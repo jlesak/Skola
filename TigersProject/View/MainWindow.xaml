@@ -1,0 +1,29 @@
+﻿<Window x:Class="TigersProject.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TigersProject"
+        xmlns:viewModel="clr-namespace:TigersProject.ViewModel"
+        xmlns:converter="clr-namespace:TigersProject.ViewModel.Converter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
+    <Window.DataContext>
+        <viewModel:ViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <converter:Converter x:Key="Converter"/>
+        <converter:MultiConverter x:Key="MultiConverter"/>
+        <local:DataSet1 x:Key="dataSet1"/>
+        <CollectionViewSource x:Key="tABULKAViewSource" Source="{Binding TABULKA, Source={StaticResource dataSet1}}"/>
+    </Window.Resources>
+    <Grid>
+        <DataGrid x:Name="tABULKADataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource tABULKAViewSource}}" Margin="54,30,64.4,90.8" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="iDColumn" Binding="{Binding ID}" Header="ID" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="jMENOColumn" Binding="{Binding JMENO}" Header="JMENO" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>
