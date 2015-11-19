@@ -32,7 +32,6 @@
             </TabItem>
 
         </TabControl>
-        <DatePicker Margin="0,30,5,0"  Grid.Column="1" Height="30" VerticalAlignment="Top"/>
-        <Label Content="24. Prosinec" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,65,0,0"/>
+        <DatePicker SelectedDate="{Binding Date}" Margin="0,30,5,0"  Grid.Column="1" Height="30" VerticalAlignment="Top"/>
     </Grid>
 </Window>
