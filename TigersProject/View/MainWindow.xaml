@@ -7,23 +7,32 @@
         xmlns:viewModel="clr-namespace:TigersProject.ViewModel"
         xmlns:converter="clr-namespace:TigersProject.ViewModel.Converter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
+        Title="MainWindow" Height="350" Width="525">
     <Window.DataContext>
         <viewModel:ViewModel/>
     </Window.DataContext>
     <Window.Resources>
         <converter:Converter x:Key="Converter"/>
         <converter:MultiConverter x:Key="MultiConverter"/>
-        <local:DataSet1 x:Key="dataSet1"/>
-        <CollectionViewSource x:Key="tABULKAViewSource" Source="{Binding TABULKA, Source={StaticResource dataSet1}}"/>
     </Window.Resources>
     <Grid>
-        <DataGrid x:Name="tABULKADataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource tABULKAViewSource}}" Margin="54,30,64.4,90.8" RowDetailsVisibilityMode="VisibleWhenSelected">
-            <DataGrid.Columns>
-                <DataGridTextColumn x:Name="iDColumn" Binding="{Binding ID}" Header="ID" Width="SizeToHeader"/>
-                <DataGridTextColumn x:Name="jMENOColumn" Binding="{Binding JMENO}" Header="JMENO" Width="SizeToHeader"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="130"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.Column="0" Margin="5">
+            <TabItem Header="Rozpis">
+               
+            </TabItem>
+            <TabItem  Header="Výplaty">
+                
+            </TabItem>
+            <TabItem Header="Den">
+                
+            </TabItem>
 
+        </TabControl>
+        <DatePicker Margin="0,30,5,0"  Grid.Column="1" Height="30" VerticalAlignment="Top"/>
+        <Label Content="24. Prosinec" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,65,0,0"/>
     </Grid>
 </Window>

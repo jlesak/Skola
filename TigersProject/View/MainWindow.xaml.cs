@@ -49,16 +49,6 @@ namespace TigersProject.View
             }
             vystup.Text = hlaska;*/
         }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            TigersProject.DataSet1 dataSet1 = ((TigersProject.DataSet1)(this.FindResource("dataSet1")));
-            // Load data into the table TABULKA. You can modify this code as needed.
-            TigersProject.DataSet1TableAdapters.TABULKATableAdapter dataSet1TABULKATableAdapter = new TigersProject.DataSet1TableAdapters.TABULKATableAdapter();
-            dataSet1TABULKATableAdapter.Fill(dataSet1.TABULKA);
-            System.Windows.Data.CollectionViewSource tABULKAViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("tABULKAViewSource")));
-            tABULKAViewSource.View.MoveCurrentToFirst();
-        }
+       
     }
 }
