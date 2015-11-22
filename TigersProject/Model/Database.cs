@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace TigersProject.Model
 {
-    class Model
+    class Database
     {
-        private Database db;
 
-        public Model()
-        {
-            db = new Database();
-        }
     }
 }

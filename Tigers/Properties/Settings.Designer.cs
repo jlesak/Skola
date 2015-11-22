@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TigersProject.Properties {
+namespace Tigers.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,18 +20,6 @@ namespace TigersProject.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("character set=NONE;data source=localhost;initial catalog=D:\\DATABASE.FDB;user id=" +
-            "sysdba;Password=masterkey;server type=1;client library=D:\\GitHub\\DMP\\TigersProje" +
-            "ct\\bin\\fbclient.dll")]
-        public string ConnectionStringMyDB {
-            get {
-                return ((string)(this["ConnectionStringMyDB"]));
             }
         }
         

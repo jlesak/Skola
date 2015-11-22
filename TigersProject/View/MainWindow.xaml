@@ -30,7 +30,6 @@
             <TabItem Header="Den">
                 
             </TabItem>
-
         </TabControl>
         <DatePicker SelectedDate="{Binding Date}" Margin="0,30,5,0"  Grid.Column="1" Height="30" VerticalAlignment="Top"/>
     </Grid>

@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TigersProject.Model
+namespace Tigers.Model
 {
     class Model
     {
-        private Database db;
 
         public Model()
         {
-            db = new Database();
+
         }
     }
 }
