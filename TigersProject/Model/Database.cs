@@ -8,6 +8,18 @@ namespace TigersProject.Model
 {
     class Database
     {
+        public Entities db;
+        public List<jazyk> Druhy; 
 
+        public Database()
+        {
+            db = new Entities();
+            Druhy = new List<jazyk>();
+            jazyk jazyk = new jazyk();
+            jazyk.jazyk1 = "anj";
+            db.jazyk.Add(jazyk);
+            db.SaveChanges();
+            db.druh.ToList();
+        }
     }
 }
