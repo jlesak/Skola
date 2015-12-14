@@ -23,11 +23,12 @@ namespace TigersProject
         public short placeno { get; set; }
         public string poznamka { get; set; }
         public System.DateTime datum { get; set; }
-        public System.DateTime zacatek_time { get; set; }
         public float delka { get; set; }
         public int instruktor_id { get; set; }
         public int jazyk_id { get; set; }
         public int druh_id { get; set; }
+        public System.DateTime ZACATEK { get; set; }
+        public Nullable<System.DateTime> DATUM { get; set; }
     
         public virtual druh druh { get; set; }
         public virtual instruktor instruktor { get; set; }

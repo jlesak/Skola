@@ -15,9 +15,9 @@ namespace TigersProject
     public partial class dispozice
     {
         public int ID { get; set; }
-        public System.DateTime DEN { get; set; }
         public string POZNAMKA { get; set; }
         public short KLUB { get; set; }
+        public System.DateTime ZACATEK { get; set; }
     
         public virtual instruktor instruktor { get; set; }
     }

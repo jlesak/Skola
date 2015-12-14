@@ -4,13 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="FirebirdSql.Data.FirebirdClient" ProviderManifestToken="2.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="FirebirdSql.Data.FirebirdClient" ProviderManifestToken="2.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="dispozice">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="DEN" Type="timestamp" Nullable="false" />
+          <Property Name="ZACATEK" Type="timestamp" Nullable="false" />
           <Property Name="POZNAMKA" Type="varchar" MaxLength="255" Unicode="true" />
           <Property Name="KLUB" Type="smallint" Nullable="false" />
         </EntityType>
@@ -52,7 +52,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="jazyk" Type="varchar" MaxLength="2" Unicode="true" Nullable="false" />
+          <Property Name="JAZYK" Type="varchar" MaxLength="5" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="lekce">
           <Key>
@@ -69,12 +69,12 @@
           <Property Name="osob" Type="int" Nullable="false" />
           <Property Name="placeno" Type="smallint" Nullable="false" />
           <Property Name="poznamka" Type="varchar" MaxLength="255" Unicode="true" />
-          <Property Name="datum" Type="timestamp" Nullable="false" />
-          <Property Name="zacatek_time" Type="timestamp" Nullable="false" />
+          <Property Name="ZACATEK" Type="timestamp" Nullable="false" />
           <Property Name="delka" Type="float" Nullable="false" />
           <Property Name="instruktor_id" Type="int" Nullable="false" />
           <Property Name="jazyk_id" Type="int" Nullable="false" />
           <Property Name="druh_id" Type="int" Nullable="false" />
+          <Property Name="DATUM" Type="date" />
         </EntityType>
         <Association Name="dispozice_ibfk_1">
           <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
@@ -213,8 +213,7 @@
             <End Role="lekce" EntitySet="lekce" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -223,10 +222,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="DEN" Type="DateTime" Nullable="false" />
           <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="KLUB" Type="Int16" Nullable="false" />
           <NavigationProperty Name="instruktor" Relationship="Self.dispozice_ibfk_1" FromRole="dispozice" ToRole="instruktor" />
+          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityType Name="druh">
           <Key>
@@ -259,6 +258,7 @@
           <Property Name="jazyk1" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_jazyk1" FromRole="jazyk" ToRole="lekce" />
           <NavigationProperty Name="instruktor" Relationship="Self.instruktor_has_jazyk" FromRole="jazyk" ToRole="instruktor" />
+          <Property Name="JAZYK1" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="lekce">
           <Key>
@@ -276,7 +276,6 @@
           <Property Name="placeno" Type="Int16" Nullable="false" />
           <Property Name="poznamka" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="datum" Type="DateTime" Nullable="false" />
-          <Property Name="zacatek_time" Type="DateTime" Nullable="false" />
           <Property Name="delka" Type="Single" Nullable="false" />
           <Property Name="instruktor_id" Type="Int32" Nullable="false" />
           <Property Name="jazyk_id" Type="Int32" Nullable="false" />
@@ -284,6 +283,8 @@
           <NavigationProperty Name="druh" Relationship="Self.fk_lekce_druh1" FromRole="lekce" ToRole="druh" />
           <NavigationProperty Name="instruktor" Relationship="Self.fk_lekce_instruktor" FromRole="lekce" ToRole="instruktor" />
           <NavigationProperty Name="jazyk" Relationship="Self.fk_lekce_jazyk1" FromRole="lekce" ToRole="jazyk" />
+          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
+          <Property Name="DATUM" Type="DateTime" />
         </EntityType>
         <Association Name="dispozice_ibfk_1">
           <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
@@ -381,8 +382,8 @@
           <EntitySetMapping Name="dispozice">
             <EntityTypeMapping TypeName="Model.dispozice">
               <MappingFragment StoreEntitySet="dispozice">
+                <ScalarProperty Name="ZACATEK" ColumnName="ZACATEK" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="DEN" ColumnName="DEN" />
                 <ScalarProperty Name="POZNAMKA" ColumnName="POZNAMKA" />
                 <ScalarProperty Name="KLUB" ColumnName="KLUB" />
               </MappingFragment>
@@ -410,14 +411,16 @@
           <EntitySetMapping Name="jazyk">
             <EntityTypeMapping TypeName="Model.jazyk">
               <MappingFragment StoreEntitySet="jazyk">
+                <ScalarProperty Name="JAZYK1" ColumnName="JAZYK" />
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="jazyk1" ColumnName="jazyk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="lekce">
             <EntityTypeMapping TypeName="Model.lekce">
               <MappingFragment StoreEntitySet="lekce">
+                <ScalarProperty Name="DATUM" ColumnName="DATUM" />
+                <ScalarProperty Name="ZACATEK" ColumnName="ZACATEK" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="jmenoKlient" ColumnName="jmenoKlient" />
                 <ScalarProperty Name="prijmeniKlient" ColumnName="prijmeniKlient" />
@@ -426,8 +429,6 @@
                 <ScalarProperty Name="osob" ColumnName="osob" />
                 <ScalarProperty Name="placeno" ColumnName="placeno" />
                 <ScalarProperty Name="poznamka" ColumnName="poznamka" />
-                <ScalarProperty Name="datum" ColumnName="datum" />
-                <ScalarProperty Name="zacatek_time" ColumnName="zacatek_time" />
                 <ScalarProperty Name="delka" ColumnName="delka" />
                 <ScalarProperty Name="instruktor_id" ColumnName="instruktor_id" />
                 <ScalarProperty Name="jazyk_id" ColumnName="jazyk_id" />

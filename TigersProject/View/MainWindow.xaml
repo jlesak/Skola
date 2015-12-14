@@ -22,7 +22,13 @@
         </Grid.ColumnDefinitions>
         <TabControl Grid.Column="0" Margin="5">
             <TabItem Header="Rozpis">
-               
+                <ListView ItemsSource="{Binding Instruktori}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding JMENO}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </TabItem>
             <TabItem  Header="Výplaty">
                 
