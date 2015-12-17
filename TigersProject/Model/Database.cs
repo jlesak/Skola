@@ -8,36 +8,72 @@ namespace TigersProject.Model
 {
     class Database
     {
-        public Entities db;
-        public List<instruktor> Instruktori; 
+        public Entities Db;
+        public List<instruktor> Instructors; 
 
         public Database()
         {
-           
+            Db = new Entities();
+            Instructors = Db.instruktor.ToList();
         }
        
         public bool AddInstructor(instruktor instructor)
         {
-            var exists = db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
+            var exists = Db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
             if(!exists.Any())
             {
-                this.db.instruktor.Add(instructor);
-                db.SaveChanges();
+                Db.instruktor.Add(instructor);
+                Db.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Hledá vhodné instruktory pro novou lekci.
+        /// Vyplivne jen ty, kteří mají čas v danou dobu.
+        /// Filtruje podle jazyka, druhu
+        /// </summary>
+        /// <param name="startTime">datum a cas zacatku lekce</param>
+        /// <param name="duration">délka výuky</param>
+        /// <param name="language">jazyk</param>
+        /// <param name="druh">SKI/SNB</param>
+        /// <param name="name">jmeno instruktora</param>
+        /// <param name="surname">prijmeni instruktora</param>
+        public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh ,string name, string surname)
+        {
+          
+            var instructors = Db.instruktor.AsQueryable();
+            //pridat dateTime
+            if(duration > 1) instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime.AddHours(1));//kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
+            if (language != null) instructors = instructors.Where(i => i.jazyk == language);
+            if(druh != null) instructors = instructors.Where(i => i.druh == druh);
+            if (!string.IsNullOrEmpty(name)) instructors = instructors.Where(i => i.JMENO.Contains(name));
+            if (!string.IsNullOrEmpty(surname)) instructors = instructors.Where(i => i.PRIJMENI.Contains(surname));
+
+            if(instructors.Any()) this.Instructors = instructors.ToList();
+            else this.Instructors = null;
+
+
+        }
+
+        public bool AddDisposition(dispozice disposition)
+        {
+            var exists = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor == disposition.instruktor));
+            if(!exists.Any())
+            {
+                Db.dispozice.Add(disposition);
+                Db.SaveChanges();
                 return true;
             }
             else return false;
         }
 
-        public bool AddDisposition(dispozice disposition)
+        public void DeleteDisposition(dispozice disposition)
         {
-            var exists = db.dispozice.AsQueryable().Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor == disposition.instruktor));
-            if(!exists.Any())
-            {
-                db.dispozice.Add(disposition);
-                db.SaveChanges();
-                return true;
-            }
-            else return false;
+            Db.dispozice.Remove(disposition);
+            Db.SaveChanges();
+
         }
 
         /// <summary>
@@ -47,10 +83,10 @@ namespace TigersProject.Model
         /// <returns></returns>
         public bool AddLanguage(string shortLanguage)
         {
-            if(!db.jazyk.AsQueryable().Any(j => j.jazyk1 == shortLanguage))
+            if(!Db.jazyk.AsQueryable().Any(j => j.JAZYK1 == shortLanguage))
             {
-                jazyk lang = new jazyk {jazyk1 = shortLanguage};
-                db.jazyk.Add(lang);
+                jazyk lang = new jazyk {JAZYK1 = shortLanguage};
+                Db.jazyk.Add(lang);
                 return true;
             }
             else return false;
@@ -59,13 +95,12 @@ namespace TigersProject.Model
         //Do DB zapíšu jen jeden řádek (i pro lekci trvající 3h) a při přidávání do DataGridu to rozkopíruju => upravovat se bude vždycky ten jeden záznam v DB
         public bool AddLesson(lekce lesson)
         {
-            var free = db.dispozice.AsQueryable().Where(d => (d.ZACATEK == lesson.ZACATEK) && (d.instruktor == lesson.instruktor));
+            var free = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == lesson.ZACATEK) && (d.instruktor == lesson.instruktor));
             if(free.Any())
             {
-                db.lekce.Add(lesson);
-                db.dispozice.Remove(db.dispozice.FirstOrDefault(d => (d.instruktor == lesson.instruktor) && (d.ZACATEK == lesson.ZACATEK)));
-                //db.dispozice.Remove(free.FirstOrDefault()); //tohle by taky mělo fungovat jako horní řádek ↑
-                db.SaveChanges();
+                Db.lekce.Add(lesson);
+                DeleteDisposition(free.First());
+                //Db.SaveChanges();
                 return true;
             }
             else return false;

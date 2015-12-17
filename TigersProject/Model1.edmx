@@ -255,7 +255,6 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="jazyk1" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_jazyk1" FromRole="jazyk" ToRole="lekce" />
           <NavigationProperty Name="instruktor" Relationship="Self.instruktor_has_jazyk" FromRole="jazyk" ToRole="instruktor" />
           <Property Name="JAZYK1" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
@@ -275,7 +274,6 @@
           <Property Name="osob" Type="Int32" Nullable="false" />
           <Property Name="placeno" Type="Int16" Nullable="false" />
           <Property Name="poznamka" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="datum" Type="DateTime" Nullable="false" />
           <Property Name="delka" Type="Single" Nullable="false" />
           <Property Name="instruktor_id" Type="Int32" Nullable="false" />
           <Property Name="jazyk_id" Type="Int32" Nullable="false" />

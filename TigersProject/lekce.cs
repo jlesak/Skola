@@ -22,7 +22,6 @@ namespace TigersProject
         public int osob { get; set; }
         public short placeno { get; set; }
         public string poznamka { get; set; }
-        public System.DateTime datum { get; set; }
         public float delka { get; set; }
         public int instruktor_id { get; set; }
         public int jazyk_id { get; set; }

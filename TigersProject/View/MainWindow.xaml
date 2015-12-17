@@ -22,7 +22,7 @@
         </Grid.ColumnDefinitions>
         <TabControl Grid.Column="0" Margin="5">
             <TabItem Header="Rozpis">
-                <ListView ItemsSource="{Binding Instruktori}">
+                <ListView ItemsSource="{Binding Instructors}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn DisplayMemberBinding="{Binding JMENO}"/>

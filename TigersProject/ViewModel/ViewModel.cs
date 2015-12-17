@@ -12,7 +12,7 @@ namespace TigersProject.ViewModel
     {
         public Model.Database Db;
 
-        public List<instruktor> Instruktori => Db.Instruktori;
+        public List<instruktor> Instructors => Db.Instructors;
 
         private DateTime date;
         public DateTime Date
