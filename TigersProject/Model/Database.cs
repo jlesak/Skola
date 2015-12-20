@@ -44,8 +44,14 @@ namespace TigersProject.Model
         {
           
             var instructors = Db.instruktor.AsQueryable();
-            //pridat dateTime
-            if(duration > 1) instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime.AddHours(1));//kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
+
+            if(startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
+            instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime);
+            if (duration > 1)
+            {
+                for (int t = 2; t <= duration; t++)
+                    instructors = instructors.Where(i => i.dispozice.ZACATEK.AddHours(t - 1) == startTime.AddHours(t - 1));
+            }//instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime.AddHours(duration-1));//kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
             if (language != null) instructors = instructors.Where(i => i.jazyk == language);
             if(druh != null) instructors = instructors.Where(i => i.druh == druh);
             if (!string.IsNullOrEmpty(name)) instructors = instructors.Where(i => i.JMENO.Contains(name));
@@ -96,6 +102,13 @@ namespace TigersProject.Model
         public bool AddLesson(lekce lesson)
         {
             var free = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == lesson.ZACATEK) && (d.instruktor == lesson.instruktor));
+
+            if(lesson.delka > 1)
+            {
+                for (int i = 2; i <= lesson.delka; i++)
+                    free = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK.AddHours(1) == lesson.ZACATEK.AddHours(1)) && (d.instruktor == lesson.instruktor));
+            }
+          
             if(free.Any())
             {
                 Db.lekce.Add(lesson);
