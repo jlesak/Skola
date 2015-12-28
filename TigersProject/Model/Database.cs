@@ -47,11 +47,13 @@ namespace TigersProject.Model
 
             if(startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
             instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime);
+
+            //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
             if (duration > 1)
             {
                 for (int t = 2; t <= duration; t++)
                     instructors = instructors.Where(i => i.dispozice.ZACATEK.AddHours(t - 1) == startTime.AddHours(t - 1));
-            }//instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime.AddHours(duration-1));//kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
+            }//instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime.AddHours(duration-1));
             if (language != null) instructors = instructors.Where(i => i.jazyk == language);
             if(druh != null) instructors = instructors.Where(i => i.druh == druh);
             if (!string.IsNullOrEmpty(name)) instructors = instructors.Where(i => i.JMENO.Contains(name));
@@ -59,14 +61,14 @@ namespace TigersProject.Model
 
             if(instructors.Any()) this.Instructors = instructors.ToList();
             else this.Instructors = null;
-
+            
 
         }
 
         public bool AddDisposition(dispozice disposition)
         {
-            var exists = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor == disposition.instruktor));
-            if(!exists.Any())
+            var exists = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID));
+            if(Enumerable.Count(exists) > 0)
             {
                 Db.dispozice.Add(disposition);
                 Db.SaveChanges();
@@ -113,7 +115,7 @@ namespace TigersProject.Model
             {
                 Db.lekce.Add(lesson);
                 DeleteDisposition(free.First());
-                //Db.SaveChanges();
+                //DatabaseModel.SaveChanges();
                 return true;
             }
             else return false;

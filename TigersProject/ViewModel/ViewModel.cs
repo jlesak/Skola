@@ -10,9 +10,9 @@ namespace TigersProject.ViewModel
 {
     class ViewModel : INotifyPropertyChanged
     {
-        public Model.Database Db;
+        public Model.Database DatabaseModel;
 
-        public List<instruktor> Instructors => Db.Instructors;
+        public List<instruktor> Instructors => DatabaseModel.Instructors;
 
         private DateTime date;
         public DateTime Date
@@ -27,7 +27,7 @@ namespace TigersProject.ViewModel
        
         public ViewModel()
         {
-            this.Db = new Model.Database();
+            this.DatabaseModel = new Model.Database();
             date = DateTime.Today;
         }
 

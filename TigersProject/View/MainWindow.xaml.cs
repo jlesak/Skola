@@ -49,6 +49,11 @@ namespace TigersProject.View
             }
             vystup.Text = hlaska;*/
         }
-       
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DispositionWindow window = new DispositionWindow();
+            window.Show();
+        }
     }
 }
