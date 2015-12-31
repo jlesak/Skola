@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +12,18 @@ namespace TigersProject.ViewModel
 {
     class DispositionVM : ViewModel
     {
+       
         public instruktor Instructor
         {get; set; }
 
         public Command AddCmd { get; set; }
 
+
         public DispositionVM()
         {
             AddCmd = new Command(AddDisposition, CExecute);
+
+           
         }
 
         private bool CExecute()

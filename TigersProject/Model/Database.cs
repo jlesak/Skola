@@ -1,22 +1,77 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media.TextFormatting;
 
 namespace TigersProject.Model
 {
     class Database
     {
         public Entities Db;
-        public List<instruktor> Instructors; 
+        public List<instruktor> Instructors;
+        public DataTable DTableMonth;
+        public DataTable DTableDay;
 
         public Database()
         {
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
         }
-       
+
+        //přidá sloupce do rozpisu měsíce
+        //provést při změně měsíce
+        public void AddMonthColumns(int days, int month)
+        {
+            DataColumn column = new DataColumn();
+            column.ColumnName = "Instruktor";
+            this.DTableMonth.Columns.Add(column);
+            for (int i = 1; i <= days; i++) {
+                column = new DataColumn();
+                column.ColumnName = i.ToString() + ". " + month.ToString() + ".";
+                this.DTableMonth.Columns.Add(column);
+            }
+        }
+
+        public void AddMonthRows()
+        {
+            var dispositions = Db.dispozice.AsQueryable();
+            string name;
+            foreach (var instructor in this.Instructors)
+            {
+                var row = DTableMonth.NewRow();
+                name = instructor.JMENO + " " + instructor.PRIJMENI;
+                dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
+                foreach (var disposition in dispositions)
+                {
+                    //tohle musim domyslet
+                    //dodělat podle rozhodnutí o barevnosti. viz papír 1
+                }
+
+                row["Instruktor"] = name;
+            }
+        }
+       /* public  MonthRowForInstructor(instruktor instructor)
+        {
+            DataTable dTable = new DataTable();
+            var row = dTable.NewRow();
+
+            row["Instruktor"] = instructor.JMENO + " " + instructor.PRIJMENI;
+            var dispositions = Db.dispozice.AsQueryable();
+            dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
+            foreach (var disposition in dispositions) {
+                
+            }
+        }*/
+        //vytvoří rádek pro instruktora na daný den --zmenit void na cosi
+        public void DayRowForInstructor(instruktor instructor)
+        {
+            
+        }
         public bool AddInstructor(instruktor instructor)
         {
             var exists = Db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
