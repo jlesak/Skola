@@ -30,6 +30,7 @@ namespace TigersProject.ViewModel
             {
                 this.date = value;
                 ChangedProperty("Date");
+                DatabaseModel.AddDayRows(this.date);
             }
         }
        //------------------------------------------------------------------------------------------------------------------------------//
@@ -37,13 +38,12 @@ namespace TigersProject.ViewModel
         {
             this.DatabaseModel = new Model.Database();
             date = DateTime.Today;
-           
-            AddColumnsMonth();
-            AddRowsMonth();
+           //DatabaseModel.AddDayRows(this.date);
+            
         }
         //přidá sloupce do rozpisu měsíce
         //provést při změně měsíce
-        private void AddColumnsMonth()
+        /*private void AddColumnsMonth()
         {
             int days = DateTime.DaysInMonth(this.date.Year, this.date.Month);
             DataColumn column = new DataColumn();
@@ -56,10 +56,10 @@ namespace TigersProject.ViewModel
                 column.ColumnName = i.ToString() + ". " + this.date.Month.ToString() + ".";
                 this.dTableMonth.Columns.Add(column);
             }
-        }
+        }*/
         //přidá řádky do datagridu rozpisu z dispozic
         //provést při změně dispozic (přidání, odebrání.. NE přidání lekce) a měsíce
-        private void AddRowsMonth()
+       /* private void AddRowsMonth()
         {
             foreach (var instructor in this.Instructors)
             {
@@ -71,15 +71,10 @@ namespace TigersProject.ViewModel
 
                 dTableMonth.Rows.Add(row);
             }
-        }
+        }*/
         
         //provést při změně dne, lekci, dispozic
-        private void AddRowsDay()
-        {
-            foreach (var instructor in Instructors) {
-                
-            }
-        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void ChangedProperty(string propertyName)
         {

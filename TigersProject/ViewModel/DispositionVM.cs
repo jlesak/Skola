@@ -12,7 +12,16 @@ namespace TigersProject.ViewModel
 {
     class DispositionVM : ViewModel
     {
-       
+        private DateTime date;
+        public DateTime Date
+        {
+            get { return this.date; }
+            set
+            {
+                this.date = value;
+                ChangedProperty("Date");
+            }
+        }
         public instruktor Instructor
         {get; set; }
 
@@ -22,8 +31,9 @@ namespace TigersProject.ViewModel
         public DispositionVM()
         {
             AddCmd = new Command(AddDisposition, CExecute);
+            this.date = DateTime.Today;
 
-           
+
         }
 
         private bool CExecute()
@@ -37,9 +47,7 @@ namespace TigersProject.ViewModel
             disposition.KLUB = 0;
             disposition.ZACATEK = Date;
             disposition.instruktor = Instructor;
-            DatabaseModel.AddDisposition(disposition);
-            MessageBox.Show("Dispozice přidána");
-
+            if(DatabaseModel.AddDisposition(disposition)) MessageBox.Show("Dispozice přidána");
         }
     }
 }

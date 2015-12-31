@@ -21,6 +21,9 @@ namespace TigersProject.Model
         {
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
+            this.DTableDay = new DataTable();
+            this.DTableMonth = new DataTable();
+            
         }
 
         //přidá sloupce do rozpisu měsíce
@@ -37,6 +40,7 @@ namespace TigersProject.Model
             }
         }
 
+        //???predelat jen na 1 instruktora?? - pro lepsi aktualizaci tabulky
         public void AddMonthRows()
         {
             var dispositions = Db.dispozice.AsQueryable();
@@ -54,6 +58,52 @@ namespace TigersProject.Model
 
                 row["Instruktor"] = name;
             }
+        }
+
+        public void AddDayRows(DateTime date)
+        {
+            string name;
+
+            foreach (instruktor instructor in Instructors)
+            {
+                var b = Db.instruktor.AsQueryable();
+                var dispositions = Db.dispozice.AsQueryable();
+                var row = this.DTableDay.NewRow();
+                name = instructor.JMENO + " " + instructor.PRIJMENI;
+                //dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
+                //dispositions = dispositions.Where(d => d.ZACATEK.DayOfYear == date.DayOfYear);
+                foreach (dispozice disposition in dispositions)
+                {
+                    int hour = disposition.ZACATEK.TimeOfDay.Hours;
+                    //pokud je dispozice, tak do bunky zapisu MEZERU
+                    switch (hour) {
+                        case 9:
+                            row["9:00 - 10:00"] = "1";
+                            break;
+                        case 10:
+                            row["10:00 - 11:00"] = "1";
+                            break;
+                        case 11:
+                            row["11:00 - 12:00"] = "1";
+                            break;
+                        case 12:
+                            row["12:00 - 13:00"] = "1";
+                            break;
+                        case 13:
+                            row["13:00 - 14:00"] = "1";
+                            break;
+                        case 14:
+                            row["14:00 - 15:00"] = "1";
+                            break;
+                        case 15:
+                            row["15:00 - 16:00"] = "1";
+                            break;
+                    }
+                }
+                row["Instruktor"] = name;
+
+            }
+
         }
        /* public  MonthRowForInstructor(instruktor instructor)
         {
@@ -97,7 +147,6 @@ namespace TigersProject.Model
         /// <param name="surname">prijmeni instruktora</param>
         public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh ,string name, string surname)
         {
-          
             var instructors = Db.instruktor.AsQueryable();
 
             if(startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
@@ -116,15 +165,18 @@ namespace TigersProject.Model
 
             if(instructors.Any()) this.Instructors = instructors.ToList();
             else this.Instructors = null;
-            
+
 
         }
 
         public bool AddDisposition(dispozice disposition)
         {
-            var exists = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID));
-            if(Enumerable.Count(exists) > 0)
+           
+            var exists = Db.dispozice.Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID));
+            
+            if(!exists.Any())
             {
+                disposition.ID = 0;
                 Db.dispozice.Add(disposition);
                 Db.SaveChanges();
                 return true;
