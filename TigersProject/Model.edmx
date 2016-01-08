@@ -16,10 +16,10 @@
         </EntityType>
         <EntityType Name="druh">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="druh" Type="varchar" MaxLength="3" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="DRUH" Type="varchar" MaxLength="3" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="instruktor">
           <Key>
@@ -49,34 +49,34 @@
         </EntityType>
         <EntityType Name="jazyk">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="JAZYK" Type="varchar" MaxLength="5" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="lekce">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
             <PropertyRef Name="instruktor_id" />
             <PropertyRef Name="jazyk_id" />
             <PropertyRef Name="druh_id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="jmenoKlient" Type="varchar" MaxLength="255" Unicode="true" />
           <Property Name="prijmeniKlient" Type="varchar" MaxLength="255" Unicode="true" Nullable="false" />
-          <Property Name="telefon" Type="varchar" MaxLength="13" Unicode="true" Nullable="false" />
-          <Property Name="misto" Type="varchar" MaxLength="45" Unicode="true" />
-          <Property Name="osob" Type="int" Nullable="false" />
-          <Property Name="placeno" Type="smallint" Nullable="false" />
-          <Property Name="poznamka" Type="varchar" MaxLength="255" Unicode="true" />
+          <Property Name="TELEFON" Type="varchar" MaxLength="13" Unicode="true" Nullable="false" />
+          <Property Name="MISTO" Type="varchar" MaxLength="45" Unicode="true" />
+          <Property Name="OSOB" Type="int" Nullable="false" />
+          <Property Name="PLACENO" Type="smallint" Nullable="false" />
+          <Property Name="POZNAMKA" Type="varchar" MaxLength="255" Unicode="true" />
           <Property Name="ZACATEK" Type="timestamp" Nullable="false" />
-          <Property Name="delka" Type="float" Nullable="false" />
+          <Property Name="DELKA" Type="float" Nullable="false" />
           <Property Name="instruktor_id" Type="int" Nullable="false" />
           <Property Name="jazyk_id" Type="int" Nullable="false" />
           <Property Name="druh_id" Type="int" Nullable="false" />
           <Property Name="DATUM" Type="date" />
         </EntityType>
-        <Association Name="dispozice_ibfk_1">
+        <Association Name="dispozice_ibfk">
           <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
           <End Role="dispozice" Type="Self.dispozice" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -93,7 +93,7 @@
           <End Role="instruktor_has_druh" Type="Self.instruktor_has_druh" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="druh">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="instruktor_has_druh">
               <PropertyRef Name="druh_id" />
@@ -129,7 +129,7 @@
           <End Role="instruktor_has_jazyk" Type="Self.instruktor_has_jazyk" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="jazyk">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="instruktor_has_jazyk">
               <PropertyRef Name="jazyk_id" />
@@ -141,7 +141,7 @@
           <End Role="lekce" Type="Self.lekce" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="druh">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="lekce">
               <PropertyRef Name="druh_id" />
@@ -165,7 +165,7 @@
           <End Role="lekce" Type="Self.lekce" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="jazyk">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="lekce">
               <PropertyRef Name="jazyk_id" />
@@ -180,7 +180,7 @@
           <EntitySet Name="instruktor_has_jazyk" EntityType="Self.instruktor_has_jazyk" Schema="Firebird" store:Type="Tables" />
           <EntitySet Name="jazyk" EntityType="Self.jazyk" Schema="Firebird" store:Type="Tables" />
           <EntitySet Name="lekce" EntityType="Self.lekce" Schema="Firebird" store:Type="Tables" />
-          <AssociationSet Name="dispozice_ibfk_1" Association="Self.dispozice_ibfk_1">
+          <AssociationSet Name="dispozice_ibfk" Association="Self.dispozice_ibfk">
             <End Role="instruktor" EntitySet="instruktor" />
             <End Role="dispozice" EntitySet="dispozice" />
           </AssociationSet>
@@ -222,17 +222,17 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
           <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="KLUB" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="instruktor" Relationship="Self.dispozice_ibfk_1" FromRole="dispozice" ToRole="instruktor" />
-          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="instruktor" Relationship="Self.dispozice_ibfk" FromRole="dispozice" ToRole="instruktor" />
         </EntityType>
         <EntityType Name="druh">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="druh1" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="DRUH1" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_druh1" FromRole="druh" ToRole="lekce" />
           <NavigationProperty Name="instruktor" Relationship="Self.instruktor_has_druh" FromRole="druh" ToRole="instruktor" />
         </EntityType>
@@ -245,46 +245,46 @@
           <Property Name="PRIJMENI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
           <Property Name="SAZBA" Type="Single" Nullable="false" />
-          <NavigationProperty Name="dispozice" Relationship="Self.dispozice_ibfk_1" FromRole="instruktor" ToRole="dispozice" />
+          <NavigationProperty Name="dispozice" Relationship="Self.dispozice_ibfk" FromRole="instruktor" ToRole="dispozice" />
           <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_instruktor" FromRole="instruktor" ToRole="lekce" />
           <NavigationProperty Name="druh" Relationship="Self.instruktor_has_druh" FromRole="instruktor" ToRole="druh" />
           <NavigationProperty Name="jazyk" Relationship="Self.instruktor_has_jazyk" FromRole="instruktor" ToRole="jazyk" />
         </EntityType>
         <EntityType Name="jazyk">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="JAZYK1" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_jazyk1" FromRole="jazyk" ToRole="lekce" />
           <NavigationProperty Name="instruktor" Relationship="Self.instruktor_has_jazyk" FromRole="jazyk" ToRole="instruktor" />
-          <Property Name="JAZYK1" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="lekce">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
             <PropertyRef Name="instruktor_id" />
             <PropertyRef Name="jazyk_id" />
             <PropertyRef Name="druh_id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="jmenoKlient" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="prijmeniKlient" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="telefon" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="misto" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
-          <Property Name="osob" Type="Int32" Nullable="false" />
-          <Property Name="placeno" Type="Int16" Nullable="false" />
-          <Property Name="poznamka" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="delka" Type="Single" Nullable="false" />
+          <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MISTO" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="OSOB" Type="Int32" Nullable="false" />
+          <Property Name="PLACENO" Type="Int16" Nullable="false" />
+          <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
+          <Property Name="DELKA" Type="Single" Nullable="false" />
           <Property Name="instruktor_id" Type="Int32" Nullable="false" />
           <Property Name="jazyk_id" Type="Int32" Nullable="false" />
           <Property Name="druh_id" Type="Int32" Nullable="false" />
+          <Property Name="DATUM" Type="DateTime" />
           <NavigationProperty Name="druh" Relationship="Self.fk_lekce_druh1" FromRole="lekce" ToRole="druh" />
           <NavigationProperty Name="instruktor" Relationship="Self.fk_lekce_instruktor" FromRole="lekce" ToRole="instruktor" />
           <NavigationProperty Name="jazyk" Relationship="Self.fk_lekce_jazyk1" FromRole="lekce" ToRole="jazyk" />
-          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
-          <Property Name="DATUM" Type="DateTime" />
         </EntityType>
-        <Association Name="dispozice_ibfk_1">
+        <Association Name="dispozice_ibfk">
           <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
           <End Role="dispozice" Type="Self.dispozice" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -301,7 +301,7 @@
           <End Role="lekce" Type="Self.lekce" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="druh">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="lekce">
               <PropertyRef Name="druh_id" />
@@ -325,7 +325,7 @@
           <End Role="lekce" Type="Self.lekce" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="jazyk">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="lekce">
               <PropertyRef Name="jazyk_id" />
@@ -346,7 +346,7 @@
           <EntitySet Name="instruktor" EntityType="Self.instruktor" />
           <EntitySet Name="jazyk" EntityType="Self.jazyk" />
           <EntitySet Name="lekce" EntityType="Self.lekce" />
-          <AssociationSet Name="dispozice_ibfk_1" Association="Self.dispozice_ibfk_1">
+          <AssociationSet Name="dispozice_ibfk" Association="Self.dispozice_ibfk">
             <End Role="instruktor" EntitySet="instruktor" />
             <End Role="dispozice" EntitySet="dispozice" />
           </AssociationSet>
@@ -380,8 +380,8 @@
           <EntitySetMapping Name="dispozice">
             <EntityTypeMapping TypeName="Model.dispozice">
               <MappingFragment StoreEntitySet="dispozice">
-                <ScalarProperty Name="ZACATEK" ColumnName="ZACATEK" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ZACATEK" ColumnName="ZACATEK" />
                 <ScalarProperty Name="POZNAMKA" ColumnName="POZNAMKA" />
                 <ScalarProperty Name="KLUB" ColumnName="KLUB" />
               </MappingFragment>
@@ -390,8 +390,8 @@
           <EntitySetMapping Name="druh">
             <EntityTypeMapping TypeName="Model.druh">
               <MappingFragment StoreEntitySet="druh">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="druh1" ColumnName="druh" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DRUH1" ColumnName="DRUH" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -409,34 +409,34 @@
           <EntitySetMapping Name="jazyk">
             <EntityTypeMapping TypeName="Model.jazyk">
               <MappingFragment StoreEntitySet="jazyk">
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="JAZYK1" ColumnName="JAZYK" />
-                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="lekce">
             <EntityTypeMapping TypeName="Model.lekce">
               <MappingFragment StoreEntitySet="lekce">
-                <ScalarProperty Name="DATUM" ColumnName="DATUM" />
-                <ScalarProperty Name="ZACATEK" ColumnName="ZACATEK" />
-                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="jmenoKlient" ColumnName="jmenoKlient" />
                 <ScalarProperty Name="prijmeniKlient" ColumnName="prijmeniKlient" />
-                <ScalarProperty Name="telefon" ColumnName="telefon" />
-                <ScalarProperty Name="misto" ColumnName="misto" />
-                <ScalarProperty Name="osob" ColumnName="osob" />
-                <ScalarProperty Name="placeno" ColumnName="placeno" />
-                <ScalarProperty Name="poznamka" ColumnName="poznamka" />
-                <ScalarProperty Name="delka" ColumnName="delka" />
+                <ScalarProperty Name="TELEFON" ColumnName="TELEFON" />
+                <ScalarProperty Name="MISTO" ColumnName="MISTO" />
+                <ScalarProperty Name="OSOB" ColumnName="OSOB" />
+                <ScalarProperty Name="PLACENO" ColumnName="PLACENO" />
+                <ScalarProperty Name="POZNAMKA" ColumnName="POZNAMKA" />
+                <ScalarProperty Name="ZACATEK" ColumnName="ZACATEK" />
+                <ScalarProperty Name="DELKA" ColumnName="DELKA" />
                 <ScalarProperty Name="instruktor_id" ColumnName="instruktor_id" />
                 <ScalarProperty Name="jazyk_id" ColumnName="jazyk_id" />
                 <ScalarProperty Name="druh_id" ColumnName="druh_id" />
+                <ScalarProperty Name="DATUM" ColumnName="DATUM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="instruktor_has_druh" TypeName="Model.instruktor_has_druh" StoreEntitySet="instruktor_has_druh">
             <EndProperty Name="druh">
-              <ScalarProperty Name="id" ColumnName="druh_id" />
+              <ScalarProperty Name="ID" ColumnName="druh_id" />
             </EndProperty>
             <EndProperty Name="instruktor">
               <ScalarProperty Name="ID" ColumnName="instruktor_id" />
@@ -447,7 +447,7 @@
               <ScalarProperty Name="ID" ColumnName="instruktor_id" />
             </EndProperty>
             <EndProperty Name="jazyk">
-              <ScalarProperty Name="id" ColumnName="jazyk_id" />
+              <ScalarProperty Name="ID" ColumnName="jazyk_id" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

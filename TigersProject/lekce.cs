@@ -14,19 +14,19 @@ namespace TigersProject
     
     public partial class lekce
     {
-        public int id { get; set; }
+        public int ID { get; set; }
         public string jmenoKlient { get; set; }
         public string prijmeniKlient { get; set; }
-        public string telefon { get; set; }
-        public string misto { get; set; }
-        public int osob { get; set; }
-        public short placeno { get; set; }
-        public string poznamka { get; set; }
-        public float delka { get; set; }
+        public string TELEFON { get; set; }
+        public string MISTO { get; set; }
+        public int OSOB { get; set; }
+        public short PLACENO { get; set; }
+        public string POZNAMKA { get; set; }
+        public System.DateTime ZACATEK { get; set; }
+        public float DELKA { get; set; }
         public int instruktor_id { get; set; }
         public int jazyk_id { get; set; }
         public int druh_id { get; set; }
-        public System.DateTime ZACATEK { get; set; }
         public Nullable<System.DateTime> DATUM { get; set; }
     
         public virtual druh druh { get; set; }

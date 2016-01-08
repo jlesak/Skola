@@ -48,6 +48,7 @@ namespace TigersProject.ViewModel
             disposition.ZACATEK = Date;
             disposition.instruktor = Instructor;
             if(DatabaseModel.AddDisposition(disposition)) MessageBox.Show("Dispozice přidána");
+            else MessageBox.Show("Dispozice, nebo lekce již existuje.");
         }
     }
 }

@@ -176,7 +176,6 @@ namespace TigersProject.Model
             
             if(!exists.Any())
             {
-                disposition.ID = 0;
                 Db.dispozice.Add(disposition);
                 Db.SaveChanges();
                 return true;
@@ -212,9 +211,9 @@ namespace TigersProject.Model
         {
             var free = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == lesson.ZACATEK) && (d.instruktor == lesson.instruktor));
 
-            if(lesson.delka > 1)
+            if(lesson.DELKA > 1)
             {
-                for (int i = 2; i <= lesson.delka; i++)
+                for (int i = 2; i <= lesson.DELKA; i++)
                     free = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK.AddHours(1) == lesson.ZACATEK.AddHours(1)) && (d.instruktor == lesson.instruktor));
             }
           
@@ -222,7 +221,7 @@ namespace TigersProject.Model
             {
                 Db.lekce.Add(lesson);
                 DeleteDisposition(free.First());
-                //DatabaseModel.SaveChanges();
+                Db.SaveChanges();
                 return true;
             }
             else return false;
