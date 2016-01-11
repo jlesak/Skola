@@ -7,7 +7,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:TigersProject.View"
         mc:Ignorable="d"
-        Title="DispositionWindow" Height="300" Width="300">
+        Title="Přidat dispozice" Height="300" Width="300">
     <Window.DataContext>
         <viewModel:DispositionVM/>
     </Window.DataContext>
@@ -24,6 +24,6 @@
         <Label Content="Instruktor" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <xctk:DateTimePicker Value="{Binding Date}" Margin="85,37,49.6,205.4"/>
         <Label Content="Datum cas" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top"/>
-        <Button Command="{Binding AddCmd}" Content="Pridat Dispozici;" HorizontalAlignment="Left" Margin="28,208,0,0" VerticalAlignment="Top" Width="107" Height="52"/>
+        <Button Command="{Binding AddCmd}" Content="Přidat Dispozici" HorizontalAlignment="Left" Margin="28,208,0,0" VerticalAlignment="Top" Width="107" Height="52"/>
     </Grid>
 </Window>

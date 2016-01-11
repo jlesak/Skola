@@ -133,6 +133,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Lesson.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -179,6 +183,9 @@
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\DispositionWindow.xaml.cs">
       <DependentUpon>DispositionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Lesson.xaml.cs">
+      <DependentUpon>Lesson.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

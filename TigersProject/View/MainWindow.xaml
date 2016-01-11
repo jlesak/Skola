@@ -22,7 +22,7 @@
             <ColumnDefinition Width="160"/>
         </Grid.ColumnDefinitions>
         <TabControl Grid.Column="0" Margin="5">
-            <TabItem Header="Rozpis">
+            <TabItem Height="30" Header="Rozpis">
                 <DataGrid ItemsSource="{Binding DTableMonth}" AutoGenerateColumns="True">
 
                 </DataGrid>
