@@ -12,7 +12,7 @@ namespace TigersProject.Model
 
         public Model()
         {
-            db = new Database();
+           
         }
     }
 }

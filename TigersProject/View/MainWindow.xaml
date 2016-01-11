@@ -14,6 +14,7 @@
     <Window.Resources>
         <converter:Converter x:Key="Converter"/>
         <converter:MultiConverter x:Key="MultiConverter"/>
+       
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,7 +24,7 @@
         <TabControl Grid.Column="0" Margin="5">
             <TabItem Header="Rozpis">
                 <DataGrid ItemsSource="{Binding DTableMonth}" AutoGenerateColumns="True">
-                 
+
                 </DataGrid>
             </TabItem>
             <TabItem  Header="Výplaty">
@@ -31,22 +32,23 @@
             </TabItem>
             <TabItem Header="Den">
                 <DataGrid ItemsSource="{Binding DTableDay}" AutoGenerateColumns="True">
-                    <DataGrid.Columns>
+                    <!--<DataGrid.Columns>
                         <DataGridTextColumn Header="Instruktor"/>
-                        <DataGridTextColumn Header="9:00 - 10:00"/>
-                        <DataGridTextColumn Header="10:00 - 11:00"/>
-                        <DataGridTextColumn Header="11:00 - 12:00"/>
-                        <DataGridTextColumn Header="12:00 - 13:00"/>
-                        <DataGridTextColumn Header="13:00 - 14:00"/>
-                        <DataGridTextColumn Header="14:00 - 15:00"/>
-                        <DataGridTextColumn Header="15:00 - 16:00"/>
+                        <DataGridTextColumn CanUserReorder="false" Header="9 - 10"/>
+                        <DataGridTextColumn Header="10 - 11"/>
+                        <DataGridTextColumn Header="11 - 12"/>
+                        <DataGridTextColumn Header="12 - 13"/>
+                        <DataGridTextColumn Header="13 - 14"/>
+                        <DataGridTextColumn Header="14 - 15"/>
+                        <DataGridTextColumn Header="15 - 16"/>
                     </DataGrid.Columns>
-
+-->
                 </DataGrid>
             </TabItem>
             <TabItem Header="Ostatní">
                 <Button Content="Dispozice" Margin="10,7,278.6,237.4" Click="Button_Click" />
             </TabItem>
+            
         </TabControl>
         <DatePicker SelectedDate="{Binding Date}" Margin="0,30,5,0"  Grid.Column="1" Height="30" VerticalAlignment="Top" FontSize="14.667" SelectedDateFormat="Long"/>
     </Grid>

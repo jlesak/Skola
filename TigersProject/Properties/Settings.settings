@@ -18,5 +18,13 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">character set=UTF8;data source=localhost;initial catalog=D:\GitHub\DMP\TIGERS.FDB;user id=sysdba;Password=masterkey;server type=1;client library=D:\GitHub\DMP\TigersProject\bin\fbclient.dll</Value>
     </Setting>
+    <Setting Name="ConnectionString1" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;character set=UTF8;data source=localhost;initial catalog=C:\Tigers\TIGERS.FDB;user id=SYSDBA;Password=masterkey;server type=1;client library=C:\Tigers\fbclient.dll&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;FirebirdSql.Data.FirebirdClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">character set=UTF8;data source=localhost;initial catalog=C:\Tigers\TIGERS.FDB;user id=SYSDBA;Password=masterkey;server type=1;client library=C:\Tigers\fbclient.dll</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

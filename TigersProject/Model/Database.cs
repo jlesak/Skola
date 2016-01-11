@@ -2,17 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.TextFormatting;
+using Xceed.Wpf.DataGrid.Converters;
 
 namespace TigersProject.Model
 {
     class Database
     {
         public Entities Db;
+        public DateTime Date;
         public List<instruktor> Instructors;
         public DataTable DTableMonth;
         public DataTable DTableDay;
@@ -23,6 +27,10 @@ namespace TigersProject.Model
             Instructors = Db.instruktor.ToList();
             this.DTableDay = new DataTable();
             this.DTableMonth = new DataTable();
+            this.Date = DateTime.Today;
+            RefreshDay();
+          
+
             
         }
 
@@ -40,6 +48,12 @@ namespace TigersProject.Model
             }
         }
 
+        public void RefreshDay()
+        {
+            DTableDay.Clear();
+            AddDayColumns();
+            AddDayRows(this.Date);
+        }
         //???predelat jen na 1 instruktora?? - pro lepsi aktualizaci tabulky
         public void AddMonthRows()
         {
@@ -48,7 +62,7 @@ namespace TigersProject.Model
             foreach (var instructor in this.Instructors)
             {
                 var row = DTableMonth.NewRow();
-                name = instructor.JMENO + " " + instructor.PRIJMENI;
+                name = instructor.PRIJMENI + " " + instructor.JMENO;
                 dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
                 foreach (var disposition in dispositions)
                 {
@@ -60,48 +74,60 @@ namespace TigersProject.Model
             }
         }
 
+        public void AddDayColumns()
+        {DataColumn column = new DataColumn();
+            column.ColumnName = "Instruktor";
+            this.DTableDay.Columns.Add(column);
+            for (int i = 9; i <= 15; i++)
+            {
+                int y = i + 1;
+                column = new DataColumn();
+                column.ColumnName = i.ToString() + " - " + y.ToString();
+                
+                DTableDay.Columns.Add(column);
+            }
+        }
         public void AddDayRows(DateTime date)
         {
             string name;
 
             foreach (instruktor instructor in Instructors)
             {
-                var b = Db.instruktor.AsQueryable();
                 var dispositions = Db.dispozice.AsQueryable();
                 var row = this.DTableDay.NewRow();
-                name = instructor.JMENO + " " + instructor.PRIJMENI;
-                //dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
-                //dispositions = dispositions.Where(d => d.ZACATEK.DayOfYear == date.DayOfYear);
+                name = instructor.PRIJMENI + " " + instructor.JMENO;
+                dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
+                dispositions = dispositions.Where(d => DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(date));
                 foreach (dispozice disposition in dispositions)
                 {
                     int hour = disposition.ZACATEK.TimeOfDay.Hours;
                     //pokud je dispozice, tak do bunky zapisu MEZERU
                     switch (hour) {
                         case 9:
-                            row["9:00 - 10:00"] = "1";
+                            row["9 - 10"] = "1";
                             break;
                         case 10:
-                            row["10:00 - 11:00"] = "1";
+                            row["10 - 11"] = "1";
                             break;
                         case 11:
-                            row["11:00 - 12:00"] = "1";
+                            row["11 - 12"] = "1";
                             break;
                         case 12:
-                            row["12:00 - 13:00"] = "1";
+                            row["12 - 13"] = "1";
                             break;
                         case 13:
-                            row["13:00 - 14:00"] = "1";
+                            row["13 - 14"] = "1";
                             break;
                         case 14:
-                            row["14:00 - 15:00"] = "1";
+                            row["14 - 15"] = "1";
                             break;
                         case 15:
-                            row["15:00 - 16:00"] = "1";
+                            row["15 - 16"] = "1";
                             break;
                     }
                 }
                 row["Instruktor"] = name;
-
+                this.DTableDay.Rows.Add(row);
             }
 
         }

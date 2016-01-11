@@ -16,7 +16,6 @@ namespace TigersProject.ViewModel
 
         public List<instruktor> Instructors => DatabaseModel.Instructors;
 
-        private DateTime date;
 
         //DataGrid pro rozpis
         public DataTable DTableMonth => this.DatabaseModel.DTableMonth;
@@ -25,20 +24,18 @@ namespace TigersProject.ViewModel
         public DataTable DTableDay => this.DatabaseModel.DTableDay;
         public DateTime Date
         {
-            get { return this.date; }
+            get { return DatabaseModel.Date; }
             set
             {
-                this.date = value;
+                DatabaseModel.Date = value;
                 ChangedProperty("Date");
-                DatabaseModel.AddDayRows(this.date);
+                DatabaseModel.RefreshDay();
             }
         }
        //------------------------------------------------------------------------------------------------------------------------------//
         public ViewModel()
         {
             this.DatabaseModel = new Model.Database();
-            date = DateTime.Today;
-           //DatabaseModel.AddDayRows(this.date);
             
         }
         //přidá sloupce do rozpisu měsíce
