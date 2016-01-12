@@ -4,13 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TigersProject.View"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Lekce" Height="324.08" Width="450.502">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -21,23 +22,30 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
-        <ListBox Grid.ColumnSpan="2" Grid.RowSpan="2"></ListBox>
-        <Label Content="Příjmení klienta:" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"/>
-        <TextBox Text="{Binding}" Grid.Row="0" Grid.Column="3" Height="25"/>
-        <Label Content="Jméno klienta:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"/>
-        <TextBox Text="{Binding}" Grid.Row="1" Grid.Column="3" Height="25"/>
-        <Label Content="Telefon:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"/>
-        <TextBox Text="{Binding}" Grid.Row="2" Grid.Column="3" Height="25"/>
-        <Label Content="Počet osob:" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"/>
-        <TextBox Text="{Binding}" Grid.Row="3" Grid.Column="3" Height="25"/>
-        <Label Content="Místo:" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"/>
-        <TextBox Text="{Binding}" Grid.Row="4" Grid.Column="3" Height="25"/>
-        <Label Content="Počet osob:" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"/>
-        <TextBox Text="{Binding}" Grid.Row="3" Grid.Column="3" Height="25"/>
-        <Label Content="Poznámka:" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0"/>
-        <TextBox Text="{Binding}" Grid.Row="5" Grid.Column="3" Height="25"/>
-       
+        <ListBox Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5" ></ListBox>
+        <Label Content="Příjmení klienta:" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,1,5.8" Height="25" Width="95"/>
+        <TextBox Text="{Binding}" Grid.Row="0" Grid.Column="3" Height="Auto" Margin="4,6,0,5.8"/>
+        <Label Content="Jméno klienta:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.2,1,5.6" Height="26" Width="87"/>
+        <TextBox Text="{Binding}" Grid.Row="1" Grid.Column="3" Height="Auto" Margin="4,6.2,0,5.6"/>
+        <Label Content="Telefon:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.4,1,5.4" Height="26" Width="51"/>
+        <TextBox Text="{Binding}" Grid.Row="2" Grid.Column="3" Height="Auto" Margin="4,6.4,0,6.4"/>
+        <Label Content="Počet osob:" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.6,1,5.2" Height="26" Width="72"/>
+        <TextBox Text="{Binding}" Grid.Row="3" Grid.Column="3" Height="Auto" Margin="4,5.6,0,6.2"/>
+        <Label Content="Místo:" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.8,1,6" Height="25" Width="43"/>
+        <TextBox Text="{Binding}" Grid.Row="4" Grid.Column="3" Height="Auto" Margin="4,5.8,0,6"/>
+        <Label Content="Počet osob:" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.6,1,5.2" Height="26" Width="72"/>
+        <TextBox Text="{Binding}" Grid.Row="3" Grid.Column="3" Height="Auto" Margin="4,5.6,0,6.2"/>
+        <Label Content="Poznámka:" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,1,5.8" Height="25" Width="67"/>
+        <TextBox Text="{Binding}" Grid.Row="5" Grid.Column="3" Height="Auto" Margin="4,6,0,5.8"/>
+        <Label Content="Datum a čas:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.6,5.2,5.2" Height="26" Width="78"/>
+        <xctk:DateTimePicker Value="{Binding }" Grid.Row="3" Grid.Column="0" Height="Auto" Grid.ColumnSpan="2" Margin="111,5.6,2.6,6.2"/>
+        <Label Content="Druh:" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,5.2,5.8" Height="25" Width="38"/>
+        <ComboBox  Grid.Row="5" Grid.ColumnSpan="2" Margin="111,6,2.6,5.8"/>
+        <Label Content="Jazyk:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.8,5.2,6" Height="25" Width="40"/>
+        <ComboBox  Grid.Row="4" Grid.ColumnSpan="2" Margin="111,5.8,2.6,6"/>
+        <Label Content="Délka:" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.2,5.2,5.6" Height="26" Width="41"/>
+        <TextBox  Grid.Row="6" Grid.ColumnSpan="2" Margin="111,6.2,2.6,5.6"/>
+
     </Grid>
 </Window>
