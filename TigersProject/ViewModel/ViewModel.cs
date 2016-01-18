@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.TextFormatting;
@@ -15,8 +16,7 @@ namespace TigersProject.ViewModel
         public Model.Database DatabaseModel;
 
         public List<instruktor> Instructors => DatabaseModel.Instructors;
-
-
+      
         //DataGrid pro rozpis
         public DataTable DTableMonth => this.DatabaseModel.DTableMonth;
 

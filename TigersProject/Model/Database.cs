@@ -18,6 +18,8 @@ namespace TigersProject.Model
         public Entities Db;
         public DateTime Date;
         public List<instruktor> Instructors;
+        public List<druh> Druhy;
+        public List<jazyk> Languages;  
         public DataTable DTableMonth;
         public DataTable DTableDay;
 
@@ -25,6 +27,8 @@ namespace TigersProject.Model
         {
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
+            Druhy = Db.druh.ToList();
+            Languages = Db.jazyk.ToList();
             this.DTableDay = new DataTable();
             this.DTableMonth = new DataTable();
             this.Date = DateTime.Today;
