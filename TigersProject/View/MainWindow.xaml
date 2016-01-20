@@ -22,6 +22,7 @@
             <ColumnDefinition Width="160"/>
         </Grid.ColumnDefinitions>
         <TabControl Grid.Column="0" Margin="5">
+            
             <TabItem Height="30" Header="Rozpis">
                 <DataGrid ItemsSource="{Binding DTableMonth}" AutoGenerateColumns="True">
 
@@ -50,6 +51,11 @@
             </TabItem>
             
         </TabControl>
-        <DatePicker SelectedDate="{Binding Date}" Margin="0,30,5,0"  Grid.Column="1" Height="30" VerticalAlignment="Top" FontSize="14.667" SelectedDateFormat="Long"/>
+        <DatePicker SelectedDate="{Binding Date}" Margin="193,6,10.4,0" Height="30" Width="100" VerticalAlignment="Top" FontSize="14.667" SelectedDateFormat="Long"/>
+        <Menu Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="49.6,133,0,0" VerticalAlignment="Top" Width="100">
+            <MenuItem Header="MenuItem">
+                <MenuItem Header="MenuItem" HorizontalAlignment="Left" Width="139.2"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

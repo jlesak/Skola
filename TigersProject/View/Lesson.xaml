@@ -54,7 +54,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Content="Délka:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.2,5.2,5.6" Height="26" Width="41"/>
-            <TextBox  Grid.Row="4" Grid.ColumnSpan="2" Margin="111,6.2,2.6,5.6"/>
+            <TextBox Text="{Binding Duration}" Grid.Row="4" Grid.ColumnSpan="2" Margin="111,6.2,2.6,5.6"/>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -72,21 +72,20 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Content="Příjmení klienta:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,1,5.8" Height="25" Width="95"/>
-            <TextBox Text="{Binding}" Grid.Row="0" Grid.Column="1" Height="Auto" Margin="4,6,0,5.8"/>
+            <TextBox Text="{Binding Surname}" Grid.Row="0" Grid.Column="1" Height="Auto" Margin="4,6,0,5.8"/>
             <Label Content="Jméno klienta:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.2,1,5.6" Height="26" Width="87"/>
-            <TextBox Text="{Binding}" Grid.Row="1" Grid.Column="1" Height="Auto" Margin="4,6.2,0,5.6"/>
+            <TextBox Text="{Binding Name}" Grid.Row="1" Grid.Column="1" Height="Auto" Margin="4,6.2,0,5.6"/>
             <Label Content="Telefon:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.4,1,5.4" Height="26" Width="51"/>
-            <TextBox Text="{Binding}" Grid.Row="2" Grid.Column="1" Height="Auto" Margin="4,6.4,0,6.4"/>
+            <TextBox Text="{Binding Phone}" Grid.Row="2" Grid.Column="1" Height="Auto" Margin="4,6.4,0,6.4"/>
             <Label Content="Počet osob:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.6,1,5.2" Height="26" Width="72"/>
-            <TextBox Text="{Binding}" Grid.Row="3" Grid.Column="1" Height="Auto" Margin="4,5.6,0,6.2"/>
+            <TextBox Text="{Binding People}" Grid.Row="3" Grid.Column="1" Height="Auto" Margin="4,5.6,0,6.2"/>
             <Label Content="Místo:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5.8,1,6" Height="25" Width="43"/>
-            <TextBox Text="{Binding}" Grid.Row="4" Grid.Column="1" Height="Auto" Margin="4,5.8,0,6"/>
+            <TextBox Text="{Binding Place}" Grid.Row="4" Grid.Column="1" Height="Auto" Margin="4,5.8,0,6"/>
             <Label Content="Placeno:" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,1,5.8" Height="25" Width="67"/>
-            <CheckBox IsChecked="{Binding}" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Margin="4,5.6,0,6.2"/>
+            <CheckBox IsChecked="{Binding Paid}" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Margin="4,5.6,0,6.2"/>
             <Label Content="Poznámka:" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,1,5.8" Height="25" Width="67"/>
-            <TextBox Text="{Binding}" Grid.Row="6" Grid.Column="1" Height="Auto" Margin="4,6,0,5.8"/>
+            <TextBox Text="{Binding Comment}" Grid.Row="6" Grid.Column="1" Height="Auto" Margin="4,6,0,5.8"/>
             <Button Content="Přidat lekci" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="7" VerticalAlignment="Top" Height="35"/>
-
         </Grid>
 
 

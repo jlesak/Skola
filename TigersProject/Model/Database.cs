@@ -22,9 +22,12 @@ namespace TigersProject.Model
         public List<jazyk> Languages;  
         public DataTable DTableMonth;
         public DataTable DTableDay;
+        public DataGrid d;
 
         public Database()
         {
+           
+            
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
             Druhy = Db.druh.ToList();
@@ -68,6 +71,8 @@ namespace TigersProject.Model
                 var row = DTableMonth.NewRow();
                 name = instructor.PRIJMENI + " " + instructor.JMENO;
                 dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
+
+                //vypsani dispozic do 'row', ??přidat barvu buňky??...
                 foreach (var disposition in dispositions)
                 {
                     //tohle musim domyslet
@@ -78,6 +83,8 @@ namespace TigersProject.Model
             }
         }
 
+        //přidávají se i "statický" sloupce hodin, protože předávám celej datagrid z modelu do VM/V
+        //?????Dá se nějak z view předat datatable do modelu, tady to upravit a předat zpět do view?????
         public void AddDayColumns()
         {DataColumn column = new DataColumn();
             column.ColumnName = "Instruktor";
@@ -105,7 +112,8 @@ namespace TigersProject.Model
                 foreach (dispozice disposition in dispositions)
                 {
                     int hour = disposition.ZACATEK.TimeOfDay.Hours;
-                    //pokud je dispozice, tak do bunky zapisu MEZERU
+                    //pokud je dispozice, tak do bunky zapisu "1"
+                    //???co tam psát??? jak měnit barvu??
                     switch (hour) {
                         case 9:
                             row["9 - 10"] = "1";
@@ -148,10 +156,7 @@ namespace TigersProject.Model
             }
         }*/
         //vytvoří rádek pro instruktora na daný den --zmenit void na cosi
-        public void DayRowForInstructor(instruktor instructor)
-        {
-            
-        }
+      
         public bool AddInstructor(instruktor instructor)
         {
             var exists = Db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
@@ -185,8 +190,8 @@ namespace TigersProject.Model
             //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
             if (duration > 1)
             {
-                for (int t = 2; t <= duration; t++)
-                    instructors = instructors.Where(i => i.dispozice.ZACATEK.AddHours(t - 1) == startTime.AddHours(t - 1));
+                for (int t = 1; t <= duration; t++)
+                    instructors = instructors.Where(i => i.dispozice.ZACATEK.AddHours(t) == startTime.AddHours(t));
             }//instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime.AddHours(duration-1));
             if (language != null) instructors = instructors.Where(i => i.jazyk == language);
             if(druh != null) instructors = instructors.Where(i => i.druh == druh);
