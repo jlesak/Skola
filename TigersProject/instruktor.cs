@@ -20,6 +20,7 @@ namespace TigersProject
             this.lekce = new HashSet<lekce>();
             this.druh = new HashSet<druh>();
             this.jazyk = new HashSet<jazyk>();
+            this.dispozice1 = new HashSet<dispozice>();
         }
     
         public int ID { get; set; }
@@ -28,12 +29,13 @@ namespace TigersProject
         public string TELEFON { get; set; }
         public float SAZBA { get; set; }
     
-        public virtual dispozice dispozice { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<lekce> lekce { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<druh> druh { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<jazyk> jazyk { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<dispozice> dispozice1 { get; set; }
     }
 }

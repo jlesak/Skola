@@ -66,7 +66,7 @@ namespace TigersProject.Model
             {
                 var row = DTableMonth.NewRow();
                 string name = instructor.PRIJMENI + " " + instructor.JMENO;
-                dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
+                dispositions = dispositions.Where(d => d.instruktor_id == instructor.ID);
                 lessons = lessons.Where(l => l.instruktor_id == instructor.ID);
 
 
@@ -122,7 +122,7 @@ namespace TigersProject.Model
             {
                 var dispositions = Db.dispozice.AsQueryable();
                 var lessons = Db.lekce.AsQueryable();
-                dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
+                dispositions = dispositions.Where(d => d.instruktor_id == instructor.ID);
                 //mělo by vybrat jen ty dispozice/lekce, kde se POUZE datum (ne čas) shoduje s vybraným datem ve view
                 dispositions = dispositions.Where(d => DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(this.Date));
                 lessons = lessons.Where(l => l.instruktor_id == instructor.ID);
@@ -234,15 +234,16 @@ namespace TigersProject.Model
         public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh ,string name, string surname)
         {
             var instructors = Db.instruktor.AsQueryable();
-
+           
             if(startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
-            instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime);
+            //instructors = instructors.Where(i => i.disp == startTime);
+            instructors = instructors.Where(i => i.dispozice1.AsQueryable().Where(d => d.ZACATEK == startTime));
 
             //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
             if (duration > 1)
             {
                 for (int t = 1; t <= duration; t++)
-                    instructors = instructors.Where(i => i.dispozice.ZACATEK.AddHours(t) == startTime.AddHours(t));
+                    instructors = instructors.Where(i => i.dispozice1.ZACATEK.AddHours(t) == startTime.AddHours(t));
             }
             if (language != null) instructors = instructors.Where(i => i.jazyk == language);
             if(druh != null) instructors = instructors.Where(i => i.druh == druh);

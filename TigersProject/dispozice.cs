@@ -18,8 +18,8 @@ namespace TigersProject
         public System.DateTime ZACATEK { get; set; }
         public string POZNAMKA { get; set; }
         public short KLUB { get; set; }
-        public string Property1 { get; set; }
+        public int instruktor_id { get; set; }
     
-        public virtual instruktor instruktor { get; set; }
+        public virtual instruktor instruktor1 { get; set; }
     }
 }
