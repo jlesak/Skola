@@ -226,6 +226,7 @@
           <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="KLUB" Type="Int16" Nullable="false" />
           <NavigationProperty Name="instruktor" Relationship="Self.dispozice_ibfk" FromRole="dispozice" ToRole="instruktor" />
+          <Property Name="Property1" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="druh">
           <Key>
@@ -286,7 +287,8 @@
         </EntityType>
         <Association Name="dispozice_ibfk">
           <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
-          <End Role="dispozice" Type="Self.dispozice" Multiplicity="0..1" />
+          <End Role="dispozice" Type="Self.dispozice" Multiplicity="0..1" >
+          </End>
           <ReferentialConstraint>
             <Principal Role="instruktor">
               <PropertyRef Name="ID" />

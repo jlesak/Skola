@@ -38,39 +38,7 @@ namespace TigersProject.ViewModel
             this.DatabaseModel = new Model.Database();
             
         }
-        //přidá sloupce do rozpisu měsíce
-        //provést při změně měsíce
-        /*private void AddColumnsMonth()
-        {
-            int days = DateTime.DaysInMonth(this.date.Year, this.date.Month);
-            DataColumn column = new DataColumn();
-            column.ColumnName = "Instruktor";
-            this.dTableMonth.Columns.Add(column);
-
-            for (int i = 1; i <= days; i++)
-            {
-                column = new DataColumn();
-                column.ColumnName = i.ToString() + ". " + this.date.Month.ToString() + ".";
-                this.dTableMonth.Columns.Add(column);
-            }
-        }*/
-        //přidá řádky do datagridu rozpisu z dispozic
-        //provést při změně dispozic (přidání, odebrání.. NE přidání lekce) a měsíce
-       /* private void AddRowsMonth()
-        {
-            foreach (var instructor in this.Instructors)
-            {
-                var row = dTableMonth.NewRow();
-                
-                string name = instructor.JMENO + " " + instructor.PRIJMENI;
-                row["Instruktor"] = name;
-
-
-                dTableMonth.Rows.Add(row);
-            }
-        }*/
         
-        //provést při změně dne, lekci, dispozic
         
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void ChangedProperty(string propertyName)

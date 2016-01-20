@@ -55,36 +55,43 @@ namespace TigersProject.Model
             }
         }
 
-        public void RefreshDay()
-        {
-            DTableDay.Clear();
-            AddDayColumns();
-            AddDayRows(this.Date);
-        }
-        //???predelat jen na 1 instruktora?? - pro lepsi aktualizaci tabulky
+        /// <summary>
+        /// vytvoří a přidá řádky do tabulky měsíce (rozpis)
+        /// </summary>
         public void AddMonthRows()
         {
             var dispositions = Db.dispozice.AsQueryable();
-            string name;
+            var lessons = Db.lekce.AsQueryable();
             foreach (var instructor in this.Instructors)
             {
                 var row = DTableMonth.NewRow();
-                name = instructor.PRIJMENI + " " + instructor.JMENO;
+                string name = instructor.PRIJMENI + " " + instructor.JMENO;
                 dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
+                lessons = lessons.Where(l => l.instruktor_id == instructor.ID);
 
-                //vypsani dispozic do 'row', ??přidat barvu buňky??...
+
                 foreach (var disposition in dispositions)
                 {
-                    //tohle musim domyslet
-                    //dodělat podle rozhodnutí o barevnosti. viz papír 1
+                    string rowName = disposition.ZACATEK.Day.ToString() + ". " + disposition.ZACATEK.Month.ToString() + ".";
+                    row[rowName] = "1";
                 }
 
                 row["Instruktor"] = name;
             }
         }
+        /// <summary>
+        /// obnoví tabulku pro den
+        /// </summary>
+        public void RefreshDay()
+        {
+            DTableDay.Clear();
+            AddDayColumns();
+            AddDayRows();
+        }
 
-        //přidávají se i "statický" sloupce hodin, protože předávám celej datagrid z modelu do VM/V
-        //?????Dá se nějak z view předat datatable do modelu, tady to upravit a předat zpět do view?????
+        /// <summary>
+        /// přidá sloupce do tabulky dne 
+        /// </summary>
         public void AddDayColumns()
         {DataColumn column = new DataColumn();
             column.ColumnName = "Instruktor";
@@ -98,65 +105,109 @@ namespace TigersProject.Model
                 DTableDay.Columns.Add(column);
             }
         }
-        public void AddDayRows(DateTime date)
+        /// <summary>
+        /// Vytvoří a přidá do DataTable řádky.
+        /// pokud není nic buňka je prázdná
+        /// pokud je dispozice zapíše 1
+        /// pokud je lekce zapíše 2
+        /// pokud je klub zapíše 3
+        /// ve view se trigerama nastaví barva buněk
+        /// </summary>
+        
+        public void AddDayRows()
         {
             string name;
 
             foreach (instruktor instructor in Instructors)
             {
                 var dispositions = Db.dispozice.AsQueryable();
-                var row = this.DTableDay.NewRow();
-                name = instructor.PRIJMENI + " " + instructor.JMENO;
+                var lessons = Db.lekce.AsQueryable();
                 dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
-                dispositions = dispositions.Where(d => DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(date));
-                foreach (dispozice disposition in dispositions)
+                //mělo by vybrat jen ty dispozice/lekce, kde se POUZE datum (ne čas) shoduje s vybraným datem ve view
+                dispositions = dispositions.Where(d => DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(this.Date));
+                lessons = lessons.Where(l => l.instruktor_id == instructor.ID);
+                lessons = lessons.Where(l => DbFunctions.TruncateTime(l.ZACATEK) == DbFunctions.TruncateTime(this.Date));
+                //přidá pouze instruktory, kteří jsou daný den v práci
+                if ((Enumerable.Any(dispositions)) || (Enumerable.Any(lessons)))
                 {
-                    int hour = disposition.ZACATEK.TimeOfDay.Hours;
-                    //pokud je dispozice, tak do bunky zapisu "1"
-                    //???co tam psát??? jak měnit barvu??
-                    switch (hour) {
-                        case 9:
-                            row["9 - 10"] = "1";
-                            break;
-                        case 10:
-                            row["10 - 11"] = "1";
-                            break;
-                        case 11:
-                            row["11 - 12"] = "1";
-                            break;
-                        case 12:
-                            row["12 - 13"] = "1";
-                            break;
-                        case 13:
-                            row["13 - 14"] = "1";
-                            break;
-                        case 14:
-                            row["14 - 15"] = "1";
-                            break;
-                        case 15:
-                            row["15 - 16"] = "1";
-                            break;
+                    var row = this.DTableDay.NewRow();
+                    name = instructor.PRIJMENI + " " + instructor.JMENO;
+
+                    foreach (dispozice disposition in dispositions)
+                    {
+                        int hour = disposition.ZACATEK.TimeOfDay.Hours;
+                        switch (hour)
+                        {
+                            case 9:
+                                if (disposition.KLUB == 1) row["9 - 10"] = "3";
+                                else row["9 - 10"] = "1";
+                                break;
+                            case 10:
+                                if (disposition.KLUB == 1) row["10 - 11"] = "3";
+                                row["10 - 11"] = "1";
+                                break;
+                            case 11:
+                                if (disposition.KLUB == 1) row["11 - 12"] = "3";
+                                row["11 - 12"] = "1";
+                                break;
+                            case 12:
+                                if (disposition.KLUB == 1) row["12 - 13"] = "3";
+                                row["12 - 13"] = "1";
+                                break;
+                            case 13:
+                                if (disposition.KLUB == 1) row["13 - 14"] = "3";
+                                row["13 - 14"] = "1";
+                                break;
+                            case 14:
+                                if (disposition.KLUB == 1) row["14 - 15"] = "3";
+                                row["14 - 15"] = "1";
+                                break;
+                            case 15:
+                                if (disposition.KLUB == 1) row["15 - 16"] = "3";
+                                row["15 - 16"] = "1";
+                                break;
+                        }
                     }
+
+                    foreach (lekce lesson in lessons)
+                    {
+                        int hour = lesson.ZACATEK.TimeOfDay.Hours;
+                        switch (hour)
+                        {
+                            case 9:
+                                row["9 - 10"] = "2";
+                                break;
+                            case 10:
+                                row["10 - 11"] = "2";
+                                break;
+                            case 11:
+                                row["11 - 12"] = "2";
+                                break;
+                            case 12:
+                                row["12 - 13"] = "2";
+                                break;
+                            case 13:
+                                row["13 - 14"] = "2";
+                                break;
+                            case 14:
+                                row["14 - 15"] = "2";
+                                break;
+                            case 15:
+                                row["15 - 16"] = "2";
+                                break;
+                        }
+                    }
+                    row["Instruktor"] = name;
+                    this.DTableDay.Rows.Add(row);
                 }
-                row["Instruktor"] = name;
-                this.DTableDay.Rows.Add(row);
             }
-
         }
-       /* public  MonthRowForInstructor(instruktor instructor)
-        {
-            DataTable dTable = new DataTable();
-            var row = dTable.NewRow();
-
-            row["Instruktor"] = instructor.JMENO + " " + instructor.PRIJMENI;
-            var dispositions = Db.dispozice.AsQueryable();
-            dispositions = dispositions.Where(d => d.instruktor.ID == instructor.ID);
-            foreach (var disposition in dispositions) {
-                
-            }
-        }*/
-        //vytvoří rádek pro instruktora na daný den --zmenit void na cosi
-      
+       
+        /// <summary>
+        /// Přidává nového instruktora do databáze
+        /// </summary>
+        /// <param name="instructor">přidávaný instruktor</param>
+        /// <returns></returns>
         public bool AddInstructor(instruktor instructor)
         {
             var exists = Db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
@@ -171,8 +222,8 @@ namespace TigersProject.Model
 
         /// <summary>
         /// Hledá vhodné instruktory pro novou lekci.
-        /// Vyplivne jen ty, kteří mají čas v danou dobu.
-        /// Filtruje podle jazyka, druhu
+        /// Vyfiltruje jen ty, kteří mají čas v danou dobu.
+        /// Filtruje podle vstupních parametrů.
         /// </summary>
         /// <param name="startTime">datum a cas zacatku lekce</param>
         /// <param name="duration">délka výuky</param>
@@ -192,7 +243,7 @@ namespace TigersProject.Model
             {
                 for (int t = 1; t <= duration; t++)
                     instructors = instructors.Where(i => i.dispozice.ZACATEK.AddHours(t) == startTime.AddHours(t));
-            }//instructors = instructors.Where(i => i.dispozice.ZACATEK == startTime.AddHours(duration-1));
+            }
             if (language != null) instructors = instructors.Where(i => i.jazyk == language);
             if(druh != null) instructors = instructors.Where(i => i.druh == druh);
             if (!string.IsNullOrEmpty(name)) instructors = instructors.Where(i => i.JMENO.Contains(name));
@@ -203,7 +254,11 @@ namespace TigersProject.Model
 
 
         }
-
+        /// <summary>
+        /// Přidává jednu dispozici (jednu hodinu) do tabulky
+        /// </summary>
+        /// <param name="disposition">přidávaná dispozice</param>
+        /// <returns></returns>
         public bool AddDisposition(dispozice disposition)
         {
            
@@ -217,7 +272,7 @@ namespace TigersProject.Model
             }
             else return false;
         }
-
+        // přepsat databázi aby to dělala sama
         public void DeleteDisposition(dispozice disposition)
         {
             Db.dispozice.Remove(disposition);
@@ -226,7 +281,7 @@ namespace TigersProject.Model
         }
 
         /// <summary>
-        /// 
+        /// Přidává nový jazyk do tabulky jazyk v databázi
         /// </summary>
         /// <param name="shortLanguage">3 místná zkratka pro jazyk (ANJ, NEJ..)</param>
         /// <returns></returns>
@@ -242,10 +297,14 @@ namespace TigersProject.Model
         }
 
         //Do DB zapíšu jen jeden řádek (i pro lekci trvající 3h) a při přidávání do DataGridu to rozkopíruju => upravovat se bude vždycky ten jeden záznam v DB
+        /// <summary>
+        /// Přidává záznam do tabulky lekce v databázi
+        /// </summary>
+        /// <param name="lesson">lekce, kterou přidáváme</param>
+        /// <returns></returns>
         public bool AddLesson(lekce lesson)
         {
             var free = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == lesson.ZACATEK) && (d.instruktor == lesson.instruktor));
-
             if(lesson.DELKA > 1)
             {
                 for (int i = 2; i <= lesson.DELKA; i++)
