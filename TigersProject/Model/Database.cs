@@ -237,8 +237,7 @@ namespace TigersProject.Model
            
             if(startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
             //instructors = instructors.Where(i => i.disp == startTime);
-            instructors = instructors.Where(i => i.dispozice1.AsQueryable().Where(d => d.ZACATEK == startTime));
-
+            /*Vybrat dispozice kde se shoduje čas, pak projet vybrane dispozice a pomoci instructor_id vypsat instruktory...izy*/
             //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
             if (duration > 1)
             {
