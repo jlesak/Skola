@@ -7,29 +7,33 @@
         xmlns:viewModel="clr-namespace:TigersProject.ViewModel"
         xmlns:converter="clr-namespace:TigersProject.ViewModel.Converter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="600" MinWidth="500" MinHeight="300" Width="900">
     <Window.DataContext>
         <viewModel:ViewModel/>
     </Window.DataContext>
     <Window.Resources>
         <converter:Converter x:Key="Converter"/>
         <converter:MultiConverter x:Key="MultiConverter"/>
-       
+
     </Window.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="160"/>
-        </Grid.ColumnDefinitions>
-        <TabControl Grid.Column="0" Margin="5">
-            
+    <Grid Margin="5,5,5,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="14.667" Background="White">
+            <MenuItem Header="Nová lekce" Click="LessonClick"/>
+            <MenuItem Header="Hledat Lekci" Click="LessonClick"/>
+            <MenuItem Header="Výplaty"/>
+            <MenuItem Header="Dispozice" Click="DispositionClick"/>
+        </Menu>
+
+        <TabControl Grid.Row="1" Grid.Column="0" Margin="5,0,5,5">
             <TabItem Height="30" Header="Rozpis">
                 <DataGrid ItemsSource="{Binding DTableMonth}" AutoGenerateColumns="True">
 
                 </DataGrid>
-            </TabItem>
-            <TabItem  Header="Výplaty">
-
             </TabItem>
             <TabItem Header="Den">
                 <DataGrid ItemsSource="{Binding DTableDay}" AutoGenerateColumns="True">
@@ -46,16 +50,9 @@
 -->
                 </DataGrid>
             </TabItem>
-            <TabItem Header="Ostatní">
-                <Button Content="Dispozice" Margin="10,7,278.6,237.4" Click="Button_Click" />
-            </TabItem>
-            
+
+
         </TabControl>
-        <DatePicker SelectedDate="{Binding Date}" Margin="193,6,10.4,0" Height="30" Width="100" VerticalAlignment="Top" FontSize="14.667" SelectedDateFormat="Long"/>
-        <Menu Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="49.6,133,0,0" VerticalAlignment="Top" Width="100">
-            <MenuItem Header="MenuItem">
-                <MenuItem Header="MenuItem" HorizontalAlignment="Left" Width="139.2"/>
-            </MenuItem>
-        </Menu>
+        <DatePicker SelectedDate="{Binding Date}" SelectedDateFormat="Short" VerticalAlignment="Top" Height="30" Margin="155,2,601,0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" FontSize="14.667" />
     </Grid>
 </Window>

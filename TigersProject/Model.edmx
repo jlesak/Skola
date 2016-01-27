@@ -4,57 +4,57 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Alias="Self" Namespace="Model.Store" Provider="FirebirdSql.Data.FirebirdClient" ProviderManifestToken="2.5">
+      <Schema Namespace="Model.Store" Provider="FirebirdSql.Data.FirebirdClient" ProviderManifestToken="2.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="dispozice">
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="instruktor_id" />
           </Key>
-          <Property Name="ID" Nullable="false" Type="int" />
-          <Property Name="ZACATEK" Nullable="false" Type="timestamp" />
-          <Property Name="POZNAMKA" MaxLength="255" Unicode="true" Type="varchar" />
-          <Property Name="KLUB" Nullable="false" Type="smallint" />
-          <Property Name="instruktor_id" Nullable="false" Type="int" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ZACATEK" Type="timestamp" Nullable="false" />
+          <Property Name="POZNAMKA" Type="varchar" MaxLength="255" Unicode="true" />
+          <Property Name="instruktor_id" Type="int" Nullable="false" />
+          <Property Name="KLUB" Type="smallint" Nullable="false" />
         </EntityType>
         <EntityType Name="druh">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Nullable="false" Type="int" />
-          <Property Name="DRUH" Nullable="false" MaxLength="3" Unicode="true" Type="varchar" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="DRUH" Type="varchar" MaxLength="3" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="instruktor">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Nullable="false" Type="int" />
-          <Property Name="JMENO" Nullable="false" MaxLength="255" Unicode="true" Type="varchar" />
-          <Property Name="PRIJMENI" Nullable="false" MaxLength="255" Unicode="true" Type="varchar" />
-          <Property Name="TELEFON" MaxLength="13" Unicode="true" Type="varchar" />
-          <Property Name="SAZBA" Nullable="false" Type="float" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="JMENO" Type="varchar" MaxLength="255" Unicode="true" Nullable="false" />
+          <Property Name="PRIJMENI" Type="varchar" MaxLength="255" Unicode="true" Nullable="false" />
+          <Property Name="TELEFON" Type="varchar" MaxLength="13" Unicode="true" />
+          <Property Name="SAZBA" Type="float" Nullable="false" />
         </EntityType>
-        <EntityType Name="instruktor_has_druh">
+        <EntityType Name="INSTRUKTOR_HAS_DRUH">
           <Key>
-            <PropertyRef Name="instruktor_id" />
-            <PropertyRef Name="druh_id" />
+            <PropertyRef Name="INSTRUKTOR_ID" />
+            <PropertyRef Name="DRUH_ID" />
           </Key>
-          <Property Name="instruktor_id" Nullable="false" Type="int" />
-          <Property Name="druh_id" Nullable="false" Type="int" />
+          <Property Name="INSTRUKTOR_ID" Type="int" Nullable="false" />
+          <Property Name="DRUH_ID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="instruktor_has_jazyk">
           <Key>
             <PropertyRef Name="instruktor_id" />
             <PropertyRef Name="jazyk_id" />
           </Key>
-          <Property Name="instruktor_id" Nullable="false" Type="int" />
-          <Property Name="jazyk_id" Nullable="false" Type="int" />
+          <Property Name="instruktor_id" Type="int" Nullable="false" />
+          <Property Name="jazyk_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="jazyk">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Nullable="false" Type="int" />
-          <Property Name="JAZYK" Nullable="false" MaxLength="5" Unicode="true" Type="varchar" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="JAZYK" Type="varchar" MaxLength="5" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="lekce">
           <Key>
@@ -63,24 +63,23 @@
             <PropertyRef Name="jazyk_id" />
             <PropertyRef Name="druh_id" />
           </Key>
-          <Property Name="ID" Nullable="false" Type="int" />
-          <Property Name="jmenoKlient" MaxLength="255" Unicode="true" Type="varchar" />
-          <Property Name="prijmeniKlient" Nullable="false" MaxLength="255" Unicode="true" Type="varchar" />
-          <Property Name="TELEFON" Nullable="false" MaxLength="13" Unicode="true" Type="varchar" />
-          <Property Name="MISTO" MaxLength="45" Unicode="true" Type="varchar" />
-          <Property Name="OSOB" Nullable="false" Type="int" />
-          <Property Name="PLACENO" Nullable="false" Type="smallint" />
-          <Property Name="POZNAMKA" MaxLength="255" Unicode="true" Type="varchar" />
-          <Property Name="ZACATEK" Nullable="false" Type="timestamp" />
-          <Property Name="DELKA" Nullable="false" Type="float" />
-          <Property Name="instruktor_id" Nullable="false" Type="int" />
-          <Property Name="jazyk_id" Nullable="false" Type="int" />
-          <Property Name="druh_id" Nullable="false" Type="int" />
-          <Property Name="DATUM" Type="date" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="jmenoKlient" Type="varchar" MaxLength="255" Unicode="true" />
+          <Property Name="prijmeniKlient" Type="varchar" MaxLength="255" Unicode="true" Nullable="false" />
+          <Property Name="TELEFON" Type="varchar" MaxLength="13" Unicode="true" Nullable="false" />
+          <Property Name="MISTO" Type="varchar" MaxLength="45" Unicode="true" />
+          <Property Name="OSOB" Type="int" Nullable="false" />
+          <Property Name="PLACENO" Type="smallint" Nullable="false" />
+          <Property Name="POZNAMKA" Type="varchar" MaxLength="255" Unicode="true" />
+          <Property Name="ZACATEK" Type="timestamp" Nullable="false" />
+          <Property Name="instruktor_id" Type="int" Nullable="false" />
+          <Property Name="jazyk_id" Type="int" Nullable="false" />
+          <Property Name="druh_id" Type="int" Nullable="false" />
+          <Property Name="DELKA" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="fk_dispozice_instruktor">
-          <End Type="Self.instruktor" Multiplicity="1" Role="instruktor" />
-          <End Type="Self.dispozice" Multiplicity="*" Role="dispozice" />
+          <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
+          <End Role="dispozice" Type="Self.dispozice" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="instruktor">
               <PropertyRef Name="ID" />
@@ -90,33 +89,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_ihd_druh">
-          <End Type="Self.druh" Multiplicity="1" Role="druh" />
-          <End Type="Self.instruktor_has_druh" Multiplicity="*" Role="instruktor_has_druh" />
-          <ReferentialConstraint>
-            <Principal Role="druh">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="instruktor_has_druh">
-              <PropertyRef Name="druh_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_ihd_inst">
-          <End Type="Self.instruktor" Multiplicity="1" Role="instruktor" />
-          <End Type="Self.instruktor_has_druh" Multiplicity="*" Role="instruktor_has_druh" />
-          <ReferentialConstraint>
-            <Principal Role="instruktor">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="instruktor_has_druh">
-              <PropertyRef Name="instruktor_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_ihj_inst">
-          <End Type="Self.instruktor" Multiplicity="1" Role="instruktor" />
-          <End Type="Self.instruktor_has_jazyk" Multiplicity="*" Role="instruktor_has_jazyk" />
+          <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
+          <End Role="instruktor_has_jazyk" Type="Self.instruktor_has_jazyk" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="instruktor">
               <PropertyRef Name="ID" />
@@ -127,8 +102,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_ihj_jazyk">
-          <End Type="Self.jazyk" Multiplicity="1" Role="jazyk" />
-          <End Type="Self.instruktor_has_jazyk" Multiplicity="*" Role="instruktor_has_jazyk" />
+          <End Role="jazyk" Type="Self.jazyk" Multiplicity="1" />
+          <End Role="instruktor_has_jazyk" Type="Self.instruktor_has_jazyk" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="jazyk">
               <PropertyRef Name="ID" />
@@ -138,155 +113,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_lekce_druh1">
-          <End Type="Self.druh" Multiplicity="1" Role="druh" />
-          <End Type="Self.lekce" Multiplicity="*" Role="lekce" />
+        <Association Name="FK_INSTRUKTOR_HAS_DRUH_DRUH">
+          <End Role="druh" Type="Self.druh" Multiplicity="1" />
+          <End Role="INSTRUKTOR_HAS_DRUH" Type="Self.INSTRUKTOR_HAS_DRUH" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="druh">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="lekce">
-              <PropertyRef Name="druh_id" />
+            <Dependent Role="INSTRUKTOR_HAS_DRUH">
+              <PropertyRef Name="DRUH_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_lekce_instruktor">
-          <End Type="Self.instruktor" Multiplicity="1" Role="instruktor" />
-          <End Type="Self.lekce" Multiplicity="*" Role="lekce" />
+        <Association Name="FK_INSTRUKTOR_HAS_DRUH_INST">
+          <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
+          <End Role="INSTRUKTOR_HAS_DRUH" Type="Self.INSTRUKTOR_HAS_DRUH" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="instruktor">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="lekce">
-              <PropertyRef Name="instruktor_id" />
+            <Dependent Role="INSTRUKTOR_HAS_DRUH">
+              <PropertyRef Name="INSTRUKTOR_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_lekce_jazyk1">
-          <End Type="Self.jazyk" Multiplicity="1" Role="jazyk" />
-          <End Type="Self.lekce" Multiplicity="*" Role="lekce" />
-          <ReferentialConstraint>
-            <Principal Role="jazyk">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="lekce">
-              <PropertyRef Name="jazyk_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="ModelStoreContainer">
-          <EntitySet Name="dispozice" EntityType="Self.dispozice" Schema="Firebird" store:Type="Tables" />
-          <EntitySet Name="druh" EntityType="Self.druh" Schema="Firebird" store:Type="Tables" />
-          <EntitySet Name="instruktor" EntityType="Self.instruktor" Schema="Firebird" store:Type="Tables" />
-          <EntitySet Name="instruktor_has_druh" EntityType="Self.instruktor_has_druh" Schema="Firebird" store:Type="Tables" />
-          <EntitySet Name="instruktor_has_jazyk" EntityType="Self.instruktor_has_jazyk" Schema="Firebird" store:Type="Tables" />
-          <EntitySet Name="jazyk" EntityType="Self.jazyk" Schema="Firebird" store:Type="Tables" />
-          <EntitySet Name="lekce" EntityType="Self.lekce" Schema="Firebird" store:Type="Tables" />
-          <AssociationSet Name="fk_dispozice_instruktor" Association="Self.fk_dispozice_instruktor">
-            <End EntitySet="instruktor" Role="instruktor" />
-            <End EntitySet="dispozice" Role="dispozice" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ihd_druh" Association="Self.fk_ihd_druh">
-            <End EntitySet="druh" Role="druh" />
-            <End EntitySet="instruktor_has_druh" Role="instruktor_has_druh" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ihd_inst" Association="Self.fk_ihd_inst">
-            <End EntitySet="instruktor" Role="instruktor" />
-            <End EntitySet="instruktor_has_druh" Role="instruktor_has_druh" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ihj_inst" Association="Self.fk_ihj_inst">
-            <End EntitySet="instruktor" Role="instruktor" />
-            <End EntitySet="instruktor_has_jazyk" Role="instruktor_has_jazyk" />
-          </AssociationSet>
-          <AssociationSet Name="fk_ihj_jazyk" Association="Self.fk_ihj_jazyk">
-            <End EntitySet="jazyk" Role="jazyk" />
-            <End EntitySet="instruktor_has_jazyk" Role="instruktor_has_jazyk" />
-          </AssociationSet>
-          <AssociationSet Name="fk_lekce_druh1" Association="Self.fk_lekce_druh1">
-            <End EntitySet="druh" Role="druh" />
-            <End EntitySet="lekce" Role="lekce" />
-          </AssociationSet>
-          <AssociationSet Name="fk_lekce_instruktor" Association="Self.fk_lekce_instruktor">
-            <End EntitySet="instruktor" Role="instruktor" />
-            <End EntitySet="lekce" Role="lekce" />
-          </AssociationSet>
-          <AssociationSet Name="fk_lekce_jazyk1" Association="Self.fk_lekce_jazyk1">
-            <End EntitySet="jazyk" Role="jazyk" />
-            <End EntitySet="lekce" Role="lekce" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
-    <!-- CSDL content -->
-    <edmx:ConceptualModels>
-      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="dispozice">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
-          <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="KLUB" Nullable="false" Type="Int16" />
-          <Property Name="instruktor_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="instruktor1" Relationship="Model.fk_dispozice_instruktor" FromRole="dispozice" ToRole="instruktor" />
-        </EntityType>
-        <EntityType Name="druh">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="DRUH1" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_druh1" FromRole="druh" ToRole="lekce" />
-          <NavigationProperty Name="instruktor" Relationship="Self.instruktor_has_druh" FromRole="druh" ToRole="instruktor" />
-        </EntityType>
-        <EntityType Name="instruktor">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="JMENO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PRIJMENI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
-          <Property Name="SAZBA" Type="Single" Nullable="false" />
-          <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_instruktor" FromRole="instruktor" ToRole="lekce" />
-          <NavigationProperty Name="druh" Relationship="Self.instruktor_has_druh" FromRole="instruktor" ToRole="druh" />
-          <NavigationProperty Name="jazyk" Relationship="Self.instruktor_has_jazyk" FromRole="instruktor" ToRole="jazyk" />
-          <NavigationProperty Name="dispozice1" Relationship="Model.fk_dispozice_instruktor" FromRole="instruktor" ToRole="dispozice" />
-        </EntityType>
-        <EntityType Name="jazyk">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="JAZYK1" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_jazyk1" FromRole="jazyk" ToRole="lekce" />
-          <NavigationProperty Name="instruktor" Relationship="Self.instruktor_has_jazyk" FromRole="jazyk" ToRole="instruktor" />
-        </EntityType>
-        <EntityType Name="lekce">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="instruktor_id" />
-            <PropertyRef Name="jazyk_id" />
-            <PropertyRef Name="druh_id" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="jmenoKlient" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="prijmeniKlient" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MISTO" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
-          <Property Name="OSOB" Type="Int32" Nullable="false" />
-          <Property Name="PLACENO" Type="Int16" Nullable="false" />
-          <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
-          <Property Name="DELKA" Type="Single" Nullable="false" />
-          <Property Name="instruktor_id" Type="Int32" Nullable="false" />
-          <Property Name="jazyk_id" Type="Int32" Nullable="false" />
-          <Property Name="druh_id" Type="Int32" Nullable="false" />
-          <Property Name="DATUM" Type="DateTime" />
-          <NavigationProperty Name="druh" Relationship="Self.fk_lekce_druh1" FromRole="lekce" ToRole="druh" />
-          <NavigationProperty Name="instruktor" Relationship="Self.fk_lekce_instruktor" FromRole="lekce" ToRole="instruktor" />
-          <NavigationProperty Name="jazyk" Relationship="Self.fk_lekce_jazyk1" FromRole="lekce" ToRole="jazyk" />
-        </EntityType>
         <Association Name="fk_lekce_druh1">
           <End Role="druh" Type="Self.druh" Multiplicity="1" />
           <End Role="lekce" Type="Self.lekce" Multiplicity="*" />
@@ -323,7 +173,169 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="instruktor_has_druh">
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="dispozice" EntityType="Self.dispozice" Schema="Firebird" store:Type="Tables" />
+          <EntitySet Name="druh" EntityType="Self.druh" Schema="Firebird" store:Type="Tables" />
+          <EntitySet Name="instruktor" EntityType="Self.instruktor" Schema="Firebird" store:Type="Tables" />
+          <EntitySet Name="INSTRUKTOR_HAS_DRUH" EntityType="Self.INSTRUKTOR_HAS_DRUH" Schema="Firebird" store:Type="Tables" />
+          <EntitySet Name="instruktor_has_jazyk" EntityType="Self.instruktor_has_jazyk" Schema="Firebird" store:Type="Tables" />
+          <EntitySet Name="jazyk" EntityType="Self.jazyk" Schema="Firebird" store:Type="Tables" />
+          <EntitySet Name="lekce" EntityType="Self.lekce" Schema="Firebird" store:Type="Tables" />
+          <AssociationSet Name="fk_dispozice_instruktor" Association="Self.fk_dispozice_instruktor">
+            <End Role="instruktor" EntitySet="instruktor" />
+            <End Role="dispozice" EntitySet="dispozice" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ihj_inst" Association="Self.fk_ihj_inst">
+            <End Role="instruktor" EntitySet="instruktor" />
+            <End Role="instruktor_has_jazyk" EntitySet="instruktor_has_jazyk" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ihj_jazyk" Association="Self.fk_ihj_jazyk">
+            <End Role="jazyk" EntitySet="jazyk" />
+            <End Role="instruktor_has_jazyk" EntitySet="instruktor_has_jazyk" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INSTRUKTOR_HAS_DRUH_DRUH" Association="Self.FK_INSTRUKTOR_HAS_DRUH_DRUH">
+            <End Role="druh" EntitySet="druh" />
+            <End Role="INSTRUKTOR_HAS_DRUH" EntitySet="INSTRUKTOR_HAS_DRUH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INSTRUKTOR_HAS_DRUH_INST" Association="Self.FK_INSTRUKTOR_HAS_DRUH_INST">
+            <End Role="instruktor" EntitySet="instruktor" />
+            <End Role="INSTRUKTOR_HAS_DRUH" EntitySet="INSTRUKTOR_HAS_DRUH" />
+          </AssociationSet>
+          <AssociationSet Name="fk_lekce_druh1" Association="Self.fk_lekce_druh1">
+            <End Role="druh" EntitySet="druh" />
+            <End Role="lekce" EntitySet="lekce" />
+          </AssociationSet>
+          <AssociationSet Name="fk_lekce_instruktor" Association="Self.fk_lekce_instruktor">
+            <End Role="instruktor" EntitySet="instruktor" />
+            <End Role="lekce" EntitySet="lekce" />
+          </AssociationSet>
+          <AssociationSet Name="fk_lekce_jazyk1" Association="Self.fk_lekce_jazyk1">
+            <End Role="jazyk" EntitySet="jazyk" />
+            <End Role="lekce" EntitySet="lekce" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="dispozice">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="instruktor_id" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
+          <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="instruktor_id" Type="Int32" Nullable="false" />
+          <Property Name="KLUB" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="instruktor" Relationship="Self.fk_dispozice_instruktor" FromRole="dispozice" ToRole="instruktor" />
+        </EntityType>
+        <EntityType Name="druh">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="DRUH1" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_druh1" FromRole="druh" ToRole="lekce" />
+          <NavigationProperty Name="instruktor" Relationship="Self.INSTRUKTOR_HAS_DRUH" FromRole="druh" ToRole="instruktor" />
+        </EntityType>
+        <EntityType Name="instruktor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="JMENO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PRIJMENI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="SAZBA" Type="Single" Nullable="false" />
+          <NavigationProperty Name="dispozice" Relationship="Self.fk_dispozice_instruktor" FromRole="instruktor" ToRole="dispozice" />
+          <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_instruktor" FromRole="instruktor" ToRole="lekce" />
+          <NavigationProperty Name="druh" Relationship="Self.INSTRUKTOR_HAS_DRUH" FromRole="instruktor" ToRole="druh" />
+          <NavigationProperty Name="jazyk" Relationship="Self.instruktor_has_jazyk" FromRole="instruktor" ToRole="jazyk" />
+        </EntityType>
+        <EntityType Name="jazyk">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="JAZYK1" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_jazyk1" FromRole="jazyk" ToRole="lekce" />
+          <NavigationProperty Name="instruktor" Relationship="Self.instruktor_has_jazyk" FromRole="jazyk" ToRole="instruktor" />
+        </EntityType>
+        <EntityType Name="lekce">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="instruktor_id" />
+            <PropertyRef Name="jazyk_id" />
+            <PropertyRef Name="druh_id" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="jmenoKlient" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="prijmeniKlient" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MISTO" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="OSOB" Type="Int32" Nullable="false" />
+          <Property Name="PLACENO" Type="Int16" Nullable="false" />
+          <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
+          <Property Name="instruktor_id" Type="Int32" Nullable="false" />
+          <Property Name="jazyk_id" Type="Int32" Nullable="false" />
+          <Property Name="druh_id" Type="Int32" Nullable="false" />
+          <Property Name="DELKA" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="druh" Relationship="Self.fk_lekce_druh1" FromRole="lekce" ToRole="druh" />
+          <NavigationProperty Name="instruktor" Relationship="Self.fk_lekce_instruktor" FromRole="lekce" ToRole="instruktor" />
+          <NavigationProperty Name="jazyk" Relationship="Self.fk_lekce_jazyk1" FromRole="lekce" ToRole="jazyk" />
+        </EntityType>
+        <Association Name="fk_dispozice_instruktor">
+          <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
+          <End Role="dispozice" Type="Self.dispozice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="instruktor">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="dispozice">
+              <PropertyRef Name="instruktor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_lekce_druh1">
+          <End Role="druh" Type="Self.druh" Multiplicity="1" />
+          <End Role="lekce" Type="Self.lekce" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="druh">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="lekce">
+              <PropertyRef Name="druh_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_lekce_instruktor">
+          <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
+          <End Role="lekce" Type="Self.lekce" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="instruktor">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="lekce">
+              <PropertyRef Name="instruktor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_lekce_jazyk1">
+          <End Role="jazyk" Type="Self.jazyk" Multiplicity="1" />
+          <End Role="lekce" Type="Self.lekce" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jazyk">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="lekce">
+              <PropertyRef Name="jazyk_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="INSTRUKTOR_HAS_DRUH">
           <End Role="druh" Type="Self.druh" Multiplicity="*" />
           <End Role="instruktor" Type="Self.instruktor" Multiplicity="*" />
         </Association>
@@ -337,6 +349,10 @@
           <EntitySet Name="instruktor" EntityType="Self.instruktor" />
           <EntitySet Name="jazyk" EntityType="Self.jazyk" />
           <EntitySet Name="lekce" EntityType="Self.lekce" />
+          <AssociationSet Name="fk_dispozice_instruktor" Association="Self.fk_dispozice_instruktor">
+            <End Role="instruktor" EntitySet="instruktor" />
+            <End Role="dispozice" EntitySet="dispozice" />
+          </AssociationSet>
           <AssociationSet Name="fk_lekce_druh1" Association="Self.fk_lekce_druh1">
             <End Role="druh" EntitySet="druh" />
             <End Role="lekce" EntitySet="lekce" />
@@ -349,7 +365,7 @@
             <End Role="jazyk" EntitySet="jazyk" />
             <End Role="lekce" EntitySet="lekce" />
           </AssociationSet>
-          <AssociationSet Name="instruktor_has_druh" Association="Self.instruktor_has_druh">
+          <AssociationSet Name="INSTRUKTOR_HAS_DRUH" Association="Self.INSTRUKTOR_HAS_DRUH">
             <End Role="druh" EntitySet="druh" />
             <End Role="instruktor" EntitySet="instruktor" />
           </AssociationSet>
@@ -357,23 +373,7 @@
             <End Role="instruktor" EntitySet="instruktor" />
             <End Role="jazyk" EntitySet="jazyk" />
           </AssociationSet>
-          <AssociationSet Name="fk_dispozice_instruktor" Association="Model.fk_dispozice_instruktor">
-            <End Role="instruktor" EntitySet="instruktor" />
-            <End Role="dispozice" EntitySet="dispozice" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="fk_dispozice_instruktor">
-          <End Type="Model.instruktor" Role="instruktor" Multiplicity="1" />
-          <End Type="Model.dispozice" Role="dispozice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="instruktor">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="dispozice">
-              <PropertyRef Name="instruktor_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -383,10 +383,10 @@
           <EntitySetMapping Name="dispozice">
             <EntityTypeMapping TypeName="Model.dispozice">
               <MappingFragment StoreEntitySet="dispozice">
-                <ScalarProperty Name="instruktor_id" ColumnName="instruktor_id" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ZACATEK" ColumnName="ZACATEK" />
                 <ScalarProperty Name="POZNAMKA" ColumnName="POZNAMKA" />
+                <ScalarProperty Name="instruktor_id" ColumnName="instruktor_id" />
                 <ScalarProperty Name="KLUB" ColumnName="KLUB" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -430,20 +430,19 @@
                 <ScalarProperty Name="PLACENO" ColumnName="PLACENO" />
                 <ScalarProperty Name="POZNAMKA" ColumnName="POZNAMKA" />
                 <ScalarProperty Name="ZACATEK" ColumnName="ZACATEK" />
-                <ScalarProperty Name="DELKA" ColumnName="DELKA" />
                 <ScalarProperty Name="instruktor_id" ColumnName="instruktor_id" />
                 <ScalarProperty Name="jazyk_id" ColumnName="jazyk_id" />
                 <ScalarProperty Name="druh_id" ColumnName="druh_id" />
-                <ScalarProperty Name="DATUM" ColumnName="DATUM" />
+                <ScalarProperty Name="DELKA" ColumnName="DELKA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="instruktor_has_druh" TypeName="Model.instruktor_has_druh" StoreEntitySet="instruktor_has_druh">
+          <AssociationSetMapping Name="INSTRUKTOR_HAS_DRUH" TypeName="Model.INSTRUKTOR_HAS_DRUH" StoreEntitySet="INSTRUKTOR_HAS_DRUH">
             <EndProperty Name="druh">
-              <ScalarProperty Name="ID" ColumnName="druh_id" />
+              <ScalarProperty Name="ID" ColumnName="DRUH_ID" />
             </EndProperty>
             <EndProperty Name="instruktor">
-              <ScalarProperty Name="ID" ColumnName="instruktor_id" />
+              <ScalarProperty Name="ID" ColumnName="INSTRUKTOR_ID" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="instruktor_has_jazyk" TypeName="Model.instruktor_has_jazyk" StoreEntitySet="instruktor_has_jazyk">

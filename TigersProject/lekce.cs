@@ -23,11 +23,10 @@ namespace TigersProject
         public short PLACENO { get; set; }
         public string POZNAMKA { get; set; }
         public System.DateTime ZACATEK { get; set; }
-        public float DELKA { get; set; }
         public int instruktor_id { get; set; }
         public int jazyk_id { get; set; }
         public int druh_id { get; set; }
-        public Nullable<System.DateTime> DATUM { get; set; }
+        public int DELKA { get; set; }
     
         public virtual druh druh { get; set; }
         public virtual instruktor instruktor { get; set; }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +27,6 @@ namespace TigersProject.Model
 
         public Database()
         {
-           
-            
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
             Druhy = Db.druh.ToList();
@@ -36,9 +35,6 @@ namespace TigersProject.Model
             this.DTableMonth = new DataTable();
             this.Date = DateTime.Today;
             RefreshDay();
-          
-
-            
         }
 
         //přidá sloupce do rozpisu měsíce
@@ -84,7 +80,7 @@ namespace TigersProject.Model
         /// </summary>
         public void RefreshDay()
         {
-            DTableDay.Clear();
+            DTableDay = new DataTable();
             AddDayColumns();
             AddDayRows();
         }
@@ -233,22 +229,32 @@ namespace TigersProject.Model
         /// <param name="surname">prijmeni instruktora</param>
         public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh ,string name, string surname)
         {
+            List<instruktor> resultInstruktors = new List<instruktor>();
             var instructors = Db.instruktor.AsQueryable();
-           
-            if(startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
-            //instructors = instructors.Where(i => i.disp == startTime);
-            /*Vybrat dispozice kde se shoduje čas, pak projet vybrane dispozice a pomoci instructor_id vypsat instruktory...izy*/
-            //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
-            if (duration > 1)
-            {
-                for (int t = 1; t <= duration; t++)
-                    instructors = instructors.Where(i => i.dispozice1.ZACATEK.AddHours(t) == startTime.AddHours(t));
-            }
-            if (language != null) instructors = instructors.Where(i => i.jazyk == language);
-            if(druh != null) instructors = instructors.Where(i => i.druh == druh);
+            if (startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
+            
+            if (language != null)instructors = instructors.Where(i => i.jazyk.Any(j => j.ID == language.ID));
+            if (druh != null) instructors = instructors.Where(i => i.druh.Any(d => d == druh));
             if (!string.IsNullOrEmpty(name)) instructors = instructors.Where(i => i.JMENO.Contains(name));
             if (!string.IsNullOrEmpty(surname)) instructors = instructors.Where(i => i.PRIJMENI.Contains(surname));
+            //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
+            //hleda se pouze pro dalsi hodinu (max 2 hodiny za sebou)
+            //v pripade že by bylo potřeba 3+h tak se to udela jeste jednou
 
+            if(duration == 1)instructors = from i in instructors from d in i.dispozice where d.ZACATEK == startTime select d.instruktor;
+
+            else
+            {
+                for (int c = 1; c < duration; c++)
+                {
+                    startTime = startTime.AddHours(c);
+                    instructors = instructors.Where(i => i.dispozice.Any(d => d.ZACATEK == startTime));
+                    //instructors = from i in instructors from d in i.dispozice where d.ZACATEK == startTime select d.instruktor;
+                }
+                //DateTime startTime2 = startTime.AddHours(1);
+                //instructors = instructors.Where(i => i.dispozice.Any(d => d.ZACATEK == startTime) && i.dispozice.Any(d => d.ZACATEK == startTime2));
+            }
+            
             if(instructors.Any()) this.Instructors = instructors.ToList();
             else this.Instructors = null;
 

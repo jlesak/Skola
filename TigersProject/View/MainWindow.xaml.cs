@@ -24,33 +24,14 @@ namespace TigersProject.View
         public MainWindow()
         {
             InitializeComponent();
-          /*  FbCommand cmd;
-            string hlaska;
-            FbConnection connection = new FbConnection("User=SYSDBA;Password=masterkey;Database=D:\\DATABASE.fdb;DataSource=localhost;Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;MinPoolSize = 0; MaxPoolSize = 50; Packet Size = 8192; ServerType = 1;");
-            connection.Open();
-            hlaska = "pripojeno";
-
-
-            cmd = new FbCommand("INSERT INTO TABULKA(ID, JMENO) VALUES(@id,@name)", connection);
-            cmd.Parameters.AddWithValue("id", 3);
-            cmd.Parameters.AddWithValue("name", "Jirka");
-            cmd.ExecuteNonQuery();
-            
-
-            cmd = new FbCommand("SELECT * from TABULKA", connection);
-            FbDataReader reader = cmd.ExecuteReader();
-            
-            while (reader.Read())
-            {
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    hlaska = hlaska + reader.GetValue(i).ToString();
-                }
-            }
-            vystup.Text = hlaska;*/
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LessonClick(object sender, RoutedEventArgs e)
+        {
+            Lesson window = new Lesson();
+            window.Show();
+        }
+        private void DispositionClick(object sender, RoutedEventArgs e)
         {
             DispositionWindow window = new DispositionWindow();
             window.Show();
