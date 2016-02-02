@@ -133,7 +133,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Lesson.xaml">
+    <Page Include="View\InstructorsWindowxaml.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LessonWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,13 +184,17 @@
     <Compile Include="ViewModel\Converter\Converter.cs" />
     <Compile Include="ViewModel\Converter\MultiConverter.cs" />
     <Compile Include="ViewModel\DispositionVM.cs" />
+    <Compile Include="ViewModel\InstructorVM.cs" />
     <Compile Include="ViewModel\LessonVM.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\DispositionWindow.xaml.cs">
       <DependentUpon>DispositionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Lesson.xaml.cs">
-      <DependentUpon>Lesson.xaml</DependentUpon>
+    <Compile Include="View\InstructorsWindowxaml.xaml.cs">
+      <DependentUpon>InstructorsWindowxaml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LessonWindow.xaml.cs">
+      <DependentUpon>LessonWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

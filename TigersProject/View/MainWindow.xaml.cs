@@ -28,12 +28,17 @@ namespace TigersProject.View
 
         private void LessonClick(object sender, RoutedEventArgs e)
         {
-            Lesson window = new Lesson();
+            LessonWindow window = new LessonWindow();
             window.Show();
         }
         private void DispositionClick(object sender, RoutedEventArgs e)
         {
             DispositionWindow window = new DispositionWindow();
+            window.Show();
+        }
+        private void InstructorClick(object sender, RoutedEventArgs e)
+        {
+            InstructorsWindowxaml window = new InstructorsWindowxaml();
             window.Show();
         }
 

@@ -30,6 +30,7 @@ namespace TigersProject.ViewModel
                 DatabaseModel.Date = value;
                 ChangedProperty("Date");
                 DatabaseModel.RefreshDay();
+                ChangedProperty("DTableDay");
             }
         }
        //------------------------------------------------------------------------------------------------------------------------------//

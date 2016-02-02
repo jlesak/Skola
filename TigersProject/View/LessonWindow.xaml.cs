@@ -17,9 +17,9 @@ namespace TigersProject.View
     /// <summary>
     /// Interaction logic for Lesson.xaml
     /// </summary>
-    public partial class Lesson : Window
+    public partial class LessonWindow : Window
     {
-        public Lesson()
+        public LessonWindow()
         {
             InitializeComponent();
         }

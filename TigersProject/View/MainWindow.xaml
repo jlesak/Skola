@@ -23,10 +23,11 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="14.667" Background="White">
-            <MenuItem Header="Nová lekce" Click="LessonClick"/>
-            <MenuItem Header="Hledat Lekci" Click="LessonClick"/>
-            <MenuItem Header="Výplaty"/>
+            <MenuItem Header="Lekce" Click="LessonClick"/>
             <MenuItem Header="Dispozice" Click="DispositionClick"/>
+            <MenuItem Header="Instruktoři" Click="InstructorClick"/>
+            <MenuItem Header="Výplaty-nic"/>
+            
         </Menu>
 
         <TabControl Grid.Row="1" Grid.Column="0" Margin="5,0,5,5">
@@ -53,6 +54,6 @@
 
 
         </TabControl>
-        <DatePicker SelectedDate="{Binding Date}" SelectedDateFormat="Short" VerticalAlignment="Top" Height="30" Margin="155,2,601,0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" FontSize="14.667" />
+        <DatePicker SelectedDate="{Binding Date}" SelectedDateFormat="Short" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="120" Width="150" Height="30" Margin="155,2,0,0" Grid.Row="1"  HorizontalContentAlignment="Stretch" FontSize="14" />
     </Grid>
 </Window>
