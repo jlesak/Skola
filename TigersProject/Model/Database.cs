@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.TextFormatting;
+using System.Xml.XPath;
 using Xceed.Wpf.DataGrid.Converters;
 
 namespace TigersProject.Model
@@ -23,8 +25,8 @@ namespace TigersProject.Model
         public List<jazyk> Languages;  
         public DataTable DTableMonth;
         public DataTable DTableDay;
-        public DataGrid d;
 
+        public string Text;
         public Database()
         {
             Db = new Entities();
@@ -90,12 +92,14 @@ namespace TigersProject.Model
         /// </summary>
         public void AddDayColumns()
         {DataColumn column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
             column.ColumnName = "Instruktor";
             this.DTableDay.Columns.Add(column);
             for (int i = 9; i <= 15; i++)
             {
                 int y = i + 1;
                 column = new DataColumn();
+                column.DataType = System.Type.GetType("System.String");
                 column.ColumnName = i.ToString() + " - " + y.ToString();
                 
                 DTableDay.Columns.Add(column);
@@ -126,7 +130,7 @@ namespace TigersProject.Model
                 //přidá pouze instruktory, kteří jsou daný den v práci
                 if ((Enumerable.Any(dispositions)) || (Enumerable.Any(lessons)))
                 {
-                    var row = this.DTableDay.NewRow();
+                    DataRow row = this.DTableDay.NewRow();
                     name = instructor.PRIJMENI + " " + instructor.JMENO;
 
                     foreach (dispozice disposition in dispositions)
@@ -194,6 +198,7 @@ namespace TigersProject.Model
                         }
                     }
                     row["Instruktor"] = name;
+                    
                     this.DTableDay.Rows.Add(row);
                 }
             }
@@ -267,7 +272,6 @@ namespace TigersProject.Model
         /// <returns></returns>
         public bool AddDisposition(dispozice disposition)
         {
-           
             var exists = Db.dispozice.Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID));
             
             if(!exists.Any())
@@ -277,6 +281,7 @@ namespace TigersProject.Model
                 return true;
             }
             else return false;
+
         }
         // přepsat databázi aby to dělala sama
         public void DeleteDisposition(dispozice disposition)
@@ -326,6 +331,11 @@ namespace TigersProject.Model
             }
             else return false;
         }
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void ChangedProperty(string propertyName)
+        {
+            if (PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

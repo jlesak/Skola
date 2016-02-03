@@ -34,6 +34,7 @@ namespace TigersProject.View
         private void DispositionClick(object sender, RoutedEventArgs e)
         {
             DispositionWindow window = new DispositionWindow();
+            window.DataContext = this.DataContext;
             window.Show();
         }
         private void InstructorClick(object sender, RoutedEventArgs e)

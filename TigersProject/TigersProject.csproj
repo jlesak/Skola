@@ -181,7 +181,7 @@
     </Compile>
     <Compile Include="Model\Database.cs" />
     <Compile Include="ViewModel\Command.cs" />
-    <Compile Include="ViewModel\Converter\Converter.cs" />
+    <Compile Include="ViewModel\Converter\CellConverter.cs" />
     <Compile Include="ViewModel\Converter\MultiConverter.cs" />
     <Compile Include="ViewModel\DispositionVM.cs" />
     <Compile Include="ViewModel\InstructorVM.cs" />
@@ -202,7 +202,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

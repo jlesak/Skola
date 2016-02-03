@@ -28,8 +28,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="JMENO" Type="varchar" MaxLength="255" Unicode="true" Nullable="false" />
-          <Property Name="PRIJMENI" Type="varchar" MaxLength="255" Unicode="true" Nullable="false" />
+          <Property Name="JMENO" Type="varchar" MaxLength="255" Unicode="true" />
+          <Property Name="PRIJMENI" Type="varchar" MaxLength="255" Unicode="true" />
           <Property Name="TELEFON" Type="varchar" MaxLength="13" Unicode="true" />
           <Property Name="SAZBA" Type="float" Nullable="false" />
         </EntityType>
@@ -64,10 +64,10 @@
             <PropertyRef Name="druh_id" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="jmenoKlient" Type="varchar" MaxLength="255" Unicode="true" />
-          <Property Name="prijmeniKlient" Type="varchar" MaxLength="255" Unicode="true" Nullable="false" />
+          <Property Name="JMENOKLIENT" Type="varchar" MaxLength="255" Unicode="true" />
+          <Property Name="PRIJMENIKLIENT" Type="varchar" MaxLength="255" Unicode="true" Nullable="false" />
           <Property Name="TELEFON" Type="varchar" MaxLength="13" Unicode="true" Nullable="false" />
-          <Property Name="MISTO" Type="varchar" MaxLength="45" Unicode="true" />
+          <Property Name="MISTO" Type="varchar" MaxLength="255" Unicode="true" />
           <Property Name="OSOB" Type="int" Nullable="false" />
           <Property Name="PLACENO" Type="smallint" Nullable="false" />
           <Property Name="POZNAMKA" Type="varchar" MaxLength="255" Unicode="true" />
@@ -245,8 +245,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="JMENO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PRIJMENI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JMENO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PRIJMENI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
           <Property Name="SAZBA" Type="Single" Nullable="false" />
           <NavigationProperty Name="dispozice" Relationship="Self.fk_dispozice_instruktor" FromRole="instruktor" ToRole="dispozice" />
@@ -271,10 +271,10 @@
             <PropertyRef Name="druh_id" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="jmenoKlient" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="prijmeniKlient" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="JMENOKLIENT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PRIJMENIKLIENT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MISTO" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
+          <Property Name="MISTO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="OSOB" Type="Int32" Nullable="false" />
           <Property Name="PLACENO" Type="Int16" Nullable="false" />
           <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -422,8 +422,8 @@
             <EntityTypeMapping TypeName="Model.lekce">
               <MappingFragment StoreEntitySet="lekce">
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="jmenoKlient" ColumnName="jmenoKlient" />
-                <ScalarProperty Name="prijmeniKlient" ColumnName="prijmeniKlient" />
+                <ScalarProperty Name="JMENOKLIENT" ColumnName="JMENOKLIENT" />
+                <ScalarProperty Name="PRIJMENIKLIENT" ColumnName="PRIJMENIKLIENT" />
                 <ScalarProperty Name="TELEFON" ColumnName="TELEFON" />
                 <ScalarProperty Name="MISTO" ColumnName="MISTO" />
                 <ScalarProperty Name="OSOB" ColumnName="OSOB" />

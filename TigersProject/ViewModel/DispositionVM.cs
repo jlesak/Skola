@@ -12,7 +12,7 @@ namespace TigersProject.ViewModel
 {
     class DispositionVM : ViewModel
     {
-        private DateTime date;
+        /*private DateTime date;
         public new DateTime Date
         {
             get { return this.date; }
@@ -51,6 +51,6 @@ namespace TigersProject.ViewModel
             else MessageBox.Show("Dispozice, nebo lekce již existuje.");
             DatabaseModel.RefreshDay();
             ChangedProperty("DTableDay");
-        }
+        }*/
     }
 }

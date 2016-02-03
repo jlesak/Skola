@@ -15,8 +15,8 @@ namespace TigersProject
     public partial class lekce
     {
         public int ID { get; set; }
-        public string jmenoKlient { get; set; }
-        public string prijmeniKlient { get; set; }
+        public string JMENOKLIENT { get; set; }
+        public string PRIJMENIKLIENT { get; set; }
         public string TELEFON { get; set; }
         public string MISTO { get; set; }
         public int OSOB { get; set; }

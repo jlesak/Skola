@@ -9,10 +9,19 @@
         mc:Ignorable="d"
         Title="Přidat dispozice" Height="300" Width="300">
     <Window.DataContext>
-        <viewModel:DispositionVM/>
+        <viewModel:ViewModel/>
     </Window.DataContext>
-    <Grid>
-        <ComboBox SelectedItem="{Binding Instructor}" ItemsSource="{Binding Instructors}" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Width="120">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ComboBox Grid.Column="1" Grid.Row="0" SelectedItem="{Binding DispositionInstructor}" ItemsSource="{Binding Instructors}" >
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -21,9 +30,9 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Label Content="Instruktor" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <xctk:DateTimePicker Value="{Binding Date}" Margin="85,37,49.6,205.4"/>
-        <Label Content="Datum cas" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top"/>
-        <Button Command="{Binding AddCmd}" Content="Přidat Dispozici" HorizontalAlignment="Left" Margin="28,208,0,0" VerticalAlignment="Top" Width="107" Height="52"/>
+        <Label Content="Instruktor" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0"/>
+        <xctk:DateTimePicker Value="{Binding DispositionDate}" Grid.Column="1" Grid.Row="1"/>
+        <Label Content="Datum cas" Grid.Column="0" Grid.Row="1"/>
+        <Button Style="{StaticResource Button}" Command="{Binding AddDispositionCmd}" Content="Přidat Dispozici" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

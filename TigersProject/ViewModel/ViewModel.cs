@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
+using System.Windows;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 
@@ -33,14 +36,55 @@ namespace TigersProject.ViewModel
                 ChangedProperty("DTableDay");
             }
         }
-       //------------------------------------------------------------------------------------------------------------------------------//
+
+        public Command ClickCommand { get; set; }
+        //Okno s přidáváním dispozic---------------------------------------------------------------
+        private DateTime dispositionDate;
+        public DateTime DispositionDate
+        {
+            get { return this.dispositionDate; }
+            set
+            {
+                this.dispositionDate = value;
+                ChangedProperty("DispositionDate");
+            }
+        }
+        public instruktor DispositionInstructor { get; set; }
+        public Command AddDispositionCmd { get; set; }
+        //____________________________________________________________________________________________
         public ViewModel()
         {
             this.DatabaseModel = new Model.Database();
-            
+            ClickCommand = new Command(() => MessageBox.Show("Click"));
+            AddDispositionCmd = new Command(AddDisposition, () =>
+            {
+                if(this.DispositionInstructor != null) return true;
+                else return false;
+            });
+            this.DispositionDate = this.DatabaseModel.Date;
         }
-        
-        
+
+        private void CellStyle()
+        {
+            foreach (DataRow row in DTableDay.Rows) {
+                
+            }
+        }
+        //okno s přidáváním dispozic----------------------------------------------------------------------------
+        public void AddDisposition()
+        {
+            dispozice disposition = new dispozice();
+            disposition.KLUB = 0;
+            disposition.ZACATEK = DispositionDate;
+            disposition.instruktor = DispositionInstructor;
+            if (DatabaseModel.AddDisposition(disposition)) MessageBox.Show("Dispozice přidána");
+            else MessageBox.Show("Dispozice, nebo lekce již existuje.");
+            DatabaseModel.RefreshDay();
+            ChangedProperty("DTableDay");
+        }
+
+
+        //okno lekce -------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void ChangedProperty(string propertyName)
         {

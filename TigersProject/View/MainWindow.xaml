@@ -12,9 +12,9 @@
         <viewModel:ViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <converter:Converter x:Key="Converter"/>
+        <converter:CellConverter x:Key="Converter"/>
         <converter:MultiConverter x:Key="MultiConverter"/>
-
+        
     </Window.Resources>
     <Grid Margin="5,5,5,10">
         <Grid.RowDefinitions>
@@ -31,29 +31,24 @@
         </Menu>
 
         <TabControl Grid.Row="1" Grid.Column="0" Margin="5,0,5,5">
+            
+            <TabItem Header="Den">
+                <DataGrid ItemsSource="{Binding DTableDay}" AutoGenerateColumns="True" CanUserAddRows="False" IsReadOnly="True">
+                    <DataGrid.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Setter Property="Background" Value="{Binding Converter={StaticResource Converter}}"/>
+                        </Style>
+                    </DataGrid.CellStyle>
+                </DataGrid>
+            </TabItem>
             <TabItem Height="30" Header="Rozpis">
                 <DataGrid ItemsSource="{Binding DTableMonth}" AutoGenerateColumns="True">
 
                 </DataGrid>
             </TabItem>
-            <TabItem Header="Den">
-                <DataGrid ItemsSource="{Binding DTableDay}" AutoGenerateColumns="True">
-                    <!--<DataGrid.Columns>
-                        <DataGridTextColumn Header="Instruktor"/>
-                        <DataGridTextColumn CanUserReorder="false" Header="9 - 10"/>
-                        <DataGridTextColumn Header="10 - 11"/>
-                        <DataGridTextColumn Header="11 - 12"/>
-                        <DataGridTextColumn Header="12 - 13"/>
-                        <DataGridTextColumn Header="13 - 14"/>
-                        <DataGridTextColumn Header="14 - 15"/>
-                        <DataGridTextColumn Header="15 - 16"/>
-                    </DataGrid.Columns>
--->
-                </DataGrid>
-            </TabItem>
 
 
         </TabControl>
-        <DatePicker SelectedDate="{Binding Date}" SelectedDateFormat="Short" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="120" Width="150" Height="30" Margin="155,2,0,0" Grid.Row="1"  HorizontalContentAlignment="Stretch" FontSize="14" />
+        <DatePicker SelectedDate="{Binding Path=Date}" SelectedDateFormat="Short" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="120" Width="150" Height="30" Margin="155,2,0,0" Grid.Row="1"  HorizontalContentAlignment="Stretch" FontSize="14" />
     </Grid>
 </Window>
