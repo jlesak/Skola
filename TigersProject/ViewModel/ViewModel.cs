@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.TextFormatting;
+using TigersProject.Model;
 using System.Windows.Navigation;
 
 namespace TigersProject.ViewModel
@@ -25,6 +27,7 @@ namespace TigersProject.ViewModel
 
         //DataGrid pro den
         public DataTable DTableDay => this.DatabaseModel.DTableDay;
+        public ObservableCollection<DayRow> DayTable => DatabaseModel.DayTable;
         public DateTime Date
         {
             get { return DatabaseModel.Date; }
@@ -33,10 +36,19 @@ namespace TigersProject.ViewModel
                 DatabaseModel.Date = value;
                 ChangedProperty("Date");
                 DatabaseModel.RefreshDay();
-                ChangedProperty("DTableDay");
+                ChangedProperty("DayTable");
             }
         }
-
+        private DayRow selectedRow;
+        public DayRow SelectedRow
+        {
+            get { return this.selectedRow; }
+            set
+            {
+                this.selectedRow = value;
+                ChangedProperty("SelectedRow");
+            }
+        }
         public Command ClickCommand { get; set; }
         //Okno s přidáváním dispozic---------------------------------------------------------------
         private DateTime dispositionDate;
@@ -51,11 +63,12 @@ namespace TigersProject.ViewModel
         }
         public instruktor DispositionInstructor { get; set; }
         public Command AddDispositionCmd { get; set; }
+        
         //____________________________________________________________________________________________
         public ViewModel()
         {
             this.DatabaseModel = new Model.Database();
-            ClickCommand = new Command(() => MessageBox.Show("Click"));
+            ClickCommand = new Command(() => MessageBox.Show("ahoooooj"));
             AddDispositionCmd = new Command(AddDisposition, () =>
             {
                 if(this.DispositionInstructor != null) return true;
@@ -80,7 +93,7 @@ namespace TigersProject.ViewModel
             if (DatabaseModel.AddDisposition(disposition)) MessageBox.Show("Dispozice přidána");
             else MessageBox.Show("Dispozice, nebo lekce již existuje.");
             DatabaseModel.RefreshDay();
-            ChangedProperty("DTableDay");
+            ChangedProperty("DayTable");
         }
 
 

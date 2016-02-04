@@ -26,6 +26,10 @@ namespace TigersProject.View
             InitializeComponent();
         }
 
+        private void Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
         private void LessonClick(object sender, RoutedEventArgs e)
         {
             LessonWindow window = new LessonWindow();

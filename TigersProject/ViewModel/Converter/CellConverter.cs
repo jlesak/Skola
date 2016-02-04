@@ -14,8 +14,8 @@ namespace TigersProject.ViewModel.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(!String.IsNullOrEmpty(value.ToString())) return Brushes.Green;
-            else return Brushes.White;
+            if(value == "1") return true;
+            else return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

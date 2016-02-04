@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
@@ -26,9 +27,13 @@ namespace TigersProject.Model
         public DataTable DTableMonth;
         public DataTable DTableDay;
 
+        public ObservableCollection<DayRow> DayTable; 
+
         public string Text;
         public Database()
         {
+            DayTable = new ObservableCollection<DayRow>();
+
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
             Druhy = Db.druh.ToList();
@@ -82,8 +87,9 @@ namespace TigersProject.Model
         /// </summary>
         public void RefreshDay()
         {
-            DTableDay = new DataTable();
-            AddDayColumns();
+            //DTableDay = new DataTable();
+            //AddDayColumns();
+            DayTable = new ObservableCollection<DayRow>();
             AddDayRows();
         }
 
@@ -130,7 +136,8 @@ namespace TigersProject.Model
                 //přidá pouze instruktory, kteří jsou daný den v práci
                 if ((Enumerable.Any(dispositions)) || (Enumerable.Any(lessons)))
                 {
-                    DataRow row = this.DTableDay.NewRow();
+                    DayRow row = new DayRow();
+                    //DataRow row = this.DTableDay.NewRow();
                     name = instructor.PRIJMENI + " " + instructor.JMENO;
 
                     foreach (dispozice disposition in dispositions)
@@ -139,37 +146,37 @@ namespace TigersProject.Model
                         switch (hour)
                         {
                             case 9:
-                                if (disposition.KLUB == 1) row["9 - 10"] = "3";
-                                else row["9 - 10"] = "1";
+                                if (disposition.KLUB == 1) row.Nine = "3";
+                                else row.Nine = "1";
                                 break;
                             case 10:
-                                if (disposition.KLUB == 1) row["10 - 11"] = "3";
-                                row["10 - 11"] = "1";
+                                if (disposition.KLUB == 1) row.Ten = "3";
+                                row.Ten= "1";
                                 break;
                             case 11:
-                                if (disposition.KLUB == 1) row["11 - 12"] = "3";
-                                row["11 - 12"] = "1";
+                                if (disposition.KLUB == 1) row.Eleven = "3";
+                                row.Eleven = "1";
                                 break;
                             case 12:
-                                if (disposition.KLUB == 1) row["12 - 13"] = "3";
-                                row["12 - 13"] = "1";
+                                if (disposition.KLUB == 1) row.Twelve = "3";
+                                row.Twelve = "1";
                                 break;
                             case 13:
-                                if (disposition.KLUB == 1) row["13 - 14"] = "3";
-                                row["13 - 14"] = "1";
+                                if (disposition.KLUB == 1) row.One = "3";
+                                row.One = "1";
                                 break;
                             case 14:
-                                if (disposition.KLUB == 1) row["14 - 15"] = "3";
-                                row["14 - 15"] = "1";
+                                if (disposition.KLUB == 1) row.Two = "3";
+                                row.Two = "1";
                                 break;
                             case 15:
-                                if (disposition.KLUB == 1) row["15 - 16"] = "3";
-                                row["15 - 16"] = "1";
+                                if (disposition.KLUB == 1) row.Three = "3";
+                                row.Three = "1";
                                 break;
                         }
                     }
 
-                    foreach (lekce lesson in lessons)
+                    /*foreach (lekce lesson in lessons)
                     {
                         int hour = lesson.ZACATEK.TimeOfDay.Hours;
                         switch (hour)
@@ -196,10 +203,10 @@ namespace TigersProject.Model
                                 row["15 - 16"] = "2";
                                 break;
                         }
-                    }
-                    row["Instruktor"] = name;
+                    }*/
+                    row.Instructor = name;
                     
-                    this.DTableDay.Rows.Add(row);
+                    this.DayTable.Add(row);
                 }
             }
         }

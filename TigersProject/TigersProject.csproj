@@ -180,6 +180,7 @@
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Model\Database.cs" />
+    <Compile Include="Model\DayRow.cs" />
     <Compile Include="ViewModel\Command.cs" />
     <Compile Include="ViewModel\Converter\CellConverter.cs" />
     <Compile Include="ViewModel\Converter\MultiConverter.cs" />
