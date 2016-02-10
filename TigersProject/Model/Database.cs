@@ -22,24 +22,19 @@ namespace TigersProject.Model
         public Entities Db;
         public DateTime Date;
         public List<instruktor> Instructors;
-        public List<druh> Druhy;
+        public List<druh> Types;
         public List<jazyk> Languages;  
-        public DataTable DTableMonth;
-        public DataTable DTableDay;
-
+        public DataTable DTableMonth; //nahradit observableColl
         public ObservableCollection<DayRow> DayTable; 
 
         public string Text;
         public Database()
         {
             DayTable = new ObservableCollection<DayRow>();
-
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
-            Druhy = Db.druh.ToList();
+            Types = Db.druh.ToList();
             Languages = Db.jazyk.ToList();
-            this.DTableDay = new DataTable();
-            this.DTableMonth = new DataTable();
             this.Date = DateTime.Today;
             RefreshDay();
         }
@@ -93,24 +88,7 @@ namespace TigersProject.Model
             AddDayRows();
         }
 
-        /// <summary>
-        /// přidá sloupce do tabulky dne 
-        /// </summary>
-        public void AddDayColumns()
-        {DataColumn column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "Instruktor";
-            this.DTableDay.Columns.Add(column);
-            for (int i = 9; i <= 15; i++)
-            {
-                int y = i + 1;
-                column = new DataColumn();
-                column.DataType = System.Type.GetType("System.String");
-                column.ColumnName = i.ToString() + " - " + y.ToString();
-                
-                DTableDay.Columns.Add(column);
-            }
-        }
+       
         /// <summary>
         /// Vytvoří a přidá do DataTable řádky.
         /// pokud není nic buňka je prázdná
@@ -176,35 +154,37 @@ namespace TigersProject.Model
                         }
                     }
 
-                    /*foreach (lekce lesson in lessons)
+                    foreach (lekce lesson in lessons)
                     {
                         int hour = lesson.ZACATEK.TimeOfDay.Hours;
                         switch (hour)
                         {
                             case 9:
-                                row["9 - 10"] = "2";
+                                row.Nine = "2";
+                                row.LessonNine = lesson;
                                 break;
                             case 10:
-                                row["10 - 11"] = "2";
+                                row.LessonTen = lesson;
                                 break;
                             case 11:
-                                row["11 - 12"] = "2";
+                                row.LessonEleven = lesson;
                                 break;
                             case 12:
-                                row["12 - 13"] = "2";
+                                row.LessonTwelve = lesson;
                                 break;
                             case 13:
-                                row["13 - 14"] = "2";
+                                row.LessonOne = lesson;
                                 break;
                             case 14:
-                                row["14 - 15"] = "2";
+                                row.LessonTwo = lesson;
                                 break;
                             case 15:
-                                row["15 - 16"] = "2";
+                                row.LessonThree = lesson;
                                 break;
                         }
-                    }*/
-                    row.Instructor = name;
+                    }
+                    row.Instructor = instructor;
+                    row.Name = name;
                     
                     this.DayTable.Add(row);
                 }
@@ -241,7 +221,6 @@ namespace TigersProject.Model
         /// <param name="surname">prijmeni instruktora</param>
         public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh ,string name, string surname)
         {
-            List<instruktor> resultInstruktors = new List<instruktor>();
             var instructors = Db.instruktor.AsQueryable();
             if (startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
             
@@ -261,16 +240,21 @@ namespace TigersProject.Model
                 {
                     startTime = startTime.AddHours(c);
                     instructors = instructors.Where(i => i.dispozice.Any(d => d.ZACATEK == startTime));
-                    //instructors = from i in instructors from d in i.dispozice where d.ZACATEK == startTime select d.instruktor;
                 }
-                //DateTime startTime2 = startTime.AddHours(1);
-                //instructors = instructors.Where(i => i.dispozice.Any(d => d.ZACATEK == startTime) && i.dispozice.Any(d => d.ZACATEK == startTime2));
             }
             
             if(instructors.Any()) this.Instructors = instructors.ToList();
             else this.Instructors = null;
+        }
 
-
+        public List<lekce> SearchLessons(string surname, string name, string phone, DateTime date)
+        {
+            var lessons = Db.lekce.AsQueryable();
+            if(!String.IsNullOrEmpty(surname)) lessons = lessons.Where(l => l.PRIJMENIKLIENT.Contains(surname));
+            if (!String.IsNullOrEmpty(name)) lessons = lessons.Where(l => l.JMENOKLIENT.Contains(name));
+            if (!String.IsNullOrEmpty(phone)) lessons = lessons.Where(l => l.TELEFON.Contains(phone));
+            if (date.Hour != 0) lessons = lessons.Where(l => DbFunctions.TruncateTime(l.ZACATEK) == DbFunctions.TruncateTime(date));
+            return lessons.ToList();
         }
         /// <summary>
         /// Přidává jednu dispozici (jednu hodinu) do tabulky
@@ -322,18 +306,17 @@ namespace TigersProject.Model
         /// <returns></returns>
         public bool AddLesson(lekce lesson)
         {
-            var free = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK == lesson.ZACATEK) && (d.instruktor == lesson.instruktor));
+            var free = Db.dispozice.AsQueryable().Where(d => (DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(lesson.ZACATEK)) && (d.instruktor.ID == lesson.instruktor.ID));
             if(lesson.DELKA > 1)
             {
                 for (int i = 2; i <= lesson.DELKA; i++)
-                    free = Db.dispozice.AsQueryable().Where(d => (d.ZACATEK.AddHours(1) == lesson.ZACATEK.AddHours(1)) && (d.instruktor == lesson.instruktor));
+                    free = Db.dispozice.AsQueryable().Where(d => (DbFunctions.TruncateTime(d.ZACATEK.AddHours(1)) == DbFunctions.TruncateTime(lesson.ZACATEK.AddHours(1))) && (d.instruktor.ID == lesson.instruktor.ID));
             }
           
             if(free.Any())
             {
                 Db.lekce.Add(lesson);
                 DeleteDisposition(free.First());
-                Db.SaveChanges();
                 return true;
             }
             else return false;

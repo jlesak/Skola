@@ -33,24 +33,27 @@
         <TabControl Grid.Row="1" Grid.Column="0" Margin="5,0,5,5">
             
             <TabItem Header="Den">
-                <DataGrid SelectedItem="{Binding SelectedRow}" ItemsSource="{Binding DayTable}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Instruktor" Binding="{Binding Path=Instructor}"/>
+                <DataGrid CurrentCell="{Binding CellInfo, Mode=OneWayToSource}" ItemsSource="{Binding DayTable}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell">
+                   <DataGrid.Columns>
+                        <DataGridTextColumn Header="Instruktor" Binding="{Binding Path=Name}"/>
                         <DataGridTemplateColumn Header="9 - 10">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Command="{Binding Path=DataContext.ClickCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Content="Add">
-                                        <Button.Style>
-                                            <Style TargetType="{x:Type Button}">
-                                                <Setter Property="Visibility" Value="Hidden"/>
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Nine}" Value="1">
-                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Setter Property="Background" Value="Green"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Nine}" Value="2">
+                                                        <Setter Property="Text" Value="{Binding Path=LessonNine.PRIJMENIKLIENT}"/>
+                                                        <Setter Property="Background" Value="Blue"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </Button.Style>
-                                    </Button>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

@@ -45,6 +45,5 @@
             <Setter Property="MinWidth" Value="70"/>
             <Setter Property="FontSize" Value="16"/>
         </Style>
-       
     </Application.Resources>
 </Application>

@@ -9,19 +9,18 @@
         xmlns:viewModel="clr-namespace:TigersProject.ViewModel"
         Title="Lekce" MinWidth="550" MinHeight="370" Height="500" Width="700">
     <Window.DataContext>
-        <viewModel:LessonVM/>
+        <viewModel:ViewModel/>
     </Window.DataContext>
     <Grid Margin="5,5,5,10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*" MaxWidth="400" />
+            <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition MaxWidth="300" Width="4*"/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -30,11 +29,43 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <ListBox Grid.ColumnSpan="3" Margin="5"></ListBox>
+            
+            <Grid Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Content="Instruktoři"/>
+                <Label Grid.Column="1" Grid.Row="0" Content="Lekce"/>
+                <ListBox SelectedItem="{Binding Path=Instructor, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Instructors}" Grid.Row="1" Grid.Column="0" Margin="5">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding JMENO}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding PRIJMENI}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox HorizontalAlignment="Stretch" SelectedItem="{Binding Path=Lesson, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Lessons}" Grid.Row="1" Grid.Column="1" Margin="5">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding JMENOKLIENT}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding PRIJMENIKLIENT}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
             <Label Content="Datum a čas:" Grid.Row="1" Grid.Column="0"/>
-            <xctk:DateTimePicker Value="{Binding DateTime}" Grid.Row="1" Margin="4" Grid.Column="1" FontSize="14.667" CultureInfo="" />
+            <xctk:DateTimePicker Value="{Binding Path=BeginTime, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="4" Grid.Column="1" FontSize="14.667" CultureInfo="" />
             <Label Content="Druh:" Grid.Row="2" Grid.Column="0" />
-            <ComboBox SelectedItem="{Binding Druh}" ItemsSource="{Binding Druhy}" Grid.Row="2" Grid.Column="1">
+            <ComboBox SelectedItem="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=Types}" Grid.Row="2" Grid.Column="1">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -44,7 +75,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Content="Jazyk:" Grid.Row="3" Grid.Column="0"/>
-            <ComboBox SelectedItem="{Binding Language}" ItemsSource="{Binding Languages}" Grid.Row="3" Grid.Column="1">
+            <ComboBox SelectedItem="{Binding Path=Language, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Languages}" Grid.Row="3" Grid.Column="1">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -54,7 +85,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Content="Délka:" Grid.Row="4" Grid.Column="0"/>
-            <TextBox Text="{Binding Duration}" Grid.Row="4" Grid.Column="1"/>
+            <TextBox Text="{Binding Path=Duration, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1"/>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -72,22 +103,23 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Label Content="Příjmení klienta:" Grid.Row="0" Grid.Column="0" />
-            <TextBox Text="{Binding Surname}" Grid.Row="0" Grid.Column="1"/>
+            <TextBox Text="{Binding Path=Surname, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1"/>
             <Label Content="Jméno klienta:" Grid.Row="1" Grid.Column="0"/>
-            <TextBox Text="{Binding Name}" Grid.Row="1" Grid.Column="1"/>
+            <TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1"/>
             <Label Content="Telefon:" Grid.Row="2" Grid.Column="0"/>
-            <TextBox Text="{Binding Phone}" Grid.Row="2" Grid.Column="1"/>
+            <TextBox Text="{Binding Path=Phone, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1"/>
             <Label Content="Počet osob:" Grid.Row="3" Grid.Column="0"/>
-            <TextBox Text="{Binding People}" Grid.Row="3" Grid.Column="1"/>
+            <TextBox Text="{Binding Path=People, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1"/>
             <Label Content="Místo:" Grid.Row="4" Grid.Column="0"/>
-            <TextBox Text="{Binding Place}" Grid.Row="4" Grid.Column="1"/>
+            <TextBox Text="{Binding Path=Place, UpdateSourceTrigger=PropertyChanged }" Grid.Row="4" Grid.Column="1"/>
             <Label Content="Placeno:" Grid.Row="5" Grid.Column="0"/>
-            <CheckBox IsChecked="{Binding Paid}" Grid.Column="1" Grid.Row="5"/>
+            <CheckBox IsChecked="{Binding Path=Paid, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="5"/>
             <Label Content="Poznámka:" Grid.Row="6" Grid.Column="0"/>
-            <TextBox Text="{Binding Comment}" Grid.Row="6" Grid.Column="1" Height="70" TextWrapping="Wrap" FontSize="11"/>
-            <StackPanel Grid.ColumnSpan="2" Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource Button}" Content="Přidat lekci"/>
-                <Button Style="{StaticResource Button}" Content="Hledat lekci"/>
+            <TextBox Text="{Binding Path=Comment, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" Height="70" TextWrapping="Wrap" FontSize="11"/>
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource Button}" Command="{Binding DeleteLessonCmd}" Content="Smazat"/>
+                <Button Style="{StaticResource Button}" Command="{Binding SearchLessonCmd}" Content="Hledat"/>
+                <Button Style="{StaticResource Button}" Command="{Binding AddLessonCmd}" Content="Přidat lekci"/>
             </StackPanel>
         </Grid>
     </Grid>

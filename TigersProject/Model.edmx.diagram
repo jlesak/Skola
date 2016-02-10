@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="665410df63ff418c9d6a7698efb052b2" Name="Diagram1">
         <EntityTypeShape EntityType="Model.dispozice" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.druh" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.druh" Width="1.5" PointX="0.5" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.instruktor" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.jazyk" Width="1.5" PointX="5.25" PointY="6.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.lekce" Width="1.5" PointX="7.5" PointY="4.5" IsExpanded="true" />

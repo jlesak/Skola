@@ -186,7 +186,6 @@
     <Compile Include="ViewModel\Converter\MultiConverter.cs" />
     <Compile Include="ViewModel\DispositionVM.cs" />
     <Compile Include="ViewModel\InstructorVM.cs" />
-    <Compile Include="ViewModel\LessonVM.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\DispositionWindow.xaml.cs">
       <DependentUpon>DispositionWindow.xaml</DependentUpon>
