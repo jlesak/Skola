@@ -33,7 +33,9 @@ namespace TigersProject.Model
             DayTable = new ObservableCollection<DayRow>();
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
+
             Types = Db.druh.ToList();
+
             Languages = Db.jazyk.ToList();
             this.Date = DateTime.Today;
             RefreshDay();
@@ -192,16 +194,28 @@ namespace TigersProject.Model
         /// </summary>
         /// <param name="instructor">přidávaný instruktor</param>
         /// <returns></returns>
-        public bool AddInstructor(instruktor instructor)
+        public bool SaveInstructor(instruktor instructor)
         {
-            var exists = Db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
-            if(!exists.Any())
+            if(instructor.ID != 0)
             {
-                Db.instruktor.Add(instructor);
+                var exists = Db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
+                if(!exists.Any())
+                {
+                    Db.instruktor.Add(instructor);
+                    Db.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                instruktor editInstructor = Enumerable.FirstOrDefault(Db.instruktor.AsQueryable().Where(i => i.ID == instructor.ID));
+                editInstructor = instructor;
+                Db.Entry(editInstructor).State = EntityState.Modified;
                 Db.SaveChanges();
                 return true;
             }
-            return false;
+            
         }
 
         /// <summary>
@@ -215,15 +229,13 @@ namespace TigersProject.Model
         /// <param name="druh">SKI/SNB</param>
         /// <param name="name">jmeno instruktora</param>
         /// <param name="surname">prijmeni instruktora</param>
-        public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh ,string name, string surname)
+        public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh)
         {
             var instructors = Db.instruktor.AsQueryable();
             if (startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
             
             if (language != null)instructors = instructors.Where(i => i.jazyk.Any(j => j.ID == language.ID));
-            if (druh != null) instructors = instructors.Where(i => i.druh.Any(d => d == druh));
-            if (!string.IsNullOrEmpty(name)) instructors = instructors.Where(i => i.JMENO.Contains(name));
-            if (!string.IsNullOrEmpty(surname)) instructors = instructors.Where(i => i.PRIJMENI.Contains(surname));
+            if (druh != null) instructors = instructors.Where(i => i.druh.Any(d => d.ID == druh.ID));
             //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
             //hleda se pouze pro dalsi hodinu (max 2 hodiny za sebou)
             //v pripade že by bylo potřeba 3+h tak se to udela jeste jednou
@@ -299,7 +311,7 @@ namespace TigersProject.Model
         /// </summary>
         /// <param name="lesson">lekce, kterou přidáváme</param>
         /// <returns></returns>
-        public bool AddLesson(lekce lesson)
+        public bool SaveLesson(lekce lesson)
         {
             if(lesson.ID == 0)
             {

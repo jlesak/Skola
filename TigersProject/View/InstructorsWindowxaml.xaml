@@ -3,21 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:TigersProject.View"
+        xmlns:viewModel="clr-namespace:TigersProject.ViewModel"
         mc:Ignorable="d"
         Title="InstructorsWindowxaml" MinHeight="330" MinWidth="400" Height="400" Width="500">
+    <Window.DataContext>
+        <viewModel:ViewModel/>
+    </Window.DataContext>
     <Grid Margin="5,5,5,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition MinWidth="220" Width="auto"/>
         </Grid.ColumnDefinitions>
-        <ListView Grid.Column="0">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <ListBox SelectedItem="{Binding Path=Instructor, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Instructors}" Grid.Column="0" Margin="5">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding JMENO}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding PRIJMENI}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
@@ -33,32 +41,24 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="Jméno:"/>
-            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name}"/>
+            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Grid.Column="0" Grid.Row="1" Content="Příjmení:"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Surname}"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Grid.Column="0" Grid.Row="2" Content="Telefon:"/>
-            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Phone}"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Grid.Column="0" Grid.Row="3" Content="Sazba:"/>
-            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Money}"/>
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Money, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Grid.Column="0" Grid.Row="4" Content="Druh:"/>
-            <ComboBox Grid.Column="1" Grid.Row="4">
-
-            </ComboBox>
+            <xctk:CheckComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Types}" DisplayMemberPath="DRUH1" SelectedItemsOverride="{Binding SelectedTypes}"/>
+            
             <Label Grid.Column="0" Grid.Row="5" Content="Jazyk:"/>
-            <ComboBox Grid.Column="1" Grid.Row="5">
+            <xctk:CheckComboBox Grid.Column="1" Grid.Row="5" ItemsSource="{Binding Languages}" DisplayMemberPath="JAZYK1" SelectedItemsOverride="{Binding SelectedLanguages}">
 
-            </ComboBox>
-            <StackPanel Grid.ColumnSpan="2" Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource Button}" Content="Smazat" Command="{Binding DeleteCommand}"/>
-                <Button Style="{StaticResource Button}" Content="Upravit" Command="{Binding EditCommand}"/>
-                <Button Style="{StaticResource Button}" Content="Přidat" Command="{Binding AddCommand}"/>
+            </xctk:CheckComboBox>
+            <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource Button}" Content="Smazat" Command="{Binding DeleteInstructorCmd}"/>
+                <Button Style="{StaticResource Button}" Content="Uložit" Command="{Binding SaveInstructorCmd}"/>
             </StackPanel>
-
-
-
-
-
         </Grid>
-
     </Grid>
 </Window>

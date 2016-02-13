@@ -195,6 +195,7 @@ namespace TigersProject.ViewModel
             set
             {
                 this.beginTime = value;
+                SearchInstructors();
                 ChangedProperty("BeginTime");
             }
         }
@@ -204,6 +205,7 @@ namespace TigersProject.ViewModel
             set
             {
                 this.duration = value;
+                SearchInstructors();
                 ChangedProperty("Duration");
             }
         }
@@ -278,6 +280,7 @@ namespace TigersProject.ViewModel
             set
             {
                 this.type = value;
+                SearchInstructors();
                 ChangedProperty("Type");
             }
         }
@@ -287,13 +290,51 @@ namespace TigersProject.ViewModel
             get { return this.language; }
             set
             {
-                this.language = value; 
+                this.language = value;
+                SearchInstructors();
                 ChangedProperty("Language");
             }
         }
+        //okno instruktoři
+        private float money;
+        private List<druh> selectedTypes;
+        private List<jazyk> selectedLanguages;
+        public float Money
+        {
+            get { return this.money; }
+            set
+            {
+                this.money = value;
+                ChangedProperty("Money");
+            }
+        }
+        public Command DeleteInstructorCmd { get; set; }
+        public Command SaveInstructorCmd { get; set; }
+        
+
+        public List<druh> SelectedTypes
+        {
+            get { return this.selectedTypes; }
+            set
+            {
+                this.selectedTypes = value;
+                ChangedProperty("SelectedTypes");
+            }
+        }
+        public List<jazyk> SelectedLanguages
+        {
+            get { return this.selectedLanguages; }
+            set
+            {
+                this.selectedLanguages = value;
+                ChangedProperty("SelectedLanguages");
+            }
+        }
+
         //____________________________________________________________________________________________
         public ViewModel()
         {
+            
             this.DatabaseModel = new Model.Database();
             AddDispositionCmd = new Command(AddDisposition, () =>
             {
@@ -309,6 +350,8 @@ namespace TigersProject.ViewModel
             SearchLessonCmd = new Command(SearchLesson, CanSearchLesson);
 
             this.Lessons = new List<lekce>();
+            SelectedTypes = new List<druh>();
+            SelectedLanguages = new List<jazyk>();
             this.DispositionDate = this.DatabaseModel.Date;
             ResetAttributes();
         }
@@ -320,14 +363,13 @@ namespace TigersProject.ViewModel
         /// <param name="begin">Začátek výuky</param>
         private void CellClick(instruktor instructor, DateTime begin, string surname, bool isLesson)
         {
-
             ResetAttributes();
             if(isLesson)
             {
                 lekce lesson = this.DatabaseModel.SearchLessons(surname, this.name, this.phone, begin).FirstOrDefault();
                 this.Lesson = lesson;
 
-                DatabaseModel.SearchInstructors(begin, 1, null, null, null, null);
+                DatabaseModel.SearchInstructors(begin, 1, null, null);
                 this.Instructors.Add(instructor);
                 /* this.surname = lesson.PRIJMENIKLIENT;
                 this.name = lesson.JMENOKLIENT;
@@ -384,7 +426,7 @@ namespace TigersProject.ViewModel
             this.lesson.druh = this.type;
             this.lesson.DELKA = (short)this.duration;
 
-            if(this.DatabaseModel.AddLesson(lesson))
+            if(this.DatabaseModel.SaveLesson(lesson))
             {
                 MessageBox.Show("Lekce uložena.");
                 DatabaseModel.RefreshDay();
@@ -394,12 +436,16 @@ namespace TigersProject.ViewModel
             else MessageBox.Show("Lekce nemohla být přidána");
         }
 
+        private void SearchInstructors()
+        {
+            DatabaseModel.SearchInstructors(this.beginTime, this.duration,this.language, this.type);
+            ChangedProperty("Instructors");
+        }
         private void SearchLesson()
         {
             this.Lessons = DatabaseModel.SearchLessons(this.surname, this.name, this.phone, this.beginTime);
             ChangedProperty("Lessons");
         }
-
         private void DeleteLesson()
         {
             MessageBoxResult result = MessageBox.Show("Opravdu chcete smazat lekci?", "Tigers", MessageBoxButton.YesNo);
