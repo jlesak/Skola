@@ -10,6 +10,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media.TextFormatting;
 using TigersProject.Model;
 using System.Windows.Navigation;
@@ -20,7 +21,7 @@ namespace TigersProject.ViewModel
     class ViewModel : INotifyPropertyChanged
     {
         public Model.Database DatabaseModel;
-        private DataGridCellInfo _cellInfo;
+        private DataGridCellInfo cellInfo;
 
         private instruktor instructor;
         public instruktor Instructor
@@ -52,10 +53,10 @@ namespace TigersProject.ViewModel
         }
         public DataGridCellInfo CellInfo
         {
-            get { return _cellInfo; }
+            get { return cellInfo; }
             set
             {
-                _cellInfo = value;
+                cellInfo = value;
                 
                 ChangedProperty("CellInfo");
                 if(value.IsValid)
@@ -131,10 +132,9 @@ namespace TigersProject.ViewModel
                                 break;
                             }
                     }
-
                     DateTime begin = Date.AddHours(8 + value.Column.DisplayIndex);
                     instruktor instructor = ((DayRow)value.Item).Instructor;
-                    CellClick(instructor, begin, isLesson,clientName);
+                    CellClick(instructor, begin, clientName, isLesson);
                 }
             }
         }
@@ -150,6 +150,7 @@ namespace TigersProject.ViewModel
             }
         }
         public instruktor DispositionInstructor { get; set; }
+        public List<instruktor> DispositionInstructors => DatabaseModel.Db.instruktor.ToList();
         public Command AddDispositionCmd { get; set; }
         
         //Okno s přidáním lekce---------------------------------------------------------------------
@@ -168,7 +169,6 @@ namespace TigersProject.ViewModel
         public List<druh> Types => DatabaseModel.Types;
         public List<jazyk> Languages => DatabaseModel.Languages;
         public List<lekce> Lessons { get; set; }
-
         public lekce Lesson
         {
             get { return this.lesson; }
@@ -186,6 +186,7 @@ namespace TigersProject.ViewModel
                 this.Instructor = value.instruktor;
                 this.Type = value.druh;
                 this.Language = value.jazyk;
+                this.BeginTime = value.ZACATEK;
             }
         }
         public DateTime BeginTime
@@ -299,8 +300,15 @@ namespace TigersProject.ViewModel
                 if(this.DispositionInstructor != null) return true;
                 else return false;
             });
-            AddLessonCmd = new Command(AddLesson, CanAddLesson);
+            AddLessonCmd = new Command(SaveLesson, CanSaveLesson);
+            DeleteLessonCmd = new Command(DeleteLesson, () =>
+            {
+                if(this.lesson != null) return true;
+                else return false;
+            });
             SearchLessonCmd = new Command(SearchLesson, CanSearchLesson);
+
+            this.Lessons = new List<lekce>();
             this.DispositionDate = this.DatabaseModel.Date;
             ResetAttributes();
         }
@@ -310,13 +318,18 @@ namespace TigersProject.ViewModel
         /// </summary>
         /// <param name="instructor">Instruktor</param>
         /// <param name="begin">Začátek výuky</param>
-        private void CellClick(instruktor instructor, DateTime begin,bool isLesson, string surname)
+        private void CellClick(instruktor instructor, DateTime begin, string surname, bool isLesson)
         {
+
             ResetAttributes();
             if(isLesson)
             {
-                lekce lesson = this.DatabaseModel.SearchLessons(this.surname, this.name, this.phone, this.beginTime).FirstOrDefault();
-                this.surname = lesson.PRIJMENIKLIENT;
+                lekce lesson = this.DatabaseModel.SearchLessons(surname, this.name, this.phone, begin).FirstOrDefault();
+                this.Lesson = lesson;
+
+                DatabaseModel.SearchInstructors(begin, 1, null, null, null, null);
+                this.Instructors.Add(instructor);
+                /* this.surname = lesson.PRIJMENIKLIENT;
                 this.name = lesson.JMENOKLIENT;
                 this.phone = lesson.TELEFON;
                 this.place = lesson.MISTO;
@@ -324,11 +337,11 @@ namespace TigersProject.ViewModel
                 this.paid = Convert.ToBoolean(lesson.PLACENO);
                 this.comment = lesson.POZNAMKA;
                 this.type = lesson.druh;
-                this.language = lesson.jazyk;
+                this.language = lesson.jazyk;*/
             }
             this.instructor = instructor;
             this.beginTime = begin;
-            DatabaseModel.SearchInstructors(begin,1,null,null,null,null);
+            
             LessonWindow window = new LessonWindow();
             window.DataContext = this;
             window.Show();
@@ -355,25 +368,25 @@ namespace TigersProject.ViewModel
         /// <summary>
         /// Vytvoří objekt lekce, přidá mu parametry a předá modelu pro přidání lekce do databáze
         /// </summary>
-        private void AddLesson()
+        private void SaveLesson()
         {
-            lekce lesson = new lekce();
-            lesson.JMENOKLIENT = this.name;
-            lesson.PRIJMENIKLIENT = this.surname;
-            lesson.TELEFON = this.phone;
-            lesson.MISTO = this.place;
-            lesson.OSOB = this.people;
-            lesson.PLACENO = Convert.ToInt16(this.paid);
-            lesson.POZNAMKA = this.comment;
-            lesson.ZACATEK = this.beginTime;
-            lesson.instruktor = this.instructor;
-            lesson.jazyk = this.language;
-            lesson.druh = this.type;
-            lesson.DELKA = (short)this.duration;
+            this.lesson = new lekce();
+            this.lesson.JMENOKLIENT = this.name;
+            this.lesson.PRIJMENIKLIENT = this.surname;
+            this.lesson.TELEFON = this.phone;
+            this.lesson.MISTO = this.place;
+            this.lesson.OSOB = this.people;
+            this.lesson.PLACENO = Convert.ToInt16(this.paid);
+            this.lesson.POZNAMKA = this.comment;
+            this.lesson.ZACATEK = this.beginTime;
+            this.lesson.instruktor = this.instructor;
+            this.lesson.jazyk = this.language;
+            this.lesson.druh = this.type;
+            this.lesson.DELKA = (short)this.duration;
 
             if(this.DatabaseModel.AddLesson(lesson))
             {
-                MessageBox.Show("Lekce přidána.");
+                MessageBox.Show("Lekce uložena.");
                 DatabaseModel.RefreshDay();
                 ChangedProperty("DayTable");
                 ResetAttributes();
@@ -384,6 +397,26 @@ namespace TigersProject.ViewModel
         private void SearchLesson()
         {
             this.Lessons = DatabaseModel.SearchLessons(this.surname, this.name, this.phone, this.beginTime);
+            ChangedProperty("Lessons");
+        }
+
+        private void DeleteLesson()
+        {
+            MessageBoxResult result = MessageBox.Show("Opravdu chcete smazat lekci?", "Tigers", MessageBoxButton.YesNo);
+            switch (result) {
+                case MessageBoxResult.Yes:
+                    DatabaseModel.DeleteLesson(this.lesson);
+                    MessageBox.Show("Lekce byla smazána.");
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+            DatabaseModel.RefreshDay();
+            ChangedProperty("DayTable");
+            ResetAttributes();
+            this.lesson = null;
+            this.Lessons = null;
+            ChangedProperty("Lesson");
             ChangedProperty("Lessons");
         }
         private bool CanSearchLesson()
@@ -398,7 +431,7 @@ namespace TigersProject.ViewModel
         /// Pokud jsou vyplněny všechny potřebné parametry, může uživatel přidat lekci
         /// </summary>
         /// <returns></returns>
-        private bool CanAddLesson()
+        private bool CanSaveLesson()
         {
             if((!String.IsNullOrEmpty(this.surname))
                && (!String.IsNullOrEmpty(this.phone))
@@ -414,11 +447,11 @@ namespace TigersProject.ViewModel
         {
             this.BeginTime = this.Date;
             this.DispositionDate = this.Date;
-            this.People = this.duration = 1;
+            this.People = this.Duration = 1;
             this.Instructor = null;
-            this.Type = null;
-            this.Language = null;
-            this.Phone = this.place = this.name = this.surname = null;
+            this.Type = Types.Find(d => d.ID == 0);
+            this.Language = Languages.Find(d => d.ID == 0);
+            this.Phone = this.Place = this.Name = this.Surname = null;
             this.Paid = false;
         }
         public event PropertyChangedEventHandler PropertyChanged;

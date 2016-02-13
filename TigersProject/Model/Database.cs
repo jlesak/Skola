@@ -58,6 +58,7 @@ namespace TigersProject.Model
         /// </summary>
         public void AddMonthRows()
         {
+            Instructors = Db.instruktor.ToList();
             var dispositions = Db.dispozice.AsQueryable();
             var lessons = Db.lekce.AsQueryable();
             foreach (var instructor in this.Instructors)
@@ -80,13 +81,7 @@ namespace TigersProject.Model
         /// <summary>
         /// obnoví tabulku pro den
         /// </summary>
-        public void RefreshDay()
-        {
-            //DTableDay = new DataTable();
-            //AddDayColumns();
-            DayTable = new ObservableCollection<DayRow>();
-            AddDayRows();
-        }
+        
 
        
         /// <summary>
@@ -98,10 +93,11 @@ namespace TigersProject.Model
         /// ve view se trigerama nastaví barva buněk
         /// </summary>
         
-        public void AddDayRows()
+        public void RefreshDay()
         {
+            DayTable = new ObservableCollection<DayRow>();
             string name;
-
+            Instructors = Db.instruktor.ToList();
             foreach (instruktor instructor in Instructors)
             {
                 var dispositions = Db.dispozice.AsQueryable();
@@ -279,7 +275,6 @@ namespace TigersProject.Model
         {
             Db.dispozice.Remove(disposition);
             Db.SaveChanges();
-
         }
 
         /// <summary>
@@ -306,20 +301,43 @@ namespace TigersProject.Model
         /// <returns></returns>
         public bool AddLesson(lekce lesson)
         {
-            var free = Db.dispozice.AsQueryable().Where(d => (DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(lesson.ZACATEK)) && (d.instruktor.ID == lesson.instruktor.ID));
-            if(lesson.DELKA > 1)
+            if(lesson.ID == 0)
             {
-                for (int i = 2; i <= lesson.DELKA; i++)
-                    free = Db.dispozice.AsQueryable().Where(d => (DbFunctions.TruncateTime(d.ZACATEK.AddHours(1)) == DbFunctions.TruncateTime(lesson.ZACATEK.AddHours(1))) && (d.instruktor.ID == lesson.instruktor.ID));
+                var free = Db.dispozice.AsQueryable().Where(d => (DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(lesson.ZACATEK)) && (d.instruktor.ID == lesson.instruktor.ID));
+                if(lesson.DELKA > 1)
+                {
+                    for (int i = 2; i <= lesson.DELKA; i++)
+                        free = Db.dispozice.AsQueryable().Where(d => (DbFunctions.TruncateTime(d.ZACATEK.AddHours(1)) == DbFunctions.TruncateTime(lesson.ZACATEK.AddHours(1))) && (d.instruktor.ID == lesson.instruktor.ID));
+                }
+
+                if(free.Any())
+                {
+                    Db.lekce.Add(lesson);
+                    DeleteDisposition(free.First());
+                    return true;
+                }
+                else return false;
             }
-          
-            if(free.Any())
+            else
             {
-                Db.lekce.Add(lesson);
-                DeleteDisposition(free.First());
+                lekce editLesson = Enumerable.FirstOrDefault(Db.lekce.AsQueryable().Where(l => l.ID == lesson.ID));
+                editLesson = lesson;
+                Db.Entry(editLesson).State = EntityState.Modified;
+                Db.SaveChanges();
                 return true;
             }
-            else return false;
+
+        }
+
+        public void DeleteLesson(lekce lesson)
+        {
+            dispozice disposition = new dispozice();
+            disposition.KLUB = 0;
+            disposition.ZACATEK = lesson.ZACATEK;
+            disposition.instruktor = lesson.instruktor;
+            Db.lekce.Remove(lesson);
+            AddDisposition(disposition);
+           // Db.SaveChanges();
         }
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void ChangedProperty(string propertyName)
