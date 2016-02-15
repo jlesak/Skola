@@ -44,6 +44,7 @@ namespace TigersProject.View
         private void InstructorClick(object sender, RoutedEventArgs e)
         {
             InstructorsWindowxaml window = new InstructorsWindowxaml();
+            window.DataContext = this.DataContext;
             window.Show();
         }
 

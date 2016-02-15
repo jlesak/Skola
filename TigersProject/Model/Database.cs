@@ -33,9 +33,7 @@ namespace TigersProject.Model
             DayTable = new ObservableCollection<DayRow>();
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
-
             Types = Db.druh.ToList();
-
             Languages = Db.jazyk.ToList();
             this.Date = DateTime.Today;
             RefreshDay();
@@ -54,7 +52,6 @@ namespace TigersProject.Model
                 this.DTableMonth.Columns.Add(column);
             }
         }
-
         /// <summary>
         /// vytvoří a přidá řádky do tabulky měsíce (rozpis)
         /// </summary>
@@ -83,9 +80,6 @@ namespace TigersProject.Model
         /// <summary>
         /// obnoví tabulku pro den
         /// </summary>
-        
-
-       
         /// <summary>
         /// Vytvoří a přidá do DataTable řádky.
         /// pokud není nic buňka je prázdná
@@ -94,7 +88,6 @@ namespace TigersProject.Model
         /// pokud je klub zapíše 3
         /// ve view se trigerama nastaví barva buněk
         /// </summary>
-        
         public void RefreshDay()
         {
             DayTable = new ObservableCollection<DayRow>();
@@ -188,7 +181,6 @@ namespace TigersProject.Model
                 }
             }
         }
-       
         /// <summary>
         /// Přidává nového instruktora do databáze
         /// </summary>
@@ -216,6 +208,12 @@ namespace TigersProject.Model
                 return true;
             }
             
+        }
+
+        public void DeleteInstructor(instruktor instructor)
+        {
+            Db.instruktor.Remove(instructor);
+            Db.SaveChanges();
         }
 
         /// <summary>

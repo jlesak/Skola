@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows;
 using System.Security.Policy;
 using System.Text;
@@ -33,8 +34,8 @@ namespace TigersProject.ViewModel
                 ChangedProperty("Instructor");
             }
         }
-        public List<instruktor> Instructors => DatabaseModel.Instructors;
-      
+        public List<instruktor> Instructors => DatabaseModel.Db.instruktor.ToList();
+
         //DataGrid pro rozpis
         public DataTable DTableMonth => this.DatabaseModel.DTableMonth;
 
@@ -310,8 +311,6 @@ namespace TigersProject.ViewModel
         }
         public Command DeleteInstructorCmd { get; set; }
         public Command SaveInstructorCmd { get; set; }
-        
-
         public List<druh> SelectedTypes
         {
             get { return this.selectedTypes; }
@@ -348,6 +347,12 @@ namespace TigersProject.ViewModel
                 else return false;
             });
             SearchLessonCmd = new Command(SearchLesson, CanSearchLesson);
+            SaveInstructorCmd = new Command(SaveInstructor, CanSaveInstructor);
+            DeleteInstructorCmd = new Command(DeleteInstructor, () =>
+            {
+                if(this.instructor != null) return true;
+                else return false;
+            });
 
             this.Lessons = new List<lekce>();
             SelectedTypes = new List<druh>();
@@ -435,7 +440,6 @@ namespace TigersProject.ViewModel
             }
             else MessageBox.Show("Lekce nemohla být přidána");
         }
-
         private void SearchInstructors()
         {
             DatabaseModel.SearchInstructors(this.beginTime, this.duration,this.language, this.type);
@@ -485,7 +489,51 @@ namespace TigersProject.ViewModel
                && (this.beginTime.Hour < 16)) return true;
             else return false;
         }
-        
+
+        //okno INSTRUKTOR---------------------------------------------------------------------------
+        private void DeleteInstructor()
+        {
+            MessageBoxResult result = MessageBox.Show("Opravdu chcete smazat instruktora?", "Tigers", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    DatabaseModel.DeleteInstructor(this.instructor);
+                    MessageBox.Show("Instruktor byl smazán.");
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+            ResetAttributes();
+        }
+        private void SaveInstructor()
+        {
+            this.instructor = new instruktor();
+            instructor.JMENO = this.name;
+            instructor.PRIJMENI = this.surname;
+            instructor.SAZBA = this.money;
+            instructor.TELEFON = this.phone;
+
+            instructor.druh = this.SelectedTypes;
+            instructor.jazyk = this.SelectedLanguages;
+
+            if(DatabaseModel.SaveInstructor(this.instructor))
+            {
+                MessageBox.Show("Instruktor uložena.");
+                ResetAttributes();
+            }
+            else
+            { MessageBox.Show("Instruktor nemohl být uložen."); }
+        }
+        private bool CanSaveInstructor()
+        {
+            if((!String.IsNullOrEmpty(this.name))
+               && (!String.IsNullOrEmpty(this.surname))
+               && (!String.IsNullOrEmpty(this.phone))
+               && (this.money > 0)
+               &&(this.selectedLanguages.Count > 0)
+               &&(this.selectedTypes.Count > 0)) return true;
+            else return false;
+        }
         /// <summary>
         /// Vyresetuje všechny atributy ve ViewModelu
         /// </summary>
