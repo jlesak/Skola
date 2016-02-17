@@ -23,5 +23,11 @@ namespace TigersProject.View
         {
             InitializeComponent();
         }
+
+        private void ListBox_Selected(object sender, RoutedEventArgs e)
+        {
+            string s = "asd";
+
+        }
     }
 }

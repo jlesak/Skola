@@ -193,7 +193,21 @@ namespace TigersProject.Model
                 var exists = Db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
                 if(!exists.Any())
                 {
+                    
+                    List<druh> types = new List<druh>();
+                    List<jazyk> languages = new List<jazyk>();
+                    types = instructor.druh.ToList();
+                    languages = instructor.jazyk.ToList();
+                    instructor.druh.Clear();
+                    instructor.jazyk.Clear();
+
                     Db.instruktor.Add(instructor);
+                    Db.SaveChanges();
+
+                    var editInstructor = Enumerable.FirstOrDefault(Db.instruktor.AsQueryable().Where(i => (i.PRIJMENI == instructor.PRIJMENI)&&(i.JMENO == instructor.JMENO)));
+                    editInstructor.druh = types;
+                    editInstructor.jazyk = languages;
+                    Db.Entry(editInstructor).State = EntityState.Modified;
                     Db.SaveChanges();
                     return true;
                 }
@@ -207,11 +221,21 @@ namespace TigersProject.Model
                 Db.SaveChanges();
                 return true;
             }
-            
         }
 
         public void DeleteInstructor(instruktor instructor)
         {
+            var areLessons = Db.lekce.AsQueryable().Where(l => l.instruktor_id == instructor.ID);
+            var areDispositions = Db.dispozice.AsQueryable().Where(d => d.instruktor_id == instructor.ID);
+            /*if (Enumerable.Any(areLessons))
+            {
+                foreach (lekce lesson in areLessons) { Db.lekce.Remove(lesson); }
+            }
+            if (Enumerable.Any(areDispositions))
+            {
+                foreach (dispozice disposition in areDispositions) { Db.dispozice.Remove(disposition); }
+            }*/
+
             Db.instruktor.Remove(instructor);
             Db.SaveChanges();
         }
@@ -249,7 +273,7 @@ namespace TigersProject.Model
                 }
             }
             
-            if(instructors.Any()) this.Instructors = instructors.ToList();
+            if(Enumerable.Count(instructors)>0) this.Instructors = instructors.ToList();
             else this.Instructors = null;
         }
 

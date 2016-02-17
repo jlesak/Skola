@@ -195,8 +195,8 @@ namespace TigersProject.ViewModel
             get { return this.beginTime; }
             set
             {
+                if(value.Hour != 0) SearchInstructors();
                 this.beginTime = value;
-                SearchInstructors();
                 ChangedProperty("BeginTime");
             }
         }
@@ -281,7 +281,7 @@ namespace TigersProject.ViewModel
             set
             {
                 this.type = value;
-                SearchInstructors();
+                if(value != null)SearchInstructors();
                 ChangedProperty("Type");
             }
         }
@@ -292,7 +292,7 @@ namespace TigersProject.ViewModel
             set
             {
                 this.language = value;
-                SearchInstructors();
+                if (value != null) SearchInstructors();
                 ChangedProperty("Language");
             }
         }
@@ -306,15 +306,19 @@ namespace TigersProject.ViewModel
             get { return this.editInstructor; }
             set
             {
-                this.editInstructor = value;
-                ChangedProperty("EditInstructor");
-                this.Name = value.JMENO;
-                this.Surname = value.PRIJMENI;
-                this.Money = value.SAZBA;
-                this.Phone = value.TELEFON;
+                if(value != null)
+                {
+                    this.editInstructor = value;
+                    ChangedProperty("EditInstructor");
+                    this.Name = value.JMENO;
+                    this.Surname = value.PRIJMENI;
+                    this.Money = value.SAZBA;
+                    this.Phone = value.TELEFON;
 
-                this.SelectedLanguages = value.jazyk.ToList();
-                this.SelectedTypes = value.druh.ToList();
+                    this.SelectedLanguages = value.jazyk.ToList();
+                    this.SelectedTypes = value.druh.ToList();
+                }
+                else ResetAttributes();
             }
         }
         public float Money
@@ -327,6 +331,7 @@ namespace TigersProject.ViewModel
             }
         }
         public Command DeleteInstructorCmd { get; set; }
+        public Command UnselectInstrCmd { get; set; }
         public Command SaveInstructorCmd { get; set; }
         public List<druh> SelectedTypes
         {
@@ -367,9 +372,10 @@ namespace TigersProject.ViewModel
             SaveInstructorCmd = new Command(SaveInstructor, CanSaveInstructor);
             DeleteInstructorCmd = new Command(DeleteInstructor, () =>
             {
-                if(this.instructor != null) return true;
+                if(this.editInstructor != null) return true;
                 else return false;
             });
+            UnselectInstrCmd = new Command(UnselectInstructor);
 
             this.Lessons = new List<lekce>();
             SelectedTypes = new List<druh>();
@@ -393,15 +399,6 @@ namespace TigersProject.ViewModel
 
                 DatabaseModel.SearchInstructors(begin, 1, null, null);
                 this.Instructors.Add(instructor);
-                /* this.surname = lesson.PRIJMENIKLIENT;
-                this.name = lesson.JMENOKLIENT;
-                this.phone = lesson.TELEFON;
-                this.place = lesson.MISTO;
-                this.people = lesson.OSOB;
-                this.paid = Convert.ToBoolean(lesson.PLACENO);
-                this.comment = lesson.POZNAMKA;
-                this.type = lesson.druh;
-                this.language = lesson.jazyk;*/
             }
             this.instructor = instructor;
             this.beginTime = begin;
@@ -510,17 +507,24 @@ namespace TigersProject.ViewModel
         //okno INSTRUKTOR---------------------------------------------------------------------------
         private void DeleteInstructor()
         {
-            MessageBoxResult result = MessageBox.Show("Opravdu chcete smazat instruktora?", "Tigers", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("Opravdu chcete smazat instruktora a všechny jeho záznamy?", "Tigers", MessageBoxButton.YesNo);
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    DatabaseModel.DeleteInstructor(this.instructor);
+                    DatabaseModel.DeleteInstructor(this.editInstructor);
                     MessageBox.Show("Instruktor byl smazán.");
                     break;
                 case MessageBoxResult.No:
                     break;
             }
-            ResetAttributes();
+            //ResetAttributes();
+            UnselectInstructor();
+            ChangedProperty("Instructors");
+            try {
+                EditInstructor = Instructors.First();
+            }
+            catch(Exception e) {
+            }
         }
         private void SaveInstructor()
         {
@@ -540,6 +544,7 @@ namespace TigersProject.ViewModel
             {
                 MessageBox.Show("Instruktor uložen.");
                 ResetAttributes();
+                ChangedProperty("Instructors");
             }
             else
             { MessageBox.Show("Instruktor nemohl být uložen."); }
@@ -550,9 +555,17 @@ namespace TigersProject.ViewModel
                && (!String.IsNullOrEmpty(this.surname))
                && (!String.IsNullOrEmpty(this.phone))
                && (this.money > 0)
-               &&(this.selectedLanguages.Count > 0)
-               &&(this.selectedTypes.Count > 0)) return true;
+               //&&(this.selectedLanguages.Count > 0)
+               /*&&(this.selectedTypes.Count > 0)*/) return true;
             else return false;
+        }
+
+        private void UnselectInstructor()
+        {
+            this.EditInstructor = new instruktor();
+            this.Money = 0;
+            this.SelectedLanguages.Clear();
+            this.SelectedTypes.Clear();
         }
         /// <summary>
         /// Vyresetuje všechny atributy ve ViewModelu
@@ -561,10 +574,10 @@ namespace TigersProject.ViewModel
         {
             this.BeginTime = this.Date;
             this.DispositionDate = this.Date;
-            this.People = this.Duration = 1;
+            this.People = 1;
             this.Instructor = null;
-            this.Type = Types.Find(d => d.ID == 0);
-            this.Language = Languages.Find(d => d.ID == 0);
+            this.Type = null;
+            this.Language = null;
             this.Phone = this.Place = this.Name = this.Surname = null;
             this.Paid = false;
         }
