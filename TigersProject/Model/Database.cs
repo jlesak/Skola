@@ -188,7 +188,7 @@ namespace TigersProject.Model
         /// <returns></returns>
         public bool SaveInstructor(instruktor instructor)
         {
-            if(instructor.ID != 0)
+            if(instructor.ID == 0)
             {
                 var exists = Db.instruktor.AsQueryable().Where(i => (i.JMENO == instructor.JMENO) && (i.PRIJMENI == instructor.PRIJMENI));
                 if(!exists.Any())
@@ -201,7 +201,7 @@ namespace TigersProject.Model
             }
             else
             {
-                instruktor editInstructor = Enumerable.FirstOrDefault(Db.instruktor.AsQueryable().Where(i => i.ID == instructor.ID));
+                var editInstructor = Enumerable.FirstOrDefault(Db.instruktor.AsQueryable().Where(i => i.ID == instructor.ID));
                 editInstructor = instructor;
                 Db.Entry(editInstructor).State = EntityState.Modified;
                 Db.SaveChanges();
@@ -336,7 +336,6 @@ namespace TigersProject.Model
                 Db.SaveChanges();
                 return true;
             }
-
         }
 
         public void DeleteLesson(lekce lesson)

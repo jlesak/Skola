@@ -16,7 +16,7 @@
             <ColumnDefinition/>
             <ColumnDefinition MinWidth="220" Width="auto"/>
         </Grid.ColumnDefinitions>
-        <ListBox SelectedItem="{Binding Path=Instructor, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Instructors}" Grid.Column="0" Margin="5">
+        <ListBox SelectedItem="{Binding Path=EditInstructor, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Instructors}" Grid.Column="0" Margin="5">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -49,10 +49,10 @@
             <Label Grid.Column="0" Grid.Row="3" Content="Sazba:"/>
             <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Money, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Grid.Column="0" Grid.Row="4" Content="Druh:"/>
-            <xctk:CheckComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Types}" DisplayMemberPath="DRUH1" SelectedItemsOverride="{Binding SelectedTypes}"/>
+            <xctk:CheckComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Types}" DisplayMemberPath="DRUH1" SelectedItemsOverride="{Binding Path=SelectedTypes, UpdateSourceTrigger=PropertyChanged}"/>
             
             <Label Grid.Column="0" Grid.Row="5" Content="Jazyk:"/>
-            <xctk:CheckComboBox Grid.Column="1" Grid.Row="5" ItemsSource="{Binding Languages}" DisplayMemberPath="JAZYK1" SelectedItemsOverride="{Binding SelectedLanguages}">
+            <xctk:CheckComboBox Grid.Column="1" Grid.Row="5" ItemsSource="{Binding Languages}" DisplayMemberPath="JAZYK1" SelectedItemsOverride="{Binding Path=SelectedLanguages, UpdateSourceTrigger=PropertyChanged}">
 
             </xctk:CheckComboBox>
             <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">

@@ -300,6 +300,23 @@ namespace TigersProject.ViewModel
         private float money;
         private List<druh> selectedTypes;
         private List<jazyk> selectedLanguages;
+        private instruktor editInstructor;
+        public instruktor EditInstructor
+        {
+            get { return this.editInstructor; }
+            set
+            {
+                this.editInstructor = value;
+                ChangedProperty("EditInstructor");
+                this.Name = value.JMENO;
+                this.Surname = value.PRIJMENI;
+                this.Money = value.SAZBA;
+                this.Phone = value.TELEFON;
+
+                this.SelectedLanguages = value.jazyk.ToList();
+                this.SelectedTypes = value.druh.ToList();
+            }
+        }
         public float Money
         {
             get { return this.money; }
@@ -417,7 +434,7 @@ namespace TigersProject.ViewModel
         /// </summary>
         private void SaveLesson()
         {
-            this.lesson = new lekce();
+            if(this.lesson == null)this.lesson = new lekce();
             this.lesson.JMENOKLIENT = this.name;
             this.lesson.PRIJMENIKLIENT = this.surname;
             this.lesson.TELEFON = this.phone;
@@ -507,18 +524,21 @@ namespace TigersProject.ViewModel
         }
         private void SaveInstructor()
         {
-            this.instructor = new instruktor();
-            instructor.JMENO = this.name;
-            instructor.PRIJMENI = this.surname;
-            instructor.SAZBA = this.money;
-            instructor.TELEFON = this.phone;
+           if(this.editInstructor == null) this.editInstructor = new instruktor();
+            editInstructor.JMENO = this.name;
+            editInstructor.PRIJMENI = this.surname;
+            editInstructor.SAZBA = this.money;
+            editInstructor.TELEFON = this.phone;
 
-            instructor.druh = this.SelectedTypes;
-            instructor.jazyk = this.SelectedLanguages;
-
-            if(DatabaseModel.SaveInstructor(this.instructor))
+            foreach (druh type in selectedTypes)
             {
-                MessageBox.Show("Instruktor uložena.");
+                editInstructor.druh.Add(type);
+            }
+            editInstructor.jazyk = this.SelectedLanguages;
+
+            if(DatabaseModel.SaveInstructor(this.editInstructor))
+            {
+                MessageBox.Show("Instruktor uložen.");
                 ResetAttributes();
             }
             else
