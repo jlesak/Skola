@@ -517,7 +517,6 @@ namespace TigersProject.ViewModel
                 case MessageBoxResult.No:
                     break;
             }
-            //ResetAttributes();
             UnselectInstructor();
             ChangedProperty("Instructors");
             try {
@@ -580,6 +579,7 @@ namespace TigersProject.ViewModel
             this.Language = null;
             this.Phone = this.Place = this.Name = this.Surname = null;
             this.Paid = false;
+            this.Money = 0;
         }
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void ChangedProperty(string propertyName)

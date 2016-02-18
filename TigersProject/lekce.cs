@@ -26,7 +26,7 @@ namespace TigersProject
         public int instruktor_id { get; set; }
         public int jazyk_id { get; set; }
         public int druh_id { get; set; }
-        public short DELKA { get; set; }
+        public int DELKA { get; set; }
     
         public virtual druh druh { get; set; }
         public virtual instruktor instruktor { get; set; }

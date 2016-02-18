@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Core.Objects;
 using System.Data.SqlTypes;
 using System.Linq;
@@ -155,21 +156,27 @@ namespace TigersProject.Model
                                 row.LessonNine = lesson;
                                 break;
                             case 10:
+                                row.Ten = "2";
                                 row.LessonTen = lesson;
                                 break;
                             case 11:
+                                row.Eleven = "2";
                                 row.LessonEleven = lesson;
                                 break;
                             case 12:
+                                row.Twelve = "2";
                                 row.LessonTwelve = lesson;
                                 break;
                             case 13:
+                                row.One = "2";
                                 row.LessonOne = lesson;
                                 break;
                             case 14:
+                                row.Two = "2";
                                 row.LessonTwo = lesson;
                                 break;
                             case 15:
+                                row.Three = "2";
                                 row.LessonThree = lesson;
                                 break;
                         }
@@ -213,14 +220,8 @@ namespace TigersProject.Model
                 }
                 return false;
             }
-            else
-            {
-                var editInstructor = Enumerable.FirstOrDefault(Db.instruktor.AsQueryable().Where(i => i.ID == instructor.ID));
-                editInstructor = instructor;
-                Db.Entry(editInstructor).State = EntityState.Modified;
                 Db.SaveChanges();
                 return true;
-            }
         }
 
         public void DeleteInstructor(instruktor instructor)
@@ -272,45 +273,71 @@ namespace TigersProject.Model
                     instructors = instructors.Where(i => i.dispozice.Any(d => d.ZACATEK == startTime));
                 }
             }
-            
             if(Enumerable.Count(instructors)>0) this.Instructors = instructors.ToList();
             else this.Instructors = null;
         }
 
         public List<lekce> SearchLessons(string surname, string name, string phone, DateTime date)
         {
+            
             var lessons = Db.lekce.AsQueryable();
-            if(!String.IsNullOrEmpty(surname)) lessons = lessons.Where(l => l.PRIJMENIKLIENT.Contains(surname));
-            if (!String.IsNullOrEmpty(name)) lessons = lessons.Where(l => l.JMENOKLIENT.Contains(name));
+            if(!String.IsNullOrEmpty(surname)) lessons = lessons.Where(l => l.PRIJMENIKLIENT.ToLower().Contains(surname.ToLower()));
+            if (!String.IsNullOrEmpty(name)) lessons = lessons.Where(l => l.JMENOKLIENT.ToLower().Contains(name.ToLower()));
             if (!String.IsNullOrEmpty(phone)) lessons = lessons.Where(l => l.TELEFON.Contains(phone));
             if (date.Hour != 0) lessons = lessons.Where(l => DbFunctions.TruncateTime(l.ZACATEK) == DbFunctions.TruncateTime(date));
             return lessons.ToList();
         }
         /// <summary>
         /// Přidává jednu dispozici (jednu hodinu) do tabulky
+        /// pokud je čas nastáven na 0h, tak přidá dispozice na celý den
         /// </summary>
         /// <param name="disposition">přidávaná dispozice</param>
         /// <returns></returns>
         public bool AddDisposition(dispozice disposition)
         {
-            var exists = Db.dispozice.Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID));
-            
-            if(!exists.Any())
+                //pokud chce napsat dispozice na celej den
+                //kdyz jsou napsany nejaky lekce, nebo dispozice, tak je to preskoci a doplni celej den dispozicema
+            if (disposition.ZACATEK.Hour == 0)
             {
-                Db.dispozice.Add(disposition);
-                Db.SaveChanges();
-                return true;
-            }
-            else return false;
+                dispozice addDisposition = new dispozice();
+                addDisposition = disposition;
 
+                disposition.ZACATEK = disposition.ZACATEK.AddHours(9);
+                for (int i = 0; i < 7; i++)
+                {
+                    if((!Db.dispozice.Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID)).Any()) && (!Db.lekce.Where(l => (l.ZACATEK == disposition.ZACATEK) && (l.instruktor.ID == disposition.instruktor.ID)).Any()))
+                    {
+                        Db.dispozice.Add(addDisposition);
+                        Db.SaveChanges();
+                    }   
+                    addDisposition = new dispozice();
+                    addDisposition = disposition;
+                    addDisposition.ZACATEK = disposition.ZACATEK.AddHours(1);
+                }
+                    
+                    return true;
+            }
+            
+            else
+            {
+                if((!Db.dispozice.Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID)).Any()) && (!Db.lekce.Where(l => (l.ZACATEK == disposition.ZACATEK) && (l.instruktor.ID == disposition.instruktor.ID)).Any()))
+                {
+                    Db.dispozice.Add(disposition);
+                    Db.SaveChanges();
+                    return true;
+                }
+                else return false;
+                
+            }
+            
         }
-        // přepsat databázi aby to dělala sama
+
         public void DeleteDisposition(dispozice disposition)
         {
             Db.dispozice.Remove(disposition);
             Db.SaveChanges();
         }
-
+        
         /// <summary>
         /// Přidává nový jazyk do tabulky jazyk v databázi
         /// </summary>
@@ -337,29 +364,40 @@ namespace TigersProject.Model
         {
             if(lesson.ID == 0)
             {
-                var free = Db.dispozice.AsQueryable().Where(d => (DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(lesson.ZACATEK)) && (d.instruktor.ID == lesson.instruktor.ID));
-                if(lesson.DELKA > 1)
+                var free = Db.dispozice.Where(d => (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0) && (d.instruktor.ID == lesson.instruktor.ID));
+
+                if (lesson.DELKA > 1)
                 {
-                    for (int i = 2; i <= lesson.DELKA; i++)
-                        free = Db.dispozice.AsQueryable().Where(d => (DbFunctions.TruncateTime(d.ZACATEK.AddHours(1)) == DbFunctions.TruncateTime(lesson.ZACATEK.AddHours(1))) && (d.instruktor.ID == lesson.instruktor.ID));
+                    List<dispozice> dispositions = new List<dispozice>();
+                    for (int i = 0; i < lesson.DELKA; i++)
+                    {
+                        if(!Db.dispozice.Where(d => (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0) && (d.instruktor.ID == lesson.instruktor.ID)).Any()) return false;
+                        
+                        dispositions.Add(Enumerable.First(Db.dispozice.Where(d => (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0) && (d.instruktor.ID == lesson.instruktor.ID))));
+                        lesson.ZACATEK = lesson.ZACATEK.AddHours(1);
+                    }
+                    //pridavani lekci
+                    foreach (dispozice disposition in dispositions)
+                    {
+                        DeleteDisposition(disposition);
+                        Db.lekce.Add(lesson);
+                        lesson.ZACATEK = lesson.ZACATEK.AddHours(1);
+                    }
                 }
 
                 if(free.Any())
                 {
+                    DeleteDisposition(Enumerable.First(free));
                     Db.lekce.Add(lesson);
-                    DeleteDisposition(free.First());
+                    Db.SaveChanges();
                     return true;
                 }
-                else return false;
+                return false;
             }
-            else
-            {
-                lekce editLesson = Enumerable.FirstOrDefault(Db.lekce.AsQueryable().Where(l => l.ID == lesson.ID));
-                editLesson = lesson;
-                Db.Entry(editLesson).State = EntityState.Modified;
-                Db.SaveChanges();
-                return true;
-            }
+
+            Db.SaveChanges();
+            return true;
+           
         }
 
         public void DeleteLesson(lekce lesson)

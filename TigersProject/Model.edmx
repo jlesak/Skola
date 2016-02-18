@@ -4,11 +4,10 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model.Store" Provider="FirebirdSql.Data.FirebirdClient" ProviderManifestToken="2.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Model.Store" Provider="FirebirdSql.Data.FirebirdClient" ProviderManifestToken="2.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="dispozice">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="instruktor_id" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="ZACATEK" Type="timestamp" Nullable="false" />
@@ -77,7 +76,7 @@
           <Property Name="druh_id" Type="int" Nullable="false" />
           <Property Name="DELKA" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="fk_dispozice_instruktor">
+        <Association Name="FK_DISPOZICE_INSTRUCTOR">
           <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
           <End Role="dispozice" Type="Self.dispozice" Multiplicity="*" />
           <ReferentialConstraint>
@@ -181,7 +180,7 @@
           <EntitySet Name="instruktor_has_jazyk" EntityType="Self.instruktor_has_jazyk" Schema="Firebird" store:Type="Tables" />
           <EntitySet Name="jazyk" EntityType="Self.jazyk" Schema="Firebird" store:Type="Tables" />
           <EntitySet Name="lekce" EntityType="Self.lekce" Schema="Firebird" store:Type="Tables" />
-          <AssociationSet Name="fk_dispozice_instruktor" Association="Self.fk_dispozice_instruktor">
+          <AssociationSet Name="FK_DISPOZICE_INSTRUCTOR" Association="Self.FK_DISPOZICE_INSTRUCTOR">
             <End Role="instruktor" EntitySet="instruktor" />
             <End Role="dispozice" EntitySet="dispozice" />
           </AssociationSet>
@@ -214,21 +213,21 @@
             <End Role="lekce" EntitySet="lekce" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="dispozice">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="instruktor_id" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="ZACATEK" Type="DateTime" Nullable="false" />
           <Property Name="POZNAMKA" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="instruktor_id" Type="Int32" Nullable="false" />
           <Property Name="KLUB" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="instruktor" Relationship="Self.fk_dispozice_instruktor" FromRole="dispozice" ToRole="instruktor" />
+          <NavigationProperty Name="instruktor" Relationship="Self.FK_DISPOZICE_INSTRUCTOR" FromRole="dispozice" ToRole="instruktor" />
         </EntityType>
         <EntityType Name="druh">
           <Key>
@@ -248,7 +247,7 @@
           <Property Name="PRIJMENI" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="TELEFON" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
           <Property Name="SAZBA" Type="Single" Nullable="false" />
-          <NavigationProperty Name="dispozice" Relationship="Self.fk_dispozice_instruktor" FromRole="instruktor" ToRole="dispozice" />
+          <NavigationProperty Name="dispozice" Relationship="Self.FK_DISPOZICE_INSTRUCTOR" FromRole="instruktor" ToRole="dispozice" />
           <NavigationProperty Name="lekce" Relationship="Self.fk_lekce_instruktor" FromRole="instruktor" ToRole="lekce" />
           <NavigationProperty Name="druh" Relationship="Self.INSTRUKTOR_HAS_DRUH" FromRole="instruktor" ToRole="druh" />
           <NavigationProperty Name="jazyk" Relationship="Self.instruktor_has_jazyk" FromRole="instruktor" ToRole="jazyk" />
@@ -281,12 +280,12 @@
           <Property Name="instruktor_id" Type="Int32" Nullable="false" />
           <Property Name="jazyk_id" Type="Int32" Nullable="false" />
           <Property Name="druh_id" Type="Int32" Nullable="false" />
-          <Property Name="DELKA" Type="Int16" Nullable="false" />
+          <Property Name="DELKA" Type="Int32" Nullable="false" />
           <NavigationProperty Name="druh" Relationship="Self.fk_lekce_druh1" FromRole="lekce" ToRole="druh" />
           <NavigationProperty Name="instruktor" Relationship="Self.fk_lekce_instruktor" FromRole="lekce" ToRole="instruktor" />
           <NavigationProperty Name="jazyk" Relationship="Self.fk_lekce_jazyk1" FromRole="lekce" ToRole="jazyk" />
         </EntityType>
-        <Association Name="fk_dispozice_instruktor">
+        <Association Name="FK_DISPOZICE_INSTRUCTOR">
           <End Role="instruktor" Type="Self.instruktor" Multiplicity="1" />
           <End Role="dispozice" Type="Self.dispozice" Multiplicity="*" />
           <ReferentialConstraint>
@@ -348,7 +347,7 @@
           <EntitySet Name="instruktor" EntityType="Self.instruktor" />
           <EntitySet Name="jazyk" EntityType="Self.jazyk" />
           <EntitySet Name="lekce" EntityType="Self.lekce" />
-          <AssociationSet Name="fk_dispozice_instruktor" Association="Self.fk_dispozice_instruktor">
+          <AssociationSet Name="FK_DISPOZICE_INSTRUCTOR" Association="Self.FK_DISPOZICE_INSTRUCTOR">
             <End Role="instruktor" EntitySet="instruktor" />
             <End Role="dispozice" EntitySet="dispozice" />
           </AssociationSet>
