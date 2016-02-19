@@ -31,10 +31,18 @@ namespace TigersProject.ViewModel
             set
             {
                 this.instructor = value;
+                if(value != null)
+                {
+                    this.type = value.druh.First();
+                    this.language = value.jazyk.First();
+                    ChangedProperty("Type");
+                    ChangedProperty("Language");
+                }
                 ChangedProperty("Instructor");
             }
         }
-        public List<instruktor> Instructors => DatabaseModel.Db.instruktor.ToList();
+        public List<instruktor> Instructors => DatabaseModel.Instructors;
+        public List<instruktor> DbInstructors => DatabaseModel.Db.instruktor.ToList(); 
 
         //DataGrid pro rozpis
         public DataTable DTableMonth => this.DatabaseModel.DTableMonth;
@@ -151,7 +159,6 @@ namespace TigersProject.ViewModel
             }
         }
         public instruktor DispositionInstructor { get; set; }
-        public List<instruktor> DispositionInstructors => DatabaseModel.Db.instruktor.ToList();
         public Command AddDispositionCmd { get; set; }
         
         //Okno s přidáním lekce---------------------------------------------------------------------
@@ -167,8 +174,10 @@ namespace TigersProject.ViewModel
         public Command AddLessonCmd { get; set; }
         public Command SearchLessonCmd { get; set; }
         public Command DeleteLessonCmd { get; set; }
+
         public List<druh> Types => DatabaseModel.Types;
         public List<jazyk> Languages => DatabaseModel.Languages;
+       
         public List<lekce> Lessons { get; set; }
         public lekce Lesson
         {
@@ -400,7 +409,7 @@ namespace TigersProject.ViewModel
                 DatabaseModel.SearchInstructors(begin, 1, null, null);
                 this.Instructors.Add(instructor);
             }
-            this.instructor = instructor;
+            this.Instructor = instructor;
             this.beginTime = begin;
             
             LessonWindow window = new LessonWindow();
@@ -543,7 +552,7 @@ namespace TigersProject.ViewModel
             {
                 MessageBox.Show("Instruktor uložen.");
                 ResetAttributes();
-                ChangedProperty("Instructors");
+                ChangedProperty("DbInstructors");
             }
             else
             { MessageBox.Show("Instruktor nemohl být uložen."); }
@@ -573,7 +582,7 @@ namespace TigersProject.ViewModel
         {
             this.BeginTime = this.Date;
             this.DispositionDate = this.Date;
-            this.People = 1;
+            this.People = this.Duration = 1;
             this.Instructor = null;
             this.Type = null;
             this.Language = null;

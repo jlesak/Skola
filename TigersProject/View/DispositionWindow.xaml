@@ -21,7 +21,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ComboBox Grid.Column="1" Grid.Row="0" SelectedItem="{Binding DispositionInstructor}" ItemsSource="{Binding DispositionInstructors}" >
+        <ComboBox Grid.Column="1" Grid.Row="0" SelectedItem="{Binding DispositionInstructor}" ItemsSource="{Binding DbInstructors}" >
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

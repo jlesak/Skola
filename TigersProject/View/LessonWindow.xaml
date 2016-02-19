@@ -65,7 +65,7 @@
             <Label Content="Datum a čas:" Grid.Row="1" Grid.Column="0"/>
             <xctk:DateTimePicker Value="{Binding Path=BeginTime, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="4" Grid.Column="1" FontSize="14.667" CultureInfo="" />
             <Label Content="Druh:" Grid.Row="2" Grid.Column="0" />
-            <ComboBox SelectedIndex="0" SelectedItem="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=Types}" Grid.Row="2" Grid.Column="1">
+            <ComboBox SelectedItem="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=Types}" Grid.Row="2" Grid.Column="1">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -75,7 +75,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Content="Jazyk:" Grid.Row="3" Grid.Column="0"/>
-            <ComboBox SelectedIndex="0" SelectedItem="{Binding Path=Language, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Languages}" Grid.Row="3" Grid.Column="1">
+            <ComboBox SelectedItem="{Binding Path=Language, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Languages}" Grid.Row="3" Grid.Column="1">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

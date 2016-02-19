@@ -17,16 +17,16 @@ namespace TigersProject
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public druh()
         {
-            this.lekce = new HashSet<lekce>();
             this.instruktor = new HashSet<instruktor>();
+            this.lekce = new HashSet<lekce>();
         }
     
         public int ID { get; set; }
         public string DRUH1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<lekce> lekce { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<instruktor> instruktor { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<lekce> lekce { get; set; }
     }
 }

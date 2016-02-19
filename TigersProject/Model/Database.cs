@@ -255,26 +255,30 @@ namespace TigersProject.Model
         public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh)
         {
             var instructors = Db.instruktor.AsQueryable();
-            if (startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0); // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
+             // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
             
             if (language != null)instructors = instructors.Where(i => i.jazyk.Any(j => j.ID == language.ID));
             if (druh != null) instructors = instructors.Where(i => i.druh.Any(d => d.ID == druh.ID));
             //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
             //hleda se pouze pro dalsi hodinu (max 2 hodiny za sebou)
-            //v pripade že by bylo potřeba 3+h tak se to udela jeste jednou
+            //v pripade že by bylo potřeba 3+h tak se to udela jeste jednou    (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0
 
-            if(duration == 1)instructors = from i in instructors from d in i.dispozice where d.ZACATEK == startTime select d.instruktor;
-
-            else
+            if(startTime.Hour != 0)
             {
-                for (int c = 1; c < duration; c++)
+                if(startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0);
+                if(duration == 1) { instructors = from i in instructors from d in i.dispozice where d.ZACATEK == startTime select d.instruktor; }
+
+                else
                 {
-                    startTime = startTime.AddHours(c);
-                    instructors = instructors.Where(i => i.dispozice.Any(d => d.ZACATEK == startTime));
+                    for (int c = 1; c < duration; c++)
+                    {
+                        startTime = startTime.AddHours(c);
+                        instructors = instructors.Where(i => i.dispozice.Any(d => d.ZACATEK == startTime));
+                    }
                 }
             }
             if(Enumerable.Count(instructors)>0) this.Instructors = instructors.ToList();
-            else this.Instructors = null;
+            else this.Instructors.Clear();
         }
 
         public List<lekce> SearchLessons(string surname, string name, string phone, DateTime date)
@@ -299,20 +303,15 @@ namespace TigersProject.Model
                 //kdyz jsou napsany nejaky lekce, nebo dispozice, tak je to preskoci a doplni celej den dispozicema
             if (disposition.ZACATEK.Hour == 0)
             {
-                dispozice addDisposition = new dispozice();
-                addDisposition = disposition;
-
-                disposition.ZACATEK = disposition.ZACATEK.AddHours(9);
+                disposition.ZACATEK = disposition.ZACATEK.AddHours(8);
                 for (int i = 0; i < 7; i++)
                 {
-                    if((!Db.dispozice.Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID)).Any()) && (!Db.lekce.Where(l => (l.ZACATEK == disposition.ZACATEK) && (l.instruktor.ID == disposition.instruktor.ID)).Any()))
+                    disposition.ZACATEK = disposition.ZACATEK.AddHours(1);
+                    if ((!Db.dispozice.Where(d => (d.ZACATEK == disposition.ZACATEK) && (d.instruktor.ID == disposition.instruktor.ID)).Any()) && (!Db.lekce.Where(l => (l.ZACATEK == disposition.ZACATEK) && (l.instruktor.ID == disposition.instruktor.ID)).Any()))
                     {
-                        Db.dispozice.Add(addDisposition);
+                        Db.dispozice.Add(disposition);
                         Db.SaveChanges();
-                    }   
-                    addDisposition = new dispozice();
-                    addDisposition = disposition;
-                    addDisposition.ZACATEK = disposition.ZACATEK.AddHours(1);
+                    }
                 }
                     
                     return true;
@@ -362,6 +361,7 @@ namespace TigersProject.Model
         /// <returns></returns>
         public bool SaveLesson(lekce lesson)
         {
+            if(!(lesson.instruktor.druh.Contains(lesson.druh)) || !(lesson.instruktor.jazyk.Contains(lesson.jazyk))) return false;
             if(lesson.ID == 0)
             {
                 var free = Db.dispozice.Where(d => (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0) && (d.instruktor.ID == lesson.instruktor.ID));
