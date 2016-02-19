@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7d5dc06fce3c4976b2e6af580ac6dcaa" Name="Diagram1">
+      <Diagram DiagramId="59c4b81de452471dba59b147b5926ab4" Name="Diagram1">
         <EntityTypeShape EntityType="Model.dispozice" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.druh" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.instruktor" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.jazyk" Width="1.5" PointX="5.25" PointY="6.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.lekce" Width="1.5" PointX="7.5" PointY="4.5" IsExpanded="true" />
-        <AssociationConnector Association="Model.FK_DISPOZICE_INSTRUCTOR" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_DISPOZICE_instruktor" ManuallyRouted="false" />
         <AssociationConnector Association="Model.fk_lekce_druh1" ManuallyRouted="false" />
         <AssociationConnector Association="Model.fk_lekce_instruktor" ManuallyRouted="false" />
         <AssociationConnector Association="Model.fk_lekce_jazyk1" ManuallyRouted="false" />
