@@ -32,50 +32,62 @@ namespace TigersProject.Model
         public Database()
         {
             DayTable = new ObservableCollection<DayRow>();
+            
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
             Types = Db.druh.ToList();
             Languages = Db.jazyk.ToList();
             this.Date = DateTime.Today;
+            AddMonthColumns();
+            AddMonthRows();
             RefreshDay();
+        }
+
+        public void RefreshMonth()
+        {
+            AddMonthColumns();
+            AddMonthRows();
         }
 
         //přidá sloupce do rozpisu měsíce
         //provést při změně měsíce
-        public void AddMonthColumns(int days, int month)
+        private void AddMonthColumns()
         {
+            this.DTableMonth = new DataTable();
             DataColumn column = new DataColumn();
             column.ColumnName = "Instruktor";
             this.DTableMonth.Columns.Add(column);
+
+            int days = DateTime.DaysInMonth(Date.Year, Date.Month);
             for (int i = 1; i <= days; i++) {
                 column = new DataColumn();
-                column.ColumnName = i.ToString() + ". " + month.ToString() + ".";
+                string cName = i.ToString();
+                column.ColumnName = cName;
                 this.DTableMonth.Columns.Add(column);
             }
+
         }
         /// <summary>
         /// vytvoří a přidá řádky do tabulky měsíce (rozpis)
         /// </summary>
-        public void AddMonthRows()
+        private void AddMonthRows()
         {
+            this.DTableMonth.Rows.Clear();
             Instructors = Db.instruktor.ToList();
-            var dispositions = Db.dispozice.AsQueryable();
-            var lessons = Db.lekce.AsQueryable();
             foreach (var instructor in this.Instructors)
             {
                 var row = DTableMonth.NewRow();
                 string name = instructor.PRIJMENI + " " + instructor.JMENO;
-                dispositions = dispositions.Where(d => d.instruktor_id == instructor.ID);
-                lessons = lessons.Where(l => l.instruktor_id == instructor.ID);
-
-
+                var dispositions = Db.dispozice.AsQueryable().Where(d => d.instruktor_id == instructor.ID);
+                var lessons = Db.lekce.AsQueryable().Where(l => l.instruktor_id == instructor.ID);
+                
                 foreach (var disposition in dispositions)
                 {
-                    string rowName = disposition.ZACATEK.Day.ToString() + ". " + disposition.ZACATEK.Month.ToString() + ".";
+                    string rowName = disposition.ZACATEK.Day.ToString();
                     row[rowName] = "1";
                 }
-
-                row["Instruktor"] = name;
+                row[0] = name;
+                this.DTableMonth.Rows.Add(row);
             }
         }
         /// <summary>

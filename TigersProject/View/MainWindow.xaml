@@ -27,7 +27,6 @@
             <MenuItem Header="Dispozice" Click="DispositionClick"/>
             <MenuItem Header="Instruktoři" Click="InstructorClick"/>
             <MenuItem Header="Výplaty-nic"/>
-            
         </Menu>
 
         <TabControl Grid.Row="1" Grid.Column="0" Margin="5,0,5,5">
@@ -187,13 +186,13 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
+            
             <TabItem Height="30" Header="Rozpis">
-                <DataGrid ItemsSource="{Binding DTableMonth}" AutoGenerateColumns="True">
-
+                <DataGrid ItemsSource="{Binding DTableMonth}" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell">
+                  
                 </DataGrid>
             </TabItem>
-
-
+            
         </TabControl>
         <DatePicker SelectedDate="{Binding Path=Date}" SelectedDateFormat="Short" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="120" Width="150" Height="30" Margin="155,2,0,0" Grid.Row="1"  HorizontalContentAlignment="Stretch" FontSize="14" />
     </Grid>

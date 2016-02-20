@@ -54,6 +54,11 @@ namespace TigersProject.ViewModel
             get { return DatabaseModel.Date; }
             set
             {
+                if(value.Month != DatabaseModel.Date.Month)
+                {
+                    DatabaseModel.RefreshMonth();
+                    ChangedProperty("DTableMonth");
+                }
                 DatabaseModel.Date = value;
                 ChangedProperty("Date");
                 DatabaseModel.RefreshDay();
