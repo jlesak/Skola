@@ -18,8 +18,8 @@ namespace TigersProject
         public instruktor()
         {
             this.dispozice = new HashSet<dispozice>();
-            this.druh = new HashSet<druh>();
             this.lekce = new HashSet<lekce>();
+            this.druh = new HashSet<druh>();
             this.jazyk = new HashSet<jazyk>();
         }
     
@@ -32,9 +32,9 @@ namespace TigersProject
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<dispozice> dispozice { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<druh> druh { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<lekce> lekce { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<druh> druh { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<jazyk> jazyk { get; set; }
     }

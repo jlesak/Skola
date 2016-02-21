@@ -129,11 +129,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\WagesWindow.xaml.cs">
+      <DependentUpon>WagesWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\DispositionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\InstructorsWindowxaml.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LanguagesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -181,6 +188,7 @@
     </Compile>
     <Compile Include="Model\Database.cs" />
     <Compile Include="Model\DayRow.cs" />
+    <Compile Include="Model\MonthRow.cs" />
     <Compile Include="ViewModel\Command.cs" />
     <Compile Include="ViewModel\Converter\CellConverter.cs" />
     <Compile Include="ViewModel\Converter\MultiConverter.cs" />
@@ -193,6 +201,9 @@
     <Compile Include="View\InstructorsWindowxaml.xaml.cs">
       <DependentUpon>InstructorsWindowxaml.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LanguagesWindow.xaml.cs">
+      <DependentUpon>LanguagesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LessonWindow.xaml.cs">
       <DependentUpon>LessonWindow.xaml</DependentUpon>
     </Compile>
@@ -200,6 +211,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\WagesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

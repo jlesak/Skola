@@ -1,0 +1,38 @@
+﻿<Window x:Class="TigersProject.View.LanguagesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TigersProject.View"
+        xmlns:viewModel="clr-namespace:TigersProject.ViewModel"
+        mc:Ignorable="d"
+        Title="LanguagesWindow" MinHeight="150" Height="300" Width="300">
+    <Window.DataContext>
+        <viewModel:ViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" MinHeight="30"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" Content="Jazyky:"/>
+        <ListView SelectedItem="{Binding Path=Language}" Margin="5" ItemsSource="{Binding Languages}" Grid.Row="0" Grid.Column="1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding JAZYK1}"></TextBlock>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label Grid.Column="0" Grid.Row="1" Content="Zkratka jazyka:"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=ShortLang, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Command="{Binding DelLanguageCmd}" Content="Smazat" Style="{StaticResource Button}" />
+            <Button Command="{Binding AddLanguageCmd}" Content="Přidat" Style="{StaticResource Button}" />
+        </StackPanel>
+        </Grid>
+</Window>

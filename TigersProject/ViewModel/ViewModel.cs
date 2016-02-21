@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media.TextFormatting;
 using TigersProject.Model;
 using System.Windows.Navigation;
@@ -22,7 +23,8 @@ namespace TigersProject.ViewModel
     class ViewModel : INotifyPropertyChanged
     {
         public Model.Database DatabaseModel;
-        private DataGridCellInfo cellInfo;
+        private DataGridCellInfo cellDay;
+        private DataGridCellInfo cellMonth;
 
         private instruktor instructor;
         public instruktor Instructor
@@ -45,7 +47,7 @@ namespace TigersProject.ViewModel
         public List<instruktor> DbInstructors => DatabaseModel.Db.instruktor.ToList(); 
 
         //DataGrid pro rozpis
-        public DataTable DTableMonth => this.DatabaseModel.DTableMonth;
+        public ObservableCollection<MonthRow> MonthTable => this.DatabaseModel.MonthTable;
 
         //DataGrid pro den
         public ObservableCollection<DayRow> DayTable => DatabaseModel.DayTable;
@@ -57,7 +59,7 @@ namespace TigersProject.ViewModel
                 if(value.Month != DatabaseModel.Date.Month)
                 {
                     DatabaseModel.RefreshMonth();
-                    ChangedProperty("DTableMonth");
+                    ChangedProperty("MonthTable");
                 }
                 DatabaseModel.Date = value;
                 ChangedProperty("Date");
@@ -65,14 +67,14 @@ namespace TigersProject.ViewModel
                 ChangedProperty("DayTable");
             }
         }
-        public DataGridCellInfo CellInfo
+        public DataGridCellInfo CellDay
         {
-            get { return cellInfo; }
+            get { return cellDay; }
             set
             {
-                cellInfo = value;
+                cellDay = value;
                 
-                ChangedProperty("CellInfo");
+                ChangedProperty("CellDay");
                 if(value.IsValid)
                 {
                     string clientName = "";
@@ -152,6 +154,38 @@ namespace TigersProject.ViewModel
                 }
             }
         }
+
+        public DataGridCellInfo CellMonth
+        {
+            get { return this.cellMonth; }
+            set
+            {
+                this.cellMonth = value;
+                string content = "";
+
+                if(value.IsValid && value.Column.DisplayIndex != 0)
+                {
+                    this.DispositionDate = new DateTime(Date.Year, Date.Month, value.Column.DisplayIndex);
+                    this.DispositionInstructor = ((MonthRow) value.Item).Instructor;
+                    content = ((MonthRow)value.Item).Days[value.Column.DisplayIndex];
+                    if (content == "1")
+                    {
+                        //smaze dispozice pro dany den, pokud tam nejsou lekce
+                        if (!DatabaseModel.DeleteDispositions(this.DispositionInstructor, this.dispositionDate)) MessageBox.Show("Instruktor má v tento den nějaké lekce.");
+                    }
+                    else if (String.IsNullOrEmpty(content))
+                    {
+                        //prida dispozice pro cely den
+                        AddDisposition();
+                    }
+                }
+                DatabaseModel.RefreshMonth();
+                ChangedProperty("CellMonth");
+                ChangedProperty("MonthTable");
+
+            }
+        }
+
         //Okno s přidáváním dispozic---------------------------------------------------------------
         private DateTime dispositionDate;
         public DateTime DispositionDate
@@ -181,7 +215,7 @@ namespace TigersProject.ViewModel
         public Command DeleteLessonCmd { get; set; }
 
         public List<druh> Types => DatabaseModel.Types;
-        public List<jazyk> Languages => DatabaseModel.Languages;
+        public List<jazyk> Languages {get { return DatabaseModel.Languages; } }
        
         public List<lekce> Lessons { get; set; }
         public lekce Lesson
@@ -365,7 +399,23 @@ namespace TigersProject.ViewModel
                 ChangedProperty("SelectedLanguages");
             }
         }
-
+        //okno JAZYKY-------------------------------------------------------------------
+        private string shortLang;
+        public string ShortLang
+        {
+            get { return this.shortLang; }
+            set
+            {
+                this.shortLang = value;
+                ChangedProperty("ShortLang");
+            }
+        }
+        public Command AddLanguageCmd { get; set; }
+        public Command DelLanguageCmd { get; set; }
+        
+        //okno VYPLATY--------------------------------------------------------------------------
+        public DataTable WagesTable => DatabaseModel.WagesTable;
+        public Command RefreshWagesCmd { get; set; }
         //____________________________________________________________________________________________
         public ViewModel()
         {
@@ -390,6 +440,14 @@ namespace TigersProject.ViewModel
                 else return false;
             });
             UnselectInstrCmd = new Command(UnselectInstructor);
+            AddLanguageCmd = new Command(AddLanguage,CanAddLanguage);
+            DelLanguageCmd = new Command(DeleteLanguage, () =>
+            {
+                if(this.language != null) return true;
+                else return false;
+            });
+            RefreshWagesCmd = new Command(RefreshWages);
+
 
             this.Lessons = new List<lekce>();
             SelectedTypes = new List<druh>();
@@ -432,8 +490,7 @@ namespace TigersProject.ViewModel
             disposition.KLUB = 0;
             disposition.ZACATEK = DispositionDate;
             disposition.instruktor = DispositionInstructor;
-            if (DatabaseModel.AddDisposition(disposition)) MessageBox.Show("Dispozice přidána");
-            else MessageBox.Show("Dispozice, nebo lekce již existuje.");
+            if (!DatabaseModel.AddDisposition(disposition)) MessageBox.Show("Dispozice, nebo lekce již existuje.");
 
             DatabaseModel.RefreshDay();
             ChangedProperty("DayTable");
@@ -580,6 +637,30 @@ namespace TigersProject.ViewModel
             this.SelectedLanguages.Clear();
             this.SelectedTypes.Clear();
         }
+        //okno JAZYKY---------------------------------------------------------------------------------
+        private void AddLanguage()
+        {
+            DatabaseModel.AddLanguage(this.shortLang);
+            ChangedProperty("Languages");
+            ResetAttributes();
+        }
+        private void DeleteLanguage()
+        {
+            if(!DatabaseModel.DeleteLanguage(this.language)) MessageBox.Show("Některý z instruktorů mluví tímto jazykem, tudíž nemůže být smazán.");
+            ChangedProperty("Languages");
+            this.Language = null;
+        }
+        private bool CanAddLanguage()
+        {
+            if ((!String.IsNullOrEmpty(this.shortLang)) && (this.shortLang.Length >= 2) && (this.shortLang.Length <= 5)) return true;
+            else return false;
+        }
+        //-okno VYPLATY------------------------------------------------------------------
+        private void RefreshWages()
+        {
+            DatabaseModel.RefreshWages();
+            ChangedProperty("WagesTable");
+        }
         /// <summary>
         /// Vyresetuje všechny atributy ve ViewModelu
         /// </summary>
@@ -595,6 +676,11 @@ namespace TigersProject.ViewModel
             this.Paid = false;
             this.Money = 0;
         }
+        public void Mouse(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show(CellDay.Column.DisplayIndex.ToString());
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void ChangedProperty(string propertyName)
         {

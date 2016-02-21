@@ -26,10 +26,6 @@ namespace TigersProject.View
             InitializeComponent();
         }
 
-        private void Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
         private void LessonClick(object sender, RoutedEventArgs e)
         {
             LessonWindow window = new LessonWindow();
@@ -47,7 +43,19 @@ namespace TigersProject.View
             window.DataContext = this.DataContext;
             window.Show();
         }
+        
+        private void JazykyClick(object sender, RoutedEventArgs e)
+        {
+            LanguagesWindow window = new LanguagesWindow();
+            window.DataContext = this.DataContext;
+            window.Show();
+        }
 
-       
+        private void WagesClick(object sender, RoutedEventArgs e)
+        {
+            WagesWindow window = new WagesWindow();
+            window.DataContext = this.DataContext;
+            window.Show();
+        }
     }
 }

@@ -14,7 +14,14 @@
     <Window.Resources>
         <converter:CellConverter x:Key="Converter"/>
         <converter:MultiConverter x:Key="MultiConverter"/>
-        
+        <Style TargetType="{x:Type TextBlock}" x:Key="MonthColumn">
+            <Style.Triggers>
+                <Trigger Property="Text" Value="1">
+                    <Setter Property="Foreground" Value="Green"/>
+                    <Setter Property="Background" Value="Green"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid Margin="5,5,5,10">
         <Grid.RowDefinitions>
@@ -26,14 +33,15 @@
             <MenuItem Header="Lekce" Click="LessonClick"/>
             <MenuItem Header="Dispozice" Click="DispositionClick"/>
             <MenuItem Header="Instruktoři" Click="InstructorClick"/>
-            <MenuItem Header="Výplaty-nic"/>
+            <MenuItem Header="Výplaty" Click="WagesClick"/>
+            <MenuItem Header="Jazyky" Click="JazykyClick"/>
         </Menu>
 
         <TabControl Grid.Row="1" Grid.Column="0" Margin="5,0,5,5">
             
-            <TabItem Header="Den">
-                <DataGrid CurrentCell="{Binding CellInfo, Mode=OneWayToSource}" ItemsSource="{Binding DayTable}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell">
-                   <DataGrid.Columns>
+            <TabItem Header="Den" BorderBrush="#00000000">
+                <DataGrid CurrentCell="{Binding CellDay, Mode=OneWayToSource}" ItemsSource="{Binding DayTable}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell">
+                    <DataGrid.Columns>
                         <DataGridTextColumn Header="Instruktor" Binding="{Binding Path=Name}"/>
                         <DataGridTemplateColumn Header="9 - 10">
                             <DataGridTemplateColumn.CellTemplate>
@@ -188,11 +196,385 @@
             </TabItem>
             
             <TabItem Height="30" Header="Rozpis">
-                <DataGrid ItemsSource="{Binding DTableMonth}" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell">
-                  
+                <DataGrid CurrentCell="{Binding CellMonth, Mode=OneWayToSource}" ItemsSource="{Binding MonthTable}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell" BorderBrush="#00000000">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Instruktor" Binding="{Binding Path=Days[0]}"/>
+                        <DataGridTextColumn Header="1." Binding="{Binding Path=Days[1]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="2." Binding="{Binding Path=Days[2]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="3." Binding="{Binding Path=Days[3]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="4." Binding="{Binding Path=Days[4]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="5." Binding="{Binding Path=Days[5]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="6." Binding="{Binding Path=Days[6]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="7." Binding="{Binding Path=Days[7]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="8." Binding="{Binding Path=Days[8]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="9." Binding="{Binding Path=Days[8]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="10." Binding="{Binding Path=Days[10]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="11." Binding="{Binding Path=Days[11]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="12." Binding="{Binding Path=Days[12]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="13." Binding="{Binding Path=Days[13]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="14." Binding="{Binding Path=Days[14]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="15." Binding="{Binding Path=Days[15]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="16." Binding="{Binding Path=Days[16]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="17." Binding="{Binding Path=Days[17]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="18." Binding="{Binding Path=Days[18]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="19." Binding="{Binding Path=Days[19]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="20." Binding="{Binding Path=Days[20]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="21." Binding="{Binding Path=Days[21]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="22." Binding="{Binding Path=Days[22]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="23." Binding="{Binding Path=Days[23]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="24." Binding="{Binding Path=Days[24]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="25." Binding="{Binding Path=Days[25]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="26." Binding="{Binding Path=Days[26]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="27." Binding="{Binding Path=Days[27]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="28." Binding="{Binding Path=Days[28]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="29." Binding="{Binding Path=Days[29]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="30." Binding="{Binding Path=Days[30]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="31." Binding="{Binding Path=Days[31]}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="1">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <Setter Property="Background" Value="Green"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            
+           
         </TabControl>
         <DatePicker SelectedDate="{Binding Path=Date}" SelectedDateFormat="Short" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="120" Width="150" Height="30" Margin="155,2,0,0" Grid.Row="1"  HorizontalContentAlignment="Stretch" FontSize="14" />
     </Grid>

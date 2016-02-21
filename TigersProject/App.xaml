@@ -28,7 +28,6 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
-        
         <Style TargetType="{x:Type CheckBox}">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -50,5 +49,10 @@
             <Setter Property="MinWidth" Value="70"/>
             <Setter Property="FontSize" Value="16"/>
         </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="MinWidth" Value="30"/>
+        </Style>
+        
+        
     </Application.Resources>
 </Application>

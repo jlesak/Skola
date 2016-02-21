@@ -25,69 +25,55 @@ namespace TigersProject.Model
         public List<instruktor> Instructors;
         public List<druh> Types;
         public List<jazyk> Languages;  
-        public DataTable DTableMonth; //nahradit observableColl
-        public ObservableCollection<DayRow> DayTable; 
+        public ObservableCollection<MonthRow> MonthTable;
+        public ObservableCollection<DayRow> DayTable;
+        public DataTable WagesTable;
 
         public string Text;
         public Database()
         {
             DayTable = new ObservableCollection<DayRow>();
-            
+            MonthTable = new ObservableCollection<MonthRow>();
+            WagesTable = new DataTable();
+            WagesTable.Columns.Add("Instruktor");
+            WagesTable.Columns.Add("Sazba");
+            WagesTable.Columns.Add("Počet hodin");
+            WagesTable.Columns.Add("Výplata");
             Db = new Entities();
             Instructors = Db.instruktor.ToList();
             Types = Db.druh.ToList();
             Languages = Db.jazyk.ToList();
             this.Date = DateTime.Today;
-            AddMonthColumns();
-            AddMonthRows();
+           
+            RefreshMonth();
             RefreshDay();
         }
-
-        public void RefreshMonth()
-        {
-            AddMonthColumns();
-            AddMonthRows();
-        }
-
-        //přidá sloupce do rozpisu měsíce
-        //provést při změně měsíce
-        private void AddMonthColumns()
-        {
-            this.DTableMonth = new DataTable();
-            DataColumn column = new DataColumn();
-            column.ColumnName = "Instruktor";
-            this.DTableMonth.Columns.Add(column);
-
-            int days = DateTime.DaysInMonth(Date.Year, Date.Month);
-            for (int i = 1; i <= days; i++) {
-                column = new DataColumn();
-                string cName = i.ToString();
-                column.ColumnName = cName;
-                this.DTableMonth.Columns.Add(column);
-            }
-
-        }
+        
         /// <summary>
         /// vytvoří a přidá řádky do tabulky měsíce (rozpis)
         /// </summary>
-        private void AddMonthRows()
+        public void RefreshMonth()
         {
-            this.DTableMonth.Rows.Clear();
+            MonthTable.Clear();
             Instructors = Db.instruktor.ToList();
             foreach (var instructor in this.Instructors)
             {
-                var row = DTableMonth.NewRow();
                 string name = instructor.PRIJMENI + " " + instructor.JMENO;
+                MonthRow row = new MonthRow();
+                row.Days[0] = name;
+                row.Instructor = instructor;
                 var dispositions = Db.dispozice.AsQueryable().Where(d => d.instruktor_id == instructor.ID);
                 var lessons = Db.lekce.AsQueryable().Where(l => l.instruktor_id == instructor.ID);
                 
                 foreach (var disposition in dispositions)
                 {
-                    string rowName = disposition.ZACATEK.Day.ToString();
-                    row[rowName] = "1";
+                    row.Days[disposition.ZACATEK.Day] = "1";
                 }
-                row[0] = name;
-                this.DTableMonth.Rows.Add(row);
+                foreach (var lesson in lessons)
+                {
+                    row.Days[lesson.ZACATEK.Day] = "1";
+                }
+                this.MonthTable.Add(row);
             }
         }
         /// <summary>
@@ -338,15 +324,19 @@ namespace TigersProject.Model
                     return true;
                 }
                 else return false;
-                
             }
-            
         }
 
-        public void DeleteDisposition(dispozice disposition)
+        public bool DeleteDispositions(instruktor instructor, DateTime date)
         {
-            Db.dispozice.Remove(disposition);
+            var lessons = Db.lekce.AsQueryable().Where(l => (l.instruktor_id == instructor.ID) && (DbFunctions.TruncateTime(l.ZACATEK) == DbFunctions.TruncateTime(date)));
+            if (lessons.Any()) return false;
+            var dispositions = Db.dispozice.AsQueryable().Where(d => (d.instruktor_id == instructor.ID)&&(DbFunctions.TruncateTime(d.ZACATEK) == DbFunctions.TruncateTime(date)));
+            foreach (dispozice disposition in dispositions) {
+                Db.dispozice.Remove(disposition);
+            }
             Db.SaveChanges();
+            return true;
         }
         
         /// <summary>
@@ -360,9 +350,20 @@ namespace TigersProject.Model
             {
                 jazyk lang = new jazyk {JAZYK1 = shortLanguage};
                 Db.jazyk.Add(lang);
+                Db.SaveChanges();
+                this.Languages.Add(lang);
                 return true;
             }
             else return false;
+        }
+
+        public bool DeleteLanguage(jazyk language)
+        {
+            if((language.instruktor.Any()) || (language.lekce.Any())) return false;
+            Db.jazyk.Remove(Db.jazyk.Find(language.ID));
+            Db.SaveChanges();
+            this.Languages = Db.jazyk.ToList();
+            return true;
         }
 
         //Do DB zapíšu jen jeden řádek (i pro lekci trvající 3h) a při přidávání do DataGridu to rozkopíruju => upravovat se bude vždycky ten jeden záznam v DB
@@ -391,7 +392,8 @@ namespace TigersProject.Model
                     //pridavani lekci
                     foreach (dispozice disposition in dispositions)
                     {
-                        DeleteDisposition(disposition);
+                        Db.dispozice.Remove(disposition);
+                        Db.SaveChanges();
                         Db.lekce.Add(lesson);
                         lesson.ZACATEK = lesson.ZACATEK.AddHours(1);
                     }
@@ -399,7 +401,7 @@ namespace TigersProject.Model
 
                 if(free.Any())
                 {
-                    DeleteDisposition(Enumerable.First(free));
+                    Db.dispozice.Remove(Enumerable.First(free));
                     Db.lekce.Add(lesson);
                     Db.SaveChanges();
                     return true;
@@ -409,7 +411,6 @@ namespace TigersProject.Model
 
             Db.SaveChanges();
             return true;
-           
         }
 
         public void DeleteLesson(lekce lesson)
@@ -420,7 +421,23 @@ namespace TigersProject.Model
             disposition.instruktor = lesson.instruktor;
             Db.lekce.Remove(lesson);
             AddDisposition(disposition);
-           // Db.SaveChanges();
+            Db.SaveChanges();
+        }
+
+        public void RefreshWages()
+        {
+            WagesTable.Rows.Clear();
+            foreach (instruktor instructor in Db.instruktor.AsQueryable())
+            {
+                var lessons = Db.lekce.AsQueryable().Where(l => (l.instruktor_id == instructor.ID) && (DbFunctions.DiffMonths(l.ZACATEK, Date) == 0));
+                DataRow row = WagesTable.NewRow();
+                row[0] = instructor.PRIJMENI + " " + instructor.JMENO;
+                row[1] = instructor.SAZBA.ToString("F");
+                row[2] = Enumerable.Count(lessons).ToString();
+                row[3] = (Enumerable.Count(lessons)*instructor.SAZBA).ToString("F");
+
+                WagesTable.Rows.Add(row);
+            }
         }
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void ChangedProperty(string propertyName)
