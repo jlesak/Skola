@@ -75,7 +75,7 @@ namespace TigersProject.ViewModel
                 cellDay = value;
                 
                 ChangedProperty("CellDay");
-                if(value.IsValid)
+                if((value.IsValid)&&(value.Column.DisplayIndex > 0))
                 {
                     string clientName = "";
                     bool isLesson = false;

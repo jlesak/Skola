@@ -43,19 +43,21 @@
                 <DataGrid CurrentCell="{Binding CellDay, Mode=OneWayToSource}" ItemsSource="{Binding DayTable}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Instruktor" Binding="{Binding Path=Name}"/>
-                        <DataGridTemplateColumn Header="9 - 10">
+                        <DataGridTemplateColumn Header="9 - 10" MinWidth="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock>
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Padding" Value="4,1,4,1"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Nine}" Value="1">
                                                         <Setter Property="Background" Value="Green"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Nine}" Value="2">
                                                         <Setter Property="Text" Value="{Binding Path=LessonNine.PRIJMENIKLIENT}"/>
-                                                        <Setter Property="Background" Value="Blue"/>
+                                                        <Setter Property="Background" Value="DodgerBlue"/>
+                                                        <Setter Property="Foreground" Value="White"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -64,19 +66,21 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="10 - 11">
+                        <DataGridTemplateColumn Header="10 - 11" MinWidth="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock>
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Padding" Value="4,1,4,1"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Ten}" Value="1">
                                                         <Setter Property="Background" Value="Green"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Ten}" Value="2">
                                                         <Setter Property="Text" Value="{Binding Path=LessonTen.PRIJMENIKLIENT}"/>
-                                                        <Setter Property="Background" Value="Blue"/>
+                                                        <Setter Property="Background" Value="DodgerBlue"/>
+                                                        <Setter Property="Foreground" Value="White"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -85,12 +89,13 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="11 - 12">
+                        <DataGridTemplateColumn Header="11 - 12" MinWidth="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock>
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Padding" Value="4,1,4,1"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Eleven}" Value="1">
                                                         <Setter Property="Background" Value="Green"/>
@@ -107,19 +112,21 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="12 - 13">
+                        <DataGridTemplateColumn Header="12 - 13" MinWidth="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock>
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Padding" Value="4,1,4,1"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Twelve}" Value="1">
                                                         <Setter Property="Background" Value="Green"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Twelve}" Value="2">
                                                         <Setter Property="Text" Value="{Binding Path=LessonTwelve.PRIJMENIKLIENT}"/>
-                                                        <Setter Property="Background" Value="Blue"/>
+                                                        <Setter Property="Background" Value="DodgerBlue"/>
+                                                        <Setter Property="Foreground" Value="White"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -128,19 +135,21 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="13 - 14">
+                        <DataGridTemplateColumn Header="13 - 14" MinWidth="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock>
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Padding" Value="4,1,4,1"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding One}" Value="1">
                                                         <Setter Property="Background" Value="Green"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding One}" Value="2">
                                                         <Setter Property="Text" Value="{Binding Path=LessonOne.PRIJMENIKLIENT}"/>
-                                                        <Setter Property="Background" Value="Blue"/>
+                                                        <Setter Property="Background" Value="DodgerBlue"/>
+                                                        <Setter Property="Foreground" Value="White"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -149,19 +158,21 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="14 - 15">
+                        <DataGridTemplateColumn Header="14 - 15" MinWidth="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock>
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Padding" Value="4,1,4,1"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Two}" Value="1">
                                                         <Setter Property="Background" Value="Green"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Two}" Value="2">
                                                         <Setter Property="Text" Value="{Binding Path=LessonTwo.PRIJMENIKLIENT}"/>
-                                                        <Setter Property="Background" Value="Blue"/>
+                                                        <Setter Property="Background" Value="DodgerBlue"/>
+                                                        <Setter Property="Foreground" Value="White"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -170,19 +181,21 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="15 - 16">
+                        <DataGridTemplateColumn Header="15 - 16" MinWidth="100">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock>
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Padding" Value="4,1,4,1"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Three}" Value="1">
                                                         <Setter Property="Background" Value="Green"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Three}" Value="2">
                                                         <Setter Property="Text" Value="{Binding Path=LessonThree.PRIJMENIKLIENT}"/>
-                                                        <Setter Property="Background" Value="Blue"/>
+                                                        <Setter Property="Background" Value="DodgerBlue"/>
+                                                        <Setter Property="Foreground" Value="White"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
