@@ -43,7 +43,7 @@ namespace TigersProject.ViewModel
                 ChangedProperty("Instructor");
             }
         }
-        public List<instruktor> Instructors => DatabaseModel.Instructors;
+        public List<instruktor> Instructors {get { return DatabaseModel.Instructors; } }
         public List<instruktor> DbInstructors => DatabaseModel.Db.instruktor.ToList(); 
 
         //DataGrid pro rozpis
@@ -243,8 +243,8 @@ namespace TigersProject.ViewModel
             get { return this.beginTime; }
             set
             {
-                if(value.Hour != 0) SearchInstructors();
                 this.beginTime = value;
+                if (value.Hour != 0) SearchInstructors();
                 ChangedProperty("BeginTime");
             }
         }
@@ -528,6 +528,12 @@ namespace TigersProject.ViewModel
         private void SearchInstructors()
         {
             DatabaseModel.SearchInstructors(this.beginTime, this.duration,this.language, this.type);
+            if(this.Instructors.Count == 0)
+            {
+                this.Instructor = null;
+                this.Language = null;
+                this.Type = null;
+            }
             ChangedProperty("Instructors");
         }
         private void SearchLesson()

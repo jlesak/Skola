@@ -13,8 +13,8 @@
     </Window.DataContext>
     <Grid Margin="5,5,5,10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
@@ -63,7 +63,7 @@
                 </ListBox>
             </Grid>
             <Label Content="Datum a čas:" Grid.Row="1" Grid.Column="0"/>
-            <xctk:DateTimePicker Value="{Binding Path=BeginTime, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="4" Grid.Column="1" FontSize="14.667" CultureInfo="" />
+            <xctk:DateTimePicker Value="{Binding Path=BeginTime, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Margin="4" Grid.Column="1" FontSize="14.667" CultureInfo="cs-CZ" Format="Custom" FormatString="f" />
             <Label Content="Druh:" Grid.Row="2" Grid.Column="0" />
             <ComboBox SelectedItem="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=Types}" Grid.Row="2" Grid.Column="1">
                 <ComboBox.ItemTemplate>

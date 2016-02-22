@@ -253,16 +253,13 @@ namespace TigersProject.Model
         public void SearchInstructors(DateTime startTime, int duration, jazyk language, druh druh)
         {
             var instructors = Db.instruktor.AsQueryable();
-             // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
-            
-            if (language != null)instructors = instructors.Where(i => i.jazyk.Any(j => j.ID == language.ID));
-            if (druh != null) instructors = instructors.Where(i => i.druh.Any(d => d.ID == druh.ID));
             //kdyz je lekce delsi nez hodinu, tak vybere instruktory, kteri maji volno i tu dalsi hodinu
             //hleda se pouze pro dalsi hodinu (max 2 hodiny za sebou)
             //v pripade že by bylo potřeba 3+h tak se to udela jeste jednou    (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0
 
             if(startTime.Hour != 0)
             {
+                // pokud je cas napr. 8:30, zmeni se na 8:00 a hledaji se dispozice od 8:00
                 if(startTime.Minute != 0) startTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, startTime.Hour, 0, 0);
                 if(duration == 1) { instructors = from i in instructors from d in i.dispozice where d.ZACATEK == startTime select d.instruktor; }
 
@@ -275,8 +272,17 @@ namespace TigersProject.Model
                     }
                 }
             }
-            if(Enumerable.Count(instructors)>0) this.Instructors = instructors.ToList();
-            else this.Instructors.Clear();
+            else
+            {
+                this.Instructors.Clear();
+                return;
+            }
+            
+
+            if (language != null)instructors = instructors.Where(i => i.jazyk.Any(j => j.ID == language.ID));
+            if (druh != null) instructors = instructors.Where(i => i.druh.Any(d => d.ID == druh.ID));
+            
+            this.Instructors = instructors.ToList();
         }
 
         public List<lekce> SearchLessons(string surname, string name, string phone, DateTime date)
@@ -420,6 +426,7 @@ namespace TigersProject.Model
             disposition.ZACATEK = lesson.ZACATEK;
             disposition.instruktor = lesson.instruktor;
             Db.lekce.Remove(lesson);
+            Db.SaveChanges();
             AddDisposition(disposition);
             Db.SaveChanges();
         }

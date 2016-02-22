@@ -31,12 +31,6 @@ namespace TigersProject.View
             LessonWindow window = new LessonWindow();
             window.Show();
         }
-        private void DispositionClick(object sender, RoutedEventArgs e)
-        {
-            DispositionWindow window = new DispositionWindow();
-            window.DataContext = this.DataContext;
-            window.Show();
-        }
         private void InstructorClick(object sender, RoutedEventArgs e)
         {
             InstructorsWindowxaml window = new InstructorsWindowxaml();

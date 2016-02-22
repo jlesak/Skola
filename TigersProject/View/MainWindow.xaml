@@ -31,7 +31,6 @@
 
         <Menu Grid.Row="0" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="14.667" Background="White">
             <MenuItem Header="Lekce" Click="LessonClick"/>
-            <MenuItem Header="Dispozice" Click="DispositionClick"/>
             <MenuItem Header="Instruktoři" Click="InstructorClick"/>
             <MenuItem Header="Výplaty" Click="WagesClick"/>
             <MenuItem Header="Jazyky" Click="JazykyClick"/>
@@ -41,6 +40,11 @@
             
             <TabItem Header="Den" BorderBrush="#00000000">
                 <DataGrid CurrentCell="{Binding CellDay, Mode=OneWayToSource}" ItemsSource="{Binding DayTable}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="adad"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Instruktor" Binding="{Binding Path=Name}"/>
                         <DataGridTemplateColumn Header="9 - 10" MinWidth="100">
