@@ -6,7 +6,7 @@
         xmlns:viewModel="clr-namespace:TigersProject.ViewModel"
         xmlns:local="clr-namespace:TigersProject.View"
         mc:Ignorable="d"
-        Title="WagesWindow" Height="300" Width="300">
+        Title="WagesWindow" Height="400" Width="600">
     <Window.DataContext>
         <viewModel:ViewModel/>
     </Window.DataContext>

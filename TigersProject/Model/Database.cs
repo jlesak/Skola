@@ -78,9 +78,7 @@ namespace TigersProject.Model
         }
         /// <summary>
         /// obnoví tabulku pro den
-        /// </summary>
-        /// <summary>
-        /// Vytvoří a přidá do DataTable řádky.
+        /// Vytvoří a přidá řádky do ObservableCollection.
         /// pokud není nic buňka je prázdná
         /// pokud je dispozice zapíše 1
         /// pokud je lekce zapíše 2
@@ -147,37 +145,42 @@ namespace TigersProject.Model
                     foreach (lekce lesson in lessons)
                     {
                         int hour = lesson.ZACATEK.TimeOfDay.Hours;
-                        switch (hour)
-                        {
-                            case 9:
-                                row.Nine = "2";
-                                row.LessonNine = lesson;
-                                break;
-                            case 10:
-                                row.Ten = "2";
-                                row.LessonTen = lesson;
-                                break;
-                            case 11:
-                                row.Eleven = "2";
-                                row.LessonEleven = lesson;
-                                break;
-                            case 12:
-                                row.Twelve = "2";
-                                row.LessonTwelve = lesson;
-                                break;
-                            case 13:
-                                row.One = "2";
-                                row.LessonOne = lesson;
-                                break;
-                            case 14:
-                                row.Two = "2";
-                                row.LessonTwo = lesson;
-                                break;
-                            case 15:
-                                row.Three = "2";
-                                row.LessonThree = lesson;
-                                break;
+                        for (int i = 0; i < lesson.DELKA; i++) {
+                            
+                            switch (hour)
+                            {
+                                case 9:
+                                    row.Nine = "2";
+                                    row.LessonNine = lesson;
+                                    break;
+                                case 10:
+                                    row.Ten = "2";
+                                    row.LessonTen = lesson;
+                                    break;
+                                case 11:
+                                    row.Eleven = "2";
+                                    row.LessonEleven = lesson;
+                                    break;
+                                case 12:
+                                    row.Twelve = "2";
+                                    row.LessonTwelve = lesson;
+                                    break;
+                                case 13:
+                                    row.One = "2";
+                                    row.LessonOne = lesson;
+                                    break;
+                                case 14:
+                                    row.Two = "2";
+                                    row.LessonTwo = lesson;
+                                    break;
+                                case 15:
+                                    row.Three = "2";
+                                    row.LessonThree = lesson;
+                                    break;
+                            }
+                            hour++;
                         }
+                        
                     }
                     row.Instructor = instructor;
                     row.Name = name;
@@ -221,22 +224,23 @@ namespace TigersProject.Model
                 Db.SaveChanges();
                 return true;
         }
-
-        public void DeleteInstructor(instruktor instructor)
+        /// <summary>
+        /// Pokud instruktor nemá žádné lekce, tak ho smaže z databáze včetně jeho dispozicí
+        /// </summary>
+        /// <param name="instructor">instruktor pro smazání</param>
+        /// <returns></returns>
+        public bool DeleteInstructor(instruktor instructor)
         {
-            var areLessons = Db.lekce.AsQueryable().Where(l => l.instruktor_id == instructor.ID);
-            var areDispositions = Db.dispozice.AsQueryable().Where(d => d.instruktor_id == instructor.ID);
-            /*if (Enumerable.Any(areLessons))
-            {
-                foreach (lekce lesson in areLessons) { Db.lekce.Remove(lesson); }
-            }
-            if (Enumerable.Any(areDispositions))
-            {
-                foreach (dispozice disposition in areDispositions) { Db.dispozice.Remove(disposition); }
-            }*/
-
+            if (instructor.lekce.Any()) return false;
+            instructor.druh.Clear();
+            instructor.jazyk.Clear();
+            List<dispozice> disposititons = instructor.dispozice.ToList();
+            foreach (dispozice disposition in disposititons) { Db.dispozice.Remove(disposition); }
+            Db.Entry(instructor).State = EntityState.Modified;
+            Db.SaveChanges();
             Db.instruktor.Remove(instructor);
             Db.SaveChanges();
+            return true;
         }
 
         /// <summary>
@@ -265,7 +269,7 @@ namespace TigersProject.Model
 
                 else
                 {
-                    for (int c = 1; c < duration; c++)
+                    for (int c = 0; c < duration; c++)
                     {
                         startTime = startTime.AddHours(c);
                         instructors = instructors.Where(i => i.dispozice.Any(d => d.ZACATEK == startTime));
@@ -383,10 +387,10 @@ namespace TigersProject.Model
             if(!(lesson.instruktor.druh.Contains(lesson.druh)) || !(lesson.instruktor.jazyk.Contains(lesson.jazyk))) return false;
             if(lesson.ID == 0)
             {
-                var free = Db.dispozice.Where(d => (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0) && (d.instruktor.ID == lesson.instruktor.ID));
 
                 if (lesson.DELKA > 1)
                 {
+                    DateTime lessonBegin = lesson.ZACATEK;
                     List<dispozice> dispositions = new List<dispozice>();
                     for (int i = 0; i < lesson.DELKA; i++)
                     {
@@ -395,17 +399,20 @@ namespace TigersProject.Model
                         dispositions.Add(Enumerable.First(Db.dispozice.Where(d => (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0) && (d.instruktor.ID == lesson.instruktor.ID))));
                         lesson.ZACATEK = lesson.ZACATEK.AddHours(1);
                     }
-                    //pridavani lekci
                     foreach (dispozice disposition in dispositions)
                     {
                         Db.dispozice.Remove(disposition);
                         Db.SaveChanges();
-                        Db.lekce.Add(lesson);
-                        lesson.ZACATEK = lesson.ZACATEK.AddHours(1);
                     }
+                    lesson.ZACATEK = lessonBegin;
+                    Db.lekce.Add(lesson);
+                    Db.SaveChanges();
+                    
+                    return true;
                 }
+                var free = Db.dispozice.Where(d => (DateTime.Compare(d.ZACATEK, lesson.ZACATEK) == 0) && (d.instruktor.ID == lesson.instruktor.ID));
 
-                if(free.Any())
+                if (free.Any())
                 {
                     Db.dispozice.Remove(Enumerable.First(free));
                     Db.lekce.Add(lesson);
@@ -421,14 +428,29 @@ namespace TigersProject.Model
 
         public void DeleteLesson(lekce lesson)
         {
-            dispozice disposition = new dispozice();
-            disposition.KLUB = 0;
-            disposition.ZACATEK = lesson.ZACATEK;
-            disposition.instruktor = lesson.instruktor;
-            Db.lekce.Remove(lesson);
-            Db.SaveChanges();
-            AddDisposition(disposition);
-            Db.SaveChanges();
+            if(lesson.DELKA > 1)
+            {
+                instruktor instructor = lesson.instruktor;
+                Db.lekce.Remove(lesson);
+                Db.SaveChanges();
+                for (int i = 0; i < lesson.DELKA; i++) {
+                    dispozice disposition = new dispozice();
+                    disposition.KLUB = 0;
+                    disposition.ZACATEK = lesson.ZACATEK.AddHours(i);
+                    disposition.instruktor = instructor;
+                    AddDisposition(disposition);
+                }
+            }
+            else
+            {
+                dispozice disposition = new dispozice();
+                disposition.KLUB = 0;
+                disposition.ZACATEK = lesson.ZACATEK;
+                disposition.instruktor = lesson.instruktor;
+                Db.lekce.Remove(lesson);
+                Db.SaveChanges();
+                AddDisposition(disposition);
+            }
         }
 
         public void RefreshWages()
@@ -436,12 +458,14 @@ namespace TigersProject.Model
             WagesTable.Rows.Clear();
             foreach (instruktor instructor in Db.instruktor.AsQueryable())
             {
+                int totalHours = 0;
                 var lessons = Db.lekce.AsQueryable().Where(l => (l.instruktor_id == instructor.ID) && (DbFunctions.DiffMonths(l.ZACATEK, Date) == 0));
+                foreach (lekce lesson in lessons) { totalHours += lesson.DELKA; }
                 DataRow row = WagesTable.NewRow();
                 row[0] = instructor.PRIJMENI + " " + instructor.JMENO;
                 row[1] = instructor.SAZBA.ToString("F");
-                row[2] = Enumerable.Count(lessons).ToString();
-                row[3] = (Enumerable.Count(lessons)*instructor.SAZBA).ToString("F");
+                row[2] = totalHours.ToString();
+                row[3] = (totalHours*instructor.SAZBA).ToString("F");
 
                 WagesTable.Rows.Add(row);
             }

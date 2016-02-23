@@ -40,11 +40,6 @@
             
             <TabItem Header="Den" BorderBrush="#00000000">
                 <DataGrid CurrentCell="{Binding CellDay, Mode=OneWayToSource}" ItemsSource="{Binding DayTable}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="Cell">
-                    <DataGrid.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="adad"/>
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Instruktor" Binding="{Binding Path=Name}"/>
                         <DataGridTemplateColumn Header="9 - 10" MinWidth="100">

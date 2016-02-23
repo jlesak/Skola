@@ -35,8 +35,8 @@ namespace TigersProject.ViewModel
                 this.instructor = value;
                 if(value != null)
                 {
-                    this.type = value.druh.First();
-                    this.language = value.jazyk.First();
+                    if(value.druh.Any())this.type = value.druh.First();
+                    if (value.jazyk.Any()) this.language = value.jazyk.First();
                     ChangedProperty("Type");
                     ChangedProperty("Language");
                 }
@@ -186,7 +186,7 @@ namespace TigersProject.ViewModel
             }
         }
 
-        //Okno s přidáváním dispozic---------------------------------------------------------------
+        //přidávání dispozic---------------------------------------------------------------
         private DateTime dispositionDate;
         public DateTime DispositionDate
         {
@@ -225,17 +225,21 @@ namespace TigersProject.ViewModel
             {
                 this.lesson = value;
                 ChangedProperty("Lesson");
-                this.Surname = value.PRIJMENIKLIENT;
-                this.Name = value.JMENOKLIENT;
-                this.Phone = value.TELEFON;
-                this.People = value.OSOB;
-                this.Place = value.MISTO;
-                this.Paid = Convert.ToBoolean(value.PLACENO);
-                this.Comment = value.POZNAMKA;
-                this.Instructor = value.instruktor;
-                this.Type = value.druh;
-                this.Language = value.jazyk;
-                this.BeginTime = value.ZACATEK;
+                if(value != null)
+                {
+                    this.Surname = value.PRIJMENIKLIENT;
+                    this.Name = value.JMENOKLIENT;
+                    this.Phone = value.TELEFON;
+                    this.People = value.OSOB;
+                    this.Place = value.MISTO;
+                    this.Paid = Convert.ToBoolean(value.PLACENO);
+                    this.Comment = value.POZNAMKA;
+                    this.Instructor = value.instruktor;
+                    this.Type = value.druh;
+                    this.Language = value.jazyk;
+                    this.BeginTime = value.ZACATEK;
+                    this.Duration = value.DELKA;
+                }
             }
         }
         public DateTime BeginTime
@@ -379,7 +383,7 @@ namespace TigersProject.ViewModel
             }
         }
         public Command DeleteInstructorCmd { get; set; }
-        public Command UnselectInstrCmd { get; set; }
+        public Command NewCmd { get; set; }
         public Command SaveInstructorCmd { get; set; }
         public List<druh> SelectedTypes
         {
@@ -436,10 +440,10 @@ namespace TigersProject.ViewModel
             SaveInstructorCmd = new Command(SaveInstructor, CanSaveInstructor);
             DeleteInstructorCmd = new Command(DeleteInstructor, () =>
             {
-                if(this.editInstructor != null) return true;
+                if(this.editInstructor.ID != 0) return true;
                 else return false;
             });
-            UnselectInstrCmd = new Command(UnselectInstructor);
+            NewCmd = new Command(ResetAttributes);
             AddLanguageCmd = new Command(AddLanguage,CanAddLanguage);
             DelLanguageCmd = new Command(DeleteLanguage, () =>
             {
@@ -474,6 +478,7 @@ namespace TigersProject.ViewModel
             }
             this.Instructor = instructor;
             this.beginTime = begin;
+            SearchInstructors();
             
             LessonWindow window = new LessonWindow();
             window.DataContext = this;
@@ -502,6 +507,11 @@ namespace TigersProject.ViewModel
         /// </summary>
         private void SaveLesson()
         {
+            if(this.beginTime.Minute != 0)
+            {
+                MessageBox.Show("Nastavte začátek lekce na celou hodinu.");
+                return;
+            }
             if(this.lesson == null)this.lesson = new lekce();
             this.lesson.JMENOKLIENT = this.name;
             this.lesson.PRIJMENIKLIENT = this.surname;
@@ -523,7 +533,7 @@ namespace TigersProject.ViewModel
                 ChangedProperty("DayTable");
                 ResetAttributes();
             }
-            else MessageBox.Show("Lekce nemohla být přidána");
+            else MessageBox.Show("Lekce nebyla přidána, protože instruktor nemá vybraný druh, nebo jazyk.");
         }
         private void SearchInstructors()
         {
@@ -577,6 +587,9 @@ namespace TigersProject.ViewModel
             if((!String.IsNullOrEmpty(this.surname))
                && (!String.IsNullOrEmpty(this.phone))
                && (this.beginTime.Hour > 8)
+               && (this.instructor != null)
+               && (this.language != null)
+               && (this.type != null)
                && (this.beginTime.Hour < 16)) return true;
             else return false;
         }
@@ -588,13 +601,13 @@ namespace TigersProject.ViewModel
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    DatabaseModel.DeleteInstructor(this.editInstructor);
-                    MessageBox.Show("Instruktor byl smazán.");
+                    if (DatabaseModel.DeleteInstructor(this.editInstructor)) MessageBox.Show("Instruktor byl smazán.");
+                    else MessageBox.Show("Instruktor má nějaké lekce.");
                     break;
                 case MessageBoxResult.No:
                     break;
             }
-            UnselectInstructor();
+            ResetAttributes();
             ChangedProperty("Instructors");
             try {
                 EditInstructor = Instructors.First();
@@ -610,10 +623,7 @@ namespace TigersProject.ViewModel
             editInstructor.SAZBA = this.money;
             editInstructor.TELEFON = this.phone;
 
-            foreach (druh type in selectedTypes)
-            {
-                editInstructor.druh.Add(type);
-            }
+            editInstructor.druh = this.SelectedTypes;
             editInstructor.jazyk = this.SelectedLanguages;
 
             if(DatabaseModel.SaveInstructor(this.editInstructor))
@@ -631,18 +641,11 @@ namespace TigersProject.ViewModel
                && (!String.IsNullOrEmpty(this.surname))
                && (!String.IsNullOrEmpty(this.phone))
                && (this.money > 0)
-               //&&(this.selectedLanguages.Count > 0)
-               /*&&(this.selectedTypes.Count > 0)*/) return true;
+               &&(this.selectedLanguages.Count > 0)
+               &&(this.selectedTypes.Count > 0)) return true;
             else return false;
         }
-
-        private void UnselectInstructor()
-        {
-            this.EditInstructor = new instruktor();
-            this.Money = 0;
-            this.SelectedLanguages.Clear();
-            this.SelectedTypes.Clear();
-        }
+        
         //okno JAZYKY---------------------------------------------------------------------------------
         private void AddLanguage()
         {
@@ -681,6 +684,13 @@ namespace TigersProject.ViewModel
             this.Phone = this.Place = this.Name = this.Surname = null;
             this.Paid = false;
             this.Money = 0;
+            this.EditInstructor = new instruktor();
+            this.Money = 0;
+            this.SelectedLanguages.Clear();
+            this.SelectedTypes.Clear();
+            this.Lessons = null;
+            ChangedProperty("Lessons");
+            this.Lesson = null;
         }
         public void Mouse(object sender, MouseButtonEventArgs e)
         {
